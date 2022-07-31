@@ -12,25 +12,27 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import py.edu.gestisoft.model.base.Cliente;
-import py.edu.gestisoft.service.base.ClienteService;
+import py.edu.gestisoft.model.base.Producto;
+import py.edu.gestisoft.service.base.ProductoService;
 
 @RestController
 @CrossOrigin
-@RequestMapping({ "/api/cliente" })
-public class ClienteController {
-//INYECTA EL SERVICE DEL MODULO CLIENTE
+@RequestMapping({ "/api/producto" })
+public class ProductoController {
+//	INYECTA EL SERVICIO DEL MODULO PRODUCTO
 	@Autowired
-	private ClienteService clienteService;
+	private ProductoService productoService;
 
-//	GUARDA LA ENTIDAD CLIENTE
+//	GUARDA UN PRODUCTO
 	@PostMapping("/save")
-	public ResponseEntity<Cliente> save(@RequestBody Cliente cliente) {
-		cliente = clienteService.save(cliente);
-		return ResponseEntity.ok(cliente);
+	public ResponseEntity<Producto> save(@RequestBody Producto producto) {
+		producto = productoService.save(producto);
+		return ResponseEntity.ok(producto);
 	}
 
+//	DEVUELVE TODOS LOS PRODUCTOS DE LA TABLA PRODUCTOS
 	@GetMapping("/findAll")
-	public ResponseEntity<List<Cliente>> findAllClientes() {
-		return ResponseEntity.ok(clienteService.findAllClientes());
+	public ResponseEntity<List<Producto>> findAllProductos() {
+		return ResponseEntity.ok(productoService.findAllProductos());
 	}
 }

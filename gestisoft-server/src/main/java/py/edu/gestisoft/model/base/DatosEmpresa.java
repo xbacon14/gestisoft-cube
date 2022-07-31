@@ -22,18 +22,13 @@ import lombok.Setter;
 @NoArgsConstructor
 @Setter
 @Getter
-public class Cliente {
+// CAMBIAR NOMBRE PARA EMPRESA NOMAS?
+public class DatosEmpresa {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "ID_CLIENTE")
+	@Column(name = "ID_DATOS_EMPRESA")
 	private Long id;
-
-//	TODO 3
-//	NO SERIA MEJOR LLAMARLE ACTIVO?
-	@NonNull
-	@Column(name = "ESTADO")
-	private Boolean estado;
 
 	@NonNull
 	@Column(name = "NOMBRE")
@@ -45,8 +40,6 @@ public class Cliente {
 	@Column(name = "CORREO_ELECTRONICO")
 	private String correoElectronico;
 
-//	TODO 2
-//	REVISAR SI CELULARES ES NUMERO DE TELEFONO
 	@Column(name = "NUMERO_CELULAR")
 	private String numeroCelular;
 
@@ -59,14 +52,14 @@ public class Cliente {
 	@Column(name = "OBSERVACION")
 	private String observacion;
 
-//	TODO 1
-//	REVISAR QUE ES LA FECHA ALTA
-	@Column(name = "FECHA_ALTA")
-	private LocalDateTime fechaAlta;
+	@Column(name = "CIUDAD")
+	private String ciudad;
+
+	@Column(name = "FECHA_REGISTRO")
+	private LocalDateTime fechaRegistro;
 
 	@PrePersist
-	void setFechaAlta() {
-		this.fechaAlta = LocalDateTime.now();
+	void setFechaRegistro() {
+		this.fechaRegistro = LocalDateTime.now();
 	}
-
 }

@@ -7,7 +7,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.PrePersist;
 import javax.persistence.Table;
 
 import lombok.AllArgsConstructor;
@@ -17,20 +16,17 @@ import lombok.NonNull;
 import lombok.Setter;
 
 @Entity
-@Table(name = "CLIENTE")
+@Table(name = "PRODUCTO")
 @AllArgsConstructor
 @NoArgsConstructor
 @Setter
 @Getter
-public class Cliente {
-
+public class Producto {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "ID_CLIENTE")
+	@Column(name = "ID_PRODUCTO")
 	private Long id;
 
-//	TODO 3
-//	NO SERIA MEJOR LLAMARLE ACTIVO?
 	@NonNull
 	@Column(name = "ESTADO")
 	private Boolean estado;
@@ -39,34 +35,27 @@ public class Cliente {
 	@Column(name = "NOMBRE")
 	private String nombre;
 
-	@Column(name = "CI_RUC")
-	private String ciRuc;
+//	TODO 4
+//	VERIFICAR SI SE CAMBIA A BIG DECIMAL
+	@NonNull
+	@Column(name = "CANTIDAD")
+	private Long cantidad;
 
-	@Column(name = "CORREO_ELECTRONICO")
-	private String correoElectronico;
+//	TODO 5
+//	VERIFICAR SI SE CAMBIA A BIG DECIMAL
+	@Column(name = "PRECIO_VENTA")
+	private Long precioVenta;
 
-//	TODO 2
-//	REVISAR SI CELULARES ES NUMERO DE TELEFONO
-	@Column(name = "NUMERO_CELULAR")
-	private String numeroCelular;
+	@Column(name = "UNIDAD_MEDIDA")
+	private String unidadMedida;
 
-	@Column(name = "NUMERO_LINEA_BAJA")
-	private String numeroLineaBaja;
+	@Column(name = "FECHA_REGISTRO")
+	private LocalDateTime fechaRegistro;
 
-	@Column(name = "DIRECCION")
-	private String direccion;
+	@Column(name = "EXISTENCIA")
+	private Double existencia;
 
 	@Column(name = "OBSERVACION")
 	private String observacion;
-
-//	TODO 1
-//	REVISAR QUE ES LA FECHA ALTA
-	@Column(name = "FECHA_ALTA")
-	private LocalDateTime fechaAlta;
-
-	@PrePersist
-	void setFechaAlta() {
-		this.fechaAlta = LocalDateTime.now();
-	}
 
 }

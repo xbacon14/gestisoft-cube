@@ -1,4 +1,4 @@
-package py.edu.gestisoft.controller.base;
+package py.edu.gestisoft.controller.operacional;
 
 import java.util.List;
 
@@ -11,26 +11,27 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import py.edu.gestisoft.model.base.Cliente;
-import py.edu.gestisoft.service.base.ClienteService;
+import py.edu.gestisoft.model.operacional.Venta;
+import py.edu.gestisoft.service.operacional.VentaService;
 
 @RestController
 @CrossOrigin
-@RequestMapping({ "/api/cliente" })
-public class ClienteController {
-//INYECTA EL SERVICE DEL MODULO CLIENTE
+@RequestMapping({ "/api/venta" })
+public class VentaController {
+	// INYECTA EL SERVICE DEL MODULO VENTA
 	@Autowired
-	private ClienteService clienteService;
+	private VentaService ventaService;
 
-//	GUARDA LA ENTIDAD CLIENTE
+//	GUARDA LA ENTIDAD VENTA
 	@PostMapping("/save")
-	public ResponseEntity<Cliente> save(@RequestBody Cliente cliente) {
-		cliente = clienteService.save(cliente);
-		return ResponseEntity.ok(cliente);
+	public ResponseEntity<Venta> save(@RequestBody Venta venta) {
+		venta = ventaService.save(venta);
+		return ResponseEntity.ok(venta);
 	}
 
 	@GetMapping("/findAll")
-	public ResponseEntity<List<Cliente>> findAllClientes() {
-		return ResponseEntity.ok(clienteService.findAllClientes());
+	public ResponseEntity<List<Venta>> findAllVentas() {
+		return ResponseEntity.ok(ventaService.findAllVentas());
 	}
+
 }

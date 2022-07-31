@@ -12,9 +12,9 @@ public class DatabaseConfig {
 	public DataSource getDataSource() {
 		DataSourceBuilder<?> dataSourceBuilder = DataSourceBuilder.create();
 		// dataSourceBuilder.driverClassName("com.mysql.jdbc.Driver");
-		dataSourceBuilder
-				.url("jdbc:mysql://localhost:3306/gestisoft_db?useSSL=false&useUnicode=true&serverTimezone=UTC");
-//		dataSourceBuilder.url("jdbc:mysql://localhost:3307/saas_salao?useSSL=false&useUnicode=true&serverTimezone=UTC");
+//		dataSourceBuilder
+//				.url("jdbc:mysql://localhost:3306/gestisoft_db?useSSL=false&useUnicode=true&serverTimezone=UTC");
+		dataSourceBuilder.url("jdbc:mysql://localhost:3307/gestisoft_db?useSSL=false&useUnicode=true&serverTimezone=UTC");
 		dataSourceBuilder.username("root");
 		dataSourceBuilder.password("84125497");
 		return dataSourceBuilder.build();
