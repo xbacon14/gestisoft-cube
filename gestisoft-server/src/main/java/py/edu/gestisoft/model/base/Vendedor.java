@@ -36,14 +36,14 @@ public class Vendedor {
 	@Column(name = "NOMBRE")
 	private String nombre;
 
-	@Column(name = "CI_RUC")
-	private String ciRuc;
+	@Column(name = "CI")
+	private String ci;
 
-	@Column(name = "NUMERO_CELULAR")
-	private String numeroCelular;
+	@Column(name = "CELULAR")
+	private String celular;
 
-	@Column(name = "NUMERO_LINEA_BAJA")
-	private String numeroLineaBaja;
+	@Column(name = "LINEA_BAJA")
+	private String lineaBaja;
 
 	@Column(name = "CIUDAD")
 	private String ciudad;

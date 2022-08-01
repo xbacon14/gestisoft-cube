@@ -28,11 +28,12 @@ public class VentaDetalle {
 	@Column(name = "ID_VENTA_DETALLE")
 	private Long id;
 
-//	CAMBIAR A BIG DECIMAL?
+//	PARA CALCULO DE CANTIDADES ES MEJOR UTILIZAR BIG DECIMAL 
 	@NonNull
 	@Column(name = "CANTIDAD")
 	private Double cantidad;
 
+//	PARA CALCULO DE VALORES ES MEJOR UTILIZAR BIG DECIMAL 
 	@NonNull
 	@Column(name = "PRECIO")
 	private Long precio;

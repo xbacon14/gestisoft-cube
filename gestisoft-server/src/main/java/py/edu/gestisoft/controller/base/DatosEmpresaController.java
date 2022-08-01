@@ -11,8 +11,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import py.edu.gestisoft.model.base.DatosEmpresa;
-import py.edu.gestisoft.service.base.DatosEmpresaService;
+import py.edu.gestisoft.model.sistema.DatosEmpresa;
+import py.edu.gestisoft.service.sistema.DatosEmpresaService;
 
 @RestController
 @CrossOrigin
@@ -29,6 +29,6 @@ public class DatosEmpresaController {
 
 	@GetMapping("/findAll")
 	public ResponseEntity<List<DatosEmpresa>> findAllEmpresas() {
-		return ResponseEntity.ok(datosEmpresaService.findAllEmpresas());
+		return ResponseEntity.ok(datosEmpresaService.findAllDatosEmpresa());
 	}
 }

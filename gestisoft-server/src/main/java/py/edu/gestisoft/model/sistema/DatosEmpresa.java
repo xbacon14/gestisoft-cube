@@ -1,4 +1,4 @@
-package py.edu.gestisoft.model.base;
+package py.edu.gestisoft.model.sistema;
 
 import java.time.LocalDateTime;
 
@@ -17,14 +17,12 @@ import lombok.NonNull;
 import lombok.Setter;
 
 @Entity
-@Table(name = "CLIENTE")
+@Table(name = "DATOS_EMPRESA")
 @AllArgsConstructor
 @NoArgsConstructor
 @Setter
 @Getter
-// CAMBIAR NOMBRE PARA EMPRESA NOMAS?
 public class DatosEmpresa {
-
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "ID_DATOS_EMPRESA")
@@ -34,26 +32,26 @@ public class DatosEmpresa {
 	@Column(name = "NOMBRE")
 	private String nombre;
 
-	@Column(name = "CI_RUC")
-	private String ciRuc;
+	@Column(name = "RUC")
+	private String ruc;
 
-	@Column(name = "CORREO_ELECTRONICO")
-	private String correoElectronico;
+	@Column(name = "CELULAR")
+	private String celular;
 
-	@Column(name = "NUMERO_CELULAR")
-	private String numeroCelular;
+	@Column(name = "LINEA_BAJA")
+	private String lineaBaja;
 
-	@Column(name = "NUMERO_LINEA_BAJA")
-	private String numeroLineaBaja;
+	@Column(name = "EMAIL")
+	private String email;
+
+	@Column(name = "CIUDAD")
+	private String ciudad;
 
 	@Column(name = "DIRECCION")
 	private String direccion;
 
 	@Column(name = "OBSERVACION")
 	private String observacion;
-
-	@Column(name = "CIUDAD")
-	private String ciudad;
 
 	@Column(name = "FECHA_REGISTRO")
 	private LocalDateTime fechaRegistro;
@@ -62,4 +60,5 @@ public class DatosEmpresa {
 	void setFechaRegistro() {
 		this.fechaRegistro = LocalDateTime.now();
 	}
+
 }

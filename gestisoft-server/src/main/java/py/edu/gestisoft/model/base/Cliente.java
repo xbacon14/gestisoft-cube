@@ -42,16 +42,16 @@ public class Cliente {
 	@Column(name = "CI_RUC")
 	private String ciRuc;
 
-	@Column(name = "CORREO_ELECTRONICO")
-	private String correoElectronico;
+	@Column(name = "EMAIL")
+	private String email;
 
 //	TODO 2
 //	REVISAR SI CELULARES ES NUMERO DE TELEFONO
-	@Column(name = "NUMERO_CELULAR")
-	private String numeroCelular;
+	@Column(name = "CELULAR")
+	private String celular;
 
-	@Column(name = "NUMERO_LINEA_BAJA")
-	private String numeroLineaBaja;
+	@Column(name = "LINEA_BAJA")
+	private String lineaBaja;
 
 	@Column(name = "DIRECCION")
 	private String direccion;

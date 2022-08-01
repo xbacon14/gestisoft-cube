@@ -47,6 +47,7 @@ public class Venta {
 	private String observacion;
 
 //	CAMBIAR PARA VALOR_TOTAL_VENTA
+//	NECESITA SER BIG DECIMAL PARA OPERACIONES DE VALORES
 	@Column(name = "TOTAL")
 	private Long total;
 
