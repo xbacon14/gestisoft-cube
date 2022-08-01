@@ -1,6 +1,6 @@
 /*
 SQLyog Ultimate v11.11 (64 bit)
-MySQL - 5.6.47-log : Database - gestisoft_db
+MySQL - 5.7.36-log : Database - gestisoft_db
 *********************************************************************
 */
 
@@ -30,10 +30,13 @@ CREATE TABLE `cliente` (
   `NUMERO_LINEA_BAJA` varchar(20) DEFAULT NULL,
   `DIRECCION` varchar(80) DEFAULT NULL,
   `OBSERVACION` varchar(80) DEFAULT NULL,
+  `FECHA_ALTA` datetime DEFAULT NULL,
   PRIMARY KEY (`ID_CLIENTE`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
 
 /*Data for the table `cliente` */
+
+insert  into `cliente`(`ID_CLIENTE`,`ESTADO`,`NOMBRE`,`CI_RUC`,`CORREO_ELECTRONICO`,`NUMERO_CELULAR`,`NUMERO_LINEA_BAJA`,`DIRECCION`,`OBSERVACION`,`FECHA_ALTA`) values (1,1,'ITALO ANTONIO GOLIN','5243358','italo.galeano123@gmail.com','+595981383068','046243196','CALLE SAN MIGUEL 912','FRENTE A CASA DE LAS OFERTAS','2022-07-31 21:47:00');
 
 /*Table structure for table `persona` */
 
