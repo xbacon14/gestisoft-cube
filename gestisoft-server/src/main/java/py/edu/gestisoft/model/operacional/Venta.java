@@ -1,5 +1,6 @@
 package py.edu.gestisoft.model.operacional;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -30,7 +31,7 @@ public class Venta {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "ID_CLIENTE")
+	@Column(name = "ID_VENTA")
 	private Long id;
 
 	@Column(name = "CHOFER")
@@ -49,7 +50,7 @@ public class Venta {
 //	CAMBIAR PARA VALOR_TOTAL_VENTA
 //	NECESITA SER BIG DECIMAL PARA OPERACIONES DE VALORES
 	@Column(name = "TOTAL")
-	private Long total;
+	private BigDecimal total;
 
 	@Column(name = "VEHICULO")
 	private String vehiculo;

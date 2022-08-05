@@ -1,5 +1,6 @@
 package py.edu.gestisoft.model.base;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 import javax.persistence.Column;
@@ -7,6 +8,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.PrePersist;
 import javax.persistence.Table;
 
 import lombok.AllArgsConstructor;
@@ -39,12 +41,12 @@ public class Producto {
 //	VERIFICAR SI SE CAMBIA A BIG DECIMAL
 	@NonNull
 	@Column(name = "CANTIDAD")
-	private Long cantidad;
+	private BigDecimal cantidad;
 
 //	TODO 5
 //	VERIFICAR SI SE CAMBIA A BIG DECIMAL
 	@Column(name = "PRECIO_VENTA")
-	private Long precioVenta;
+	private BigDecimal precioVenta;
 
 	@Column(name = "UNIDAD_MEDIDA")
 	private String unidadMedida;
@@ -53,9 +55,14 @@ public class Producto {
 	private LocalDateTime fechaRegistro;
 
 	@Column(name = "EXISTENCIA")
-	private Double existencia;
+	private BigDecimal existencia;
 
 	@Column(name = "OBSERVACION")
 	private String observacion;
+
+	@PrePersist
+	void setFechaRegistro() {
+		this.fechaRegistro = LocalDateTime.now();
+	}
 
 }

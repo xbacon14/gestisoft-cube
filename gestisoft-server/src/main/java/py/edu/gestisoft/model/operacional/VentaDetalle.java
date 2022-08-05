@@ -1,5 +1,7 @@
 package py.edu.gestisoft.model.operacional;
 
+import java.math.BigDecimal;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -36,14 +38,14 @@ public class VentaDetalle {
 //	PARA CALCULO DE VALORES ES MEJOR UTILIZAR BIG DECIMAL 
 	@NonNull
 	@Column(name = "PRECIO")
-	private Long precio;
+	private BigDecimal precio;
 
 	@ManyToOne
 	@JoinColumn(name = "ID_VENTA", referencedColumnName = "ID_VENTA")
 	private Venta venta;
 
 	@ManyToOne
-	@JoinColumn(name = "ID_PRODUCTO", referencedColumnName = "ID_PRODUCO")
+	@JoinColumn(name = "ID_PRODUCTO", referencedColumnName = "ID_PRODUCTO")
 	private Producto producto;
 
 }

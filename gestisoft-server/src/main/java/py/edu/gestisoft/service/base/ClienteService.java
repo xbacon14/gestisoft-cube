@@ -18,6 +18,7 @@ public class ClienteService {
 
 //	PERSISTE Y GUARDA LOS DATOS RECIBIDOS EN LA TABLA CLIENTE 
 	public Cliente save(Cliente cliente) {
+		cliente.setEstado(true);
 		return clienteRepository.save(cliente);
 	}
 

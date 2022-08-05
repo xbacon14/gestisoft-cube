@@ -1,5 +1,6 @@
 package py.edu.gestisoft.service.operacional;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,10 +25,10 @@ public class VentaService {
 //		PERSISTE Y GUARDA LOS DATOS RECIBIDOS EN LA TABLA CLIENTE 
 	public Venta save(Venta venta) {
 		venta = ventaRepository.save(venta);
-		Long total = 0l;
+		BigDecimal total = BigDecimal.ZERO;
 		for (VentaDetalle detalle : venta.getDetalles()) {
 			detalle.setVenta(new Venta(venta.getId()));
-			total += detalle.getPrecio();
+			total.add(detalle.getPrecio());
 			ventaDetalleRepository.save(detalle);
 		}
 		venta.setTotal(total);
