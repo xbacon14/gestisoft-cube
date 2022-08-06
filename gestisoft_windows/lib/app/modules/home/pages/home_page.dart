@@ -21,6 +21,7 @@ class _HomePageState extends State<HomePage> with WindowListener {
   @override
   void initState() {
     windowManager.addListener(this);
+    Modular.to.pushNamed('/home');
     super.initState();
   }
 
@@ -76,7 +77,7 @@ class _HomePageState extends State<HomePage> with WindowListener {
                     Expanded(
                       child: Container(),
                     ),
-                    Expanded(
+                    Center(
                       child: Text(
                         dataShared.nombreEmpresa,
                         style: FluentTheme.of(context).typography.subtitle,
@@ -86,6 +87,8 @@ class _HomePageState extends State<HomePage> with WindowListener {
                       child: Row(
                         children: [
                           Expanded(child: Container()),
+                          const Icon(FluentIcons.people),
+                          const SizedBox(width: 12),
                           Text(
                             dataShared.nombreUsuario,
                             style: FluentTheme.of(context)
