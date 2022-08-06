@@ -2,3 +2,5 @@
 *.log
 *.lifecyclemapping
 /JavaWorkspace
+*.class
+

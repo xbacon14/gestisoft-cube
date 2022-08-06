@@ -24,30 +24,123 @@ CREATE TABLE `cliente` (
   `ID_CLIENTE` int(11) NOT NULL AUTO_INCREMENT,
   `ESTADO` tinyint(4) NOT NULL DEFAULT '1',
   `NOMBRE` varchar(80) NOT NULL,
-  `CI_RUC` varchar(16) DEFAULT NULL,
-  `CORREO_ELECTRONICO` varchar(80) DEFAULT NULL,
-  `NUMERO_CELULAR` varchar(20) DEFAULT NULL,
-  `NUMERO_LINEA_BAJA` varchar(20) DEFAULT NULL,
-  `DIRECCION` varchar(80) DEFAULT NULL,
-  `OBSERVACION` varchar(80) DEFAULT NULL,
+  `CI_RUC` varchar(30) DEFAULT NULL,
+  `EMAIL` varchar(80) DEFAULT NULL,
+  `CELULAR` varchar(20) DEFAULT NULL,
+  `LINEA_BAJA` varchar(20) DEFAULT NULL,
+  `DIRECCION` varchar(255) DEFAULT NULL,
+  `OBSERVACION` varchar(255) DEFAULT NULL,
+  `FECHA_ALTA` datetime NOT NULL,
   PRIMARY KEY (`ID_CLIENTE`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
 
 /*Data for the table `cliente` */
 
-/*Table structure for table `persona` */
+insert  into `cliente`(`ID_CLIENTE`,`ESTADO`,`NOMBRE`,`CI_RUC`,`EMAIL`,`CELULAR`,`LINEA_BAJA`,`DIRECCION`,`OBSERVACION`,`FECHA_ALTA`) values (1,1,'ITALO ANTONIO GOLIN','5243358','italo.galeano123@gmail.com','+595981383068','046243196','CALLE SAN MIGUEL 912','FRENTE A CASA DE LAS OFERTAS','2022-07-31 21:47:00'),(2,1,'ITALO ANTONIO GOLIN GALEANO','5243358','italo.galeano123@gmail.com','0981383068','046243196','CALLE SAN MIGUEL 912 C/ AV PARAGUAY','FRENTE A CASA DE LAS OFERTAS','2022-08-05 00:50:56');
 
-DROP TABLE IF EXISTS `persona`;
+/*Table structure for table `datos_empresa` */
 
-CREATE TABLE `persona` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `nombre_apellido` varchar(50) NOT NULL,
-  `ci_ruc` int(10) NOT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `ci` (`ci_ruc`)
+DROP TABLE IF EXISTS `datos_empresa`;
+
+CREATE TABLE `datos_empresa` (
+  `ID_DATOS_EMPRESA` int(1) NOT NULL AUTO_INCREMENT,
+  `NOMBRE` varchar(80) NOT NULL,
+  `RUC` varchar(30) DEFAULT NULL,
+  `CELULAR` int(11) DEFAULT NULL,
+  `LINEA_BAJA` int(11) DEFAULT NULL,
+  `EMAIL` varchar(80) DEFAULT NULL,
+  `CIUDAD` varchar(30) DEFAULT NULL,
+  `DIRECCION` varchar(255) DEFAULT NULL,
+  `OBSERVACION` varchar(255) DEFAULT NULL,
+  `FECHA_REGISTRO` datetime NOT NULL,
+  PRIMARY KEY (`ID_DATOS_EMPRESA`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
-/*Data for the table `persona` */
+/*Data for the table `datos_empresa` */
+
+/*Table structure for table `producto` */
+
+DROP TABLE IF EXISTS `producto`;
+
+CREATE TABLE `producto` (
+  `ID_PRODUCTO` int(11) NOT NULL AUTO_INCREMENT,
+  `ESTADO` tinyint(4) NOT NULL DEFAULT '1',
+  `NOMBRE` varchar(80) NOT NULL,
+  `CANTIDAD` decimal(20,3) DEFAULT NULL,
+  `PRECIO_VENTA` decimal(20,3) DEFAULT NULL,
+  `UNIDAD_MEDIDA` varchar(30) DEFAULT NULL,
+  `FECHA_REGISTRO` datetime NOT NULL,
+  `EXISTENCIA` decimal(20,3) DEFAULT NULL,
+  `OBSERVACION` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`ID_PRODUCTO`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+
+/*Data for the table `producto` */
+
+insert  into `producto`(`ID_PRODUCTO`,`ESTADO`,`NOMBRE`,`CANTIDAD`,`PRECIO_VENTA`,`UNIDAD_MEDIDA`,`FECHA_REGISTRO`,`EXISTENCIA`,`OBSERVACION`) values (1,0,'ARENA LAVADA TIPO 1',2000.000,5000.000,'METROS CUADRADOS','2022-08-05 00:54:47',10000.000,'TIPO I');
+
+/*Table structure for table `vendedor` */
+
+DROP TABLE IF EXISTS `vendedor`;
+
+CREATE TABLE `vendedor` (
+  `ID_VENDEDOR` int(11) NOT NULL AUTO_INCREMENT,
+  `NOMBRE` varchar(80) NOT NULL,
+  `CI` varbinary(15) NOT NULL,
+  `CELULAR` int(11) DEFAULT NULL,
+  `LINEA_BAJA` int(11) DEFAULT NULL,
+  `CIUDAD` varchar(30) DEFAULT NULL,
+  `DIRECCION` varchar(255) DEFAULT NULL,
+  `OBSERVACION` varchar(255) DEFAULT NULL,
+  `FECHA_ALTA` datetime NOT NULL,
+  PRIMARY KEY (`ID_VENDEDOR`),
+  UNIQUE KEY `ci` (`CI`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+/*Data for the table `vendedor` */
+
+/*Table structure for table `venta` */
+
+DROP TABLE IF EXISTS `venta`;
+
+CREATE TABLE `venta` (
+  `ID_VENTA` int(11) NOT NULL AUTO_INCREMENT,
+  `CHOFER` varchar(50) DEFAULT NULL,
+  `DOC_NRO` varchar(50) DEFAULT NULL,
+  `FECHA` datetime NOT NULL,
+  `OBSERVACION` varchar(100) DEFAULT NULL,
+  `TOTAL` decimal(20,3) DEFAULT NULL,
+  `VEHICULO` varchar(30) NOT NULL,
+  `ESTADO` tinyint(4) DEFAULT '1',
+  `ID_VENDEDOR` int(11) NOT NULL,
+  `ID_CLIENTE` int(11) NOT NULL,
+  PRIMARY KEY (`ID_VENTA`),
+  KEY `VENTA_FK_VENDEDOR` (`ID_VENDEDOR`),
+  KEY `VENTA_FK_CLIENTE` (`ID_CLIENTE`),
+  CONSTRAINT `VENTA_FK_CLIENTE` FOREIGN KEY (`ID_CLIENTE`) REFERENCES `cliente` (`ID_CLIENTE`),
+  CONSTRAINT `VENTA_FK_VENDEDOR` FOREIGN KEY (`ID_VENDEDOR`) REFERENCES `vendedor` (`ID_VENDEDOR`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+/*Data for the table `venta` */
+
+/*Table structure for table `venta_detalle` */
+
+DROP TABLE IF EXISTS `venta_detalle`;
+
+CREATE TABLE `venta_detalle` (
+  `ID_VENTA_DETALLE` int(11) NOT NULL AUTO_INCREMENT,
+  `CANTIDAD` double NOT NULL,
+  `PRECIO` int(11) NOT NULL,
+  `ID_VENTA` int(11) NOT NULL,
+  `ID_PRODUCTO` int(11) NOT NULL,
+  PRIMARY KEY (`ID_VENTA_DETALLE`),
+  KEY `VENTA_DETALLE_FK_VENTA` (`ID_VENTA`),
+  KEY `VENTA_DETALLE_FK_PRODUCTO` (`ID_PRODUCTO`),
+  CONSTRAINT `VENTA_DETALLE_FK_PRODUCTO` FOREIGN KEY (`ID_PRODUCTO`) REFERENCES `producto` (`ID_PRODUCTO`),
+  CONSTRAINT `VENTA_DETALLE_FK_VENTA` FOREIGN KEY (`ID_VENTA`) REFERENCES `venta` (`ID_VENTA`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+/*Data for the table `venta_detalle` */
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
