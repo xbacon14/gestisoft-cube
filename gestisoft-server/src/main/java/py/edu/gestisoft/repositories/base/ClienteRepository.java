@@ -6,4 +6,6 @@ import py.edu.gestisoft.model.base.Cliente;
 
 public interface ClienteRepository extends JpaRepository<Cliente, Long> {
 
+	Cliente findByciRuc(String ciRuc);
+
 }

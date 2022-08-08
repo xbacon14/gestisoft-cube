@@ -3,12 +3,14 @@ import 'package:gestisoft_windows/app/modules/cliente/cliente_module.dart';
 import 'package:gestisoft_windows/app/modules/home/home_controller.dart';
 import 'package:gestisoft_windows/app/modules/home/pages/home_page.dart';
 import 'package:gestisoft_windows/app/modules/home/pages/widgets/home_view.dart';
+import 'package:gestisoft_windows/app/modules/home/repositories/configuracion_repository.dart';
 import 'package:gestisoft_windows/app/modules/producto/pages/producto_controller.dart';
 import 'package:gestisoft_windows/app/modules/producto/repositories/producto_repository.dart';
 
 class HomeModule extends Module {
   @override
   final List<Bind> binds = [
+    Bind.lazySingleton((i) => ConfiguracionRepository(i.get())),
     Bind.lazySingleton((i) => ProductoRepository(i.get())),
     Bind.lazySingleton((i) => ProductoController(i.get())),
     Bind.lazySingleton((i) => HomeController()),
@@ -18,6 +20,7 @@ class HomeModule extends Module {
   final List<ModularRoute> routes = [
     ChildRoute('/', child: (_, args) => const HomePage(), children: [
       ChildRoute('/home', child: (context, args) => const HomeView()),
+      ChildRoute('/sin_conexion', child: (context, args) => const HomeView()),
       ModuleRoute('/cliente', module: ClienteModule()),
     ]),
 

@@ -1,9 +1,10 @@
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_modular/flutter_modular.dart';
-import 'package:gestisoft_windows/app/components/core/navigator/globals.dart';
 import 'package:gestisoft_windows/app/components/date/date_util.dart';
 import 'package:gestisoft_windows/app/components/helpers/data_shared.dart';
+import 'package:gestisoft_windows/app/modules/home/home_controller.dart';
+import 'package:mobx/mobx.dart';
 import 'package:window_manager/window_manager.dart';
 
 class HomePage extends StatefulWidget {
@@ -17,10 +18,19 @@ class _HomePageState extends State<HomePage> with WindowListener {
   final viewKey = GlobalKey();
   int index = 0;
   final DataShared dataShared = Modular.get();
+  final HomeController homeController = Modular.get();
 
   @override
   void initState() {
     windowManager.addListener(this);
+    homeController.verificarConexion();
+    reaction<bool>((r) => homeController.online, ((p0) {
+      if (p0 == false) {
+        Modular.to.pushNamed('/sin_conexion');
+      } else {
+        Modular.to.pushNamed('/home');
+      }
+    }));
     Modular.to.pushNamed('/home');
     super.initState();
   }
@@ -101,6 +111,8 @@ class _HomePageState extends State<HomePage> with WindowListener {
                           const SizedBox(
                             width: 16,
                           ),
+                          const Icon(FluentIcons.calendar),
+                          const SizedBox(width: 12),
                           Text(
                             DateUtil().formatDateString(
                               DateTime.now().toIso8601String(),

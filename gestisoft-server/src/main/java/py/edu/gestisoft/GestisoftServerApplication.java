@@ -1,5 +1,6 @@
 package py.edu.gestisoft;
 
+import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.actuate.autoconfigure.security.servlet.ManagementWebSecurityAutoConfiguration;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
@@ -12,6 +13,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @SpringBootApplication(exclude = { SecurityAutoConfiguration.class, ManagementWebSecurityAutoConfiguration.class })
 @EnableTransactionManagement
 @EnableAutoConfiguration
+@MapperScan("py.edu.gestisoft.mapper")
 public class GestisoftServerApplication extends SpringBootServletInitializer {
 
 	public static void main(String[] args) {

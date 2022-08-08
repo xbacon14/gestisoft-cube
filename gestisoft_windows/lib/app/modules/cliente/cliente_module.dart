@@ -6,12 +6,12 @@ import 'package:gestisoft_windows/app/modules/cliente/repositories/cliente_repos
 class ClienteModule extends Module {
   @override
   List<Bind> get binds => [
-        // Bind.singleton(
-        //   (i) => ClienteRepository(i()),
-        // ),
-        // Bind.singleton(
-        //   (i) => ClienteController(),
-        // ),
+        Bind.singleton(
+          (i) => ClienteRepository(i.get()),
+        ),
+        Bind.singleton(
+          (i) => ClienteController(i.get()),
+        ),
       ];
 
   @override

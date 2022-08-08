@@ -1,0 +1,47 @@
+import 'package:fluent_ui/fluent_ui.dart';
+
+class SearchTextField extends StatefulWidget {
+  const SearchTextField({
+    Key? key,
+    required this.onSubmited,
+  }) : super(key: key);
+
+  final Function(String value) onSubmited;
+
+  @override
+  State<SearchTextField> createState() => _SearchTextFieldState();
+}
+
+class _SearchTextFieldState extends State<SearchTextField> {
+  final TextEditingController searchFieldController = TextEditingController();
+
+  @override
+  void dispose() {
+    searchFieldController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return TextBox(
+      controller: searchFieldController,
+      onSubmitted: (value) => widget.onSubmited(value),
+      placeholder: "Consulte por nombre o numero de documento",
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+      onEditingComplete: () {},
+      suffix: TextButton(
+        child: searchFieldController.text.isNotEmpty
+            ? const Icon(FluentIcons.clear)
+            : const Icon(FluentIcons.search),
+        onPressed: () {
+          setState(() {
+            searchFieldController.clear();
+          });
+        },
+      ),
+      onChanged: (value) {
+        setState(() {});
+      },
+    );
+  }
+}

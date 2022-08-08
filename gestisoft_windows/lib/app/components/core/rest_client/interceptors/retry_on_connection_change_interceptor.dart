@@ -13,11 +13,6 @@ class RetryOnConnectionChangeInterceptor extends Interceptor {
   onError(DioError err, ErrorInterceptorHandler handler) {
     if (_shouldRetry(err)) {
       try {
-        // TESTAR NO MOBILE
-        // TESTAR NO MOBILE
-        // TESTAR NO MOBILE
-        // TESTAR NO MOBILE
-        // TESTAR NO MOBILE
         requestRetrier.scheduleRequestRetry(err.requestOptions);
       } catch (e) {
         DioError error = DioError(error: e, requestOptions: err.requestOptions);
@@ -29,7 +24,11 @@ class RetryOnConnectionChangeInterceptor extends Interceptor {
 
   bool _shouldRetry(DioError err) {
     // if (kIsWeb) {
-    return err.type == DioErrorType.other && err.error != null;
+    if (err.type == DioErrorType.other && err.error != null) {
+      return true;
+    } else {
+      return false;
+    }
     // } else {
     //   return err.type == DioErrorType.other &&
     //       err.error != null &&

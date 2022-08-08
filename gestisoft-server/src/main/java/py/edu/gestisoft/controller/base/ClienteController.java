@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import py.edu.gestisoft.model.base.Cliente;
@@ -24,13 +25,18 @@ public class ClienteController {
 
 //	GUARDA LA ENTIDAD CLIENTE
 	@PostMapping("/save")
-	public ResponseEntity<Cliente> save(@RequestBody Cliente cliente) {
-		cliente = clienteService.save(cliente);
-		return ResponseEntity.ok(cliente);
+	public ResponseEntity<?> save(@RequestBody Cliente cliente) {
+		return clienteService.save(cliente);
 	}
 
 	@GetMapping("/findAll")
 	public ResponseEntity<List<Cliente>> findAllClientes() {
 		return ResponseEntity.ok(clienteService.findAllClientes());
+	}
+
+	@GetMapping("/findByNombreODocumento")
+	public ResponseEntity<List<Cliente>> findByNombreODocumento(@RequestParam String condition) {
+
+		return ResponseEntity.ok(clienteService.findClientePorNombreODocumento(condition));
 	}
 }

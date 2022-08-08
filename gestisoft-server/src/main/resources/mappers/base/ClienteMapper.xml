@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="py.edu.gestisoft.mapper.base.ClienteMapper">
+
+	<resultMap id="resultSimples"
+		type="py.edu.gestisoft.model.base.Cliente">
+		<id property="id" column="ID_CLIENTE" />
+		<result property="estado" column="ESTADO" />
+		<result property="nombre" column="NOMBRE" />
+		<result property="ciRuc" column="CI_RUC" />
+		<result property="email" column="EMAIL" />
+		<result property="celular" column="CELULAR" />
+		<result property="lineaBaja" column="LINEA_BAJA" />
+		<result property="direccion" column="DIRECCION" />
+		<result property="observacion" column="OBSERVACION" />
+		<result property="fechaAlta" column="FECHA_ALTA" />
+
+
+	</resultMap>
+
+
+
+
+	<sql id="sqlDefault">
+		SELECT * FROM cliente c
+	</sql>
+
+	<select id="findClientesPorNombreODocumento"
+		resultMap="resultSimples">
+		<include refid="sqlDefault" />
+		WHERE (c.NOMBRE LIKE ${condition} OR c.CI_RUC LIKE
+		${condition})
+	</select>
+
+
+
+
+</mapper>
