@@ -82,6 +82,21 @@ class Cliente {
     );
   }
 
+  Cliente nuevo() {
+    return Cliente(
+      id: null,
+      nombre: "",
+      ciRuc: "",
+      email: "",
+      fechaAlta: "",
+      celular: "",
+      lineaBaja: "",
+      direccion: "",
+      observacion: "",
+      estado: true,
+    );
+  }
+
   String toJson() => json.encode(toMap());
 
   factory Cliente.fromJson(String source) =>

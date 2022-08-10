@@ -123,22 +123,23 @@ class _ClientePageState extends State<ClientePage> {
                           ),
                           CommandBarButton(
                             label: FilledButton(
-                                onPressed: () {
-                                  showDialog(
-                                      context: context,
-                                      builder: (BuildContext ctx) {
-                                        return const ClienteFormulario();
-                                      });
-                                },
-                                child: Row(
-                                  children: const [
-                                    Icon(FluentIcons.add),
-                                    SizedBox(
-                                      width: 8,
-                                    ),
-                                    Text("Nuevo cliente"),
-                                  ],
-                                )),
+                              onPressed: () {
+                                showDialog(
+                                    context: context,
+                                    builder: (BuildContext ctx) {
+                                      return const ClienteFormulario();
+                                    });
+                              },
+                              child: Row(
+                                children: const [
+                                  Icon(FluentIcons.add),
+                                  SizedBox(
+                                    width: 8,
+                                  ),
+                                  Text("Nuevo cliente"),
+                                ],
+                              ),
+                            ),
                             onPressed: () {
                               showDialog(
                                   context: context,

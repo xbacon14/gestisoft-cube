@@ -39,4 +39,10 @@ public class ClienteController {
 
 		return ResponseEntity.ok(clienteService.findClientePorNombreODocumento(condition));
 	}
+
+	@GetMapping("/revisarExistenciaCi")
+	public ResponseEntity<Boolean> revisarExistenciaCi(@RequestParam String documento) {
+
+		return ResponseEntity.ok(clienteService.revisarExistenciaCi(documento));
+	}
 }

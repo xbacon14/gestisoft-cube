@@ -39,11 +39,6 @@ class _SinConexionPageState extends State<SinConexionPage> {
               height: 24,
             ),
             FilledButton(
-                // style: ButtonStyle(
-                //   backgroundColor: ButtonState.all(
-                //     FluentTheme.of(context).menuColor,
-                //   ),
-                // ),
                 child: Container(
                   padding: const EdgeInsets.symmetric(vertical: 8),
                   width: 170,

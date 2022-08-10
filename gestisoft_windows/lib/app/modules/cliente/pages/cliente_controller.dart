@@ -12,10 +12,16 @@ abstract class ClienteControllerBase with Store {
   ClienteControllerBase(this.clienteRepository);
 
   @observable
+  Cliente currentRecord = Cliente().nuevo();
+
+  @observable
   bool processando = false;
 
   @observable
   bool listaVacia = false;
+
+  @observable
+  bool clienteExiste = false;
 
   ObservableList<Cliente> clientes = ObservableList();
 
@@ -46,6 +52,34 @@ abstract class ClienteControllerBase with Store {
       resolveListaVacia();
     } else {
       debugPrint("no se pudieron consultar los clientes");
+    }
+  }
+
+  Future<void> saveCliente() async {
+    processando = true;
+    final response = await clienteRepository
+        .saveCliente(currentRecord)
+        .whenComplete(() => processando = false);
+
+    if (response.statusCode == 200) {
+      debugPrint(
+          "El cliente ${currentRecord.nombre} ha sido guardado con exito");
+      currentRecord = Cliente().nuevo();
+    } else {
+      debugPrint("No se ha podido guardar el cliente");
+    }
+  }
+
+  Future<bool> revisarExistenciaCi(String ci) async {
+    processando = true;
+    final response = await clienteRepository
+        .revisarExistenciaCi(ci)
+        .whenComplete(() => processando = false);
+    if (response.statusCode == 200) {
+      return response.data;
+    } else {
+      debugPrint("No se ha podido consultar el ci");
+      return false;
     }
   }
 

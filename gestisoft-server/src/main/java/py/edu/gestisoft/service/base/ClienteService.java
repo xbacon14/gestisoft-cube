@@ -45,4 +45,13 @@ public class ClienteService {
 
 	}
 
+	public Boolean revisarExistenciaCi(String documento) {
+		Cliente cliente = clienteRepository.findByciRuc(documento);
+		if (cliente == null) {
+			return false;
+		} else {
+			return true;
+		}
+	}
+
 }

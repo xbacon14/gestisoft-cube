@@ -1,3 +1,4 @@
+// ignore: library_prefixes
 import 'package:flutter_dotenv/flutter_dotenv.dart' as dotEnv;
 
 class Enviroments {

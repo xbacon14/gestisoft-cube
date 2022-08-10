@@ -30,6 +30,8 @@ class _SearchTextFieldState extends State<SearchTextField> {
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
       onEditingComplete: () {},
       suffix: TextButton(
+        style:
+            ButtonStyle(backgroundColor: ButtonState.all(Colors.transparent)),
         child: searchFieldController.text.isNotEmpty
             ? const Icon(FluentIcons.clear)
             : const Icon(FluentIcons.search),

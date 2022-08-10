@@ -1,6 +1,7 @@
-import 'package:dio/dio.dart';
 import 'package:gestisoft_windows/app/components/core/rest_client/dio_rest_client.dart';
 import 'package:gestisoft_windows/app/components/core/rest_client/rest_client_response.dart';
+
+import '../models/cliente.dart';
 
 class ClienteRepository {
   final DioRestClient restClient;
@@ -16,5 +17,14 @@ class ClienteRepository {
       '/cliente/findByNombreODocumento',
       queryParameters: {"condition": condition},
     );
+  }
+
+  Future<RestClientResponse> saveCliente(Cliente cliente) async {
+    return await restClient.post('/cliente/save', data: cliente.toJson());
+  }
+
+  Future<RestClientResponse> revisarExistenciaCi(String ciRuc) async {
+    return await restClient.get('/cliente/revisarExistenciaCi',
+        queryParameters: {"documento": ciRuc});
   }
 }
