@@ -86,13 +86,6 @@ class Cliente {
     return Cliente(
       id: null,
       nombre: "",
-      ciRuc: "",
-      email: "",
-      fechaAlta: "",
-      celular: "",
-      lineaBaja: "",
-      direccion: "",
-      observacion: "",
       estado: true,
     );
   }

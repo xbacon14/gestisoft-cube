@@ -57,6 +57,7 @@ abstract class ClienteControllerBase with Store {
 
   Future<void> saveCliente() async {
     processando = true;
+
     final response = await clienteRepository
         .saveCliente(currentRecord)
         .whenComplete(() => processando = false);
@@ -76,6 +77,7 @@ abstract class ClienteControllerBase with Store {
         .revisarExistenciaCi(ci)
         .whenComplete(() => processando = false);
     if (response.statusCode == 200) {
+      clienteExiste = response.data;
       return response.data;
     } else {
       debugPrint("No se ha podido consultar el ci");

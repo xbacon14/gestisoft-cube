@@ -2,6 +2,7 @@ import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:gestisoft_windows/app/components/text_field/search_text_field.dart';
+import 'package:gestisoft_windows/app/components/ui/alert.dart';
 import 'package:gestisoft_windows/app/components/ui/empty_state.dart';
 import 'package:gestisoft_windows/app/modules/cliente/pages/cliente_controller.dart';
 import 'package:gestisoft_windows/app/modules/cliente/pages/widget/cliente_formulario.dart';
@@ -98,8 +99,10 @@ class _ClientePageState extends State<ClientePage> {
                                   .toList(),
                               onChanged: (newColor) => setState(
                                 () {
-                                  debugPrint(newColor);
-                                  selected = values.indexOf(newColor!);
+                                  if (newColor?.compareTo("Nombre") == 0) {
+                                    clienteController.clientes.sort((a, b) =>
+                                        a.nombre!.compareTo(b.nombre!));
+                                  }
                                 },
                               ),
                             ),
@@ -114,7 +117,13 @@ class _ClientePageState extends State<ClientePage> {
                           CommandBarButton(
                             icon: const Icon(FluentIcons.pdf),
                             label: const Text("Exportar a pdf"),
-                            onPressed: () {},
+                            onPressed: () {
+                              Alert.show(
+                                  text: "Info",
+                                  message: "Info",
+                                  type: 0,
+                                  context: context);
+                            },
                           ),
                           CommandBarButton(
                             icon: const Icon(FluentIcons.excel_logo),

@@ -1,7 +1,10 @@
+import 'dart:async';
+
 import 'package:fluent_ui/fluent_ui.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_modular/flutter_modular.dart';
+import 'package:gestisoft_windows/app/components/date/date_util.dart';
+import 'package:gestisoft_windows/app/components/text_field/string_utils.dart';
 import 'package:gestisoft_windows/app/components/text_field/text_form_field.dart';
 import 'package:gestisoft_windows/app/modules/cliente/pages/cliente_controller.dart';
 
@@ -20,8 +23,16 @@ class ClienteFormulario extends StatefulWidget {
 class _ClienteFormularioState extends State<ClienteFormulario> {
   final ClienteController clienteController = Modular.get();
   final formKey = GlobalKey<FormState>();
+  Timer? debounce;
 
   final ciRucFC = FocusNode();
+
+  @override
+  void dispose() {
+    debounce?.cancel();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return ContentDialog(
@@ -58,12 +69,15 @@ class _ClienteFormularioState extends State<ClienteFormulario> {
               FilledButton(
                 child: const Text("Guardar"),
                 onPressed: () {
+                  debugPrint(clienteController.currentRecord.toString());
                   if (formKey.currentState!.validate()) {
                     clienteController
                         .saveCliente()
                         .then((value) => Modular.to.pop())
                         .whenComplete(
                             () => clienteController.findAllClientes());
+                  } else {
+                    debugPrint("formulario no valido");
                   }
                 },
               ),
@@ -79,6 +93,7 @@ class _ClienteFormularioState extends State<ClienteFormulario> {
             // CODIGO Y ACTIVO
             Row(
               crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 Observer(
                   builder: (_) {
@@ -89,6 +104,8 @@ class _ClienteFormularioState extends State<ClienteFormulario> {
                         placeHolder: '',
                         enabled: false,
                         value: "${clienteController.currentRecord.id ?? ''}",
+                        onChanged: (String? value) {},
+                        validator: ((value) => null),
                       ),
                     );
                   },
@@ -106,10 +123,7 @@ class _ClienteFormularioState extends State<ClienteFormulario> {
                         builder: (_) {
                           return Checkbox(
                             checked: clienteController.currentRecord.estado,
-                            onChanged: (value) {
-                              clienteController.currentRecord.estado =
-                                  !clienteController.currentRecord.estado!;
-                            },
+                            onChanged: (value) {},
                           );
                         },
                       ),
@@ -141,31 +155,40 @@ class _ClienteFormularioState extends State<ClienteFormulario> {
                           }
                         },
                         child: TextFormField(
-                            title: "CI/RUC",
-                            placeHolder: 'Ej: X.XXX.XXX-X',
-                            value: clienteController.currentRecord.ciRuc ?? '',
-                            onSubmited: (value) async {
-                              await clienteController
-                                  .revisarExistenciaCi(value)
-                                  .then((response) => clienteController
-                                      .clienteExiste = response);
-                            },
-                            suffix: clienteController.clienteExiste
-                                ? const Icon(
-                                    FluentIcons.warning,
-                                    semanticLabel:
-                                        "Este CI/RUC ya está registrado",
-                                  )
-                                : const SizedBox(),
-                            validator: (text) {
-                              if (text == null || text.length < 3) {
-                                return 'El CI/RUC es obligatorio';
-                              } else if (clienteController.clienteExiste) {
-                                return 'Ya existe un cliente con este ruc';
+                          title: "CI/RUC",
+                          placeHolder: 'Ej: X.XXX.XXX-X',
+                          value: clienteController.currentRecord.ciRuc ?? '',
+                          onSubmited: (value) {},
+                          suffix: clienteController.clienteExiste
+                              ? const Icon(
+                                  FluentIcons.warning,
+                                  semanticLabel:
+                                      "Este CI/RUC ya está registrado",
+                                )
+                              : const SizedBox(),
+                          validator: (text) {
+                            if (text == null || text.length < 3) {
+                              return 'El CI/RUC es obligatorio';
+                            }
+                            if (clienteController.clienteExiste) {
+                              return 'Ya existe un cliente con este ruc';
+                            }
+                            return null;
+                          },
+                          onChanged: (value) {
+                            clienteController.currentRecord.ciRuc = value;
+                            debugPrint(value);
+                            debounce?.cancel();
+                            debounce = Timer(const Duration(milliseconds: 1500),
+                                () async {
+                              if (value!.length > 2) {
+                                await clienteController
+                                    .revisarExistenciaCi(value);
                               }
-                            },
-                            onChanged: (value) =>
-                                clienteController.currentRecord.ciRuc = value),
+                            });
+                            return null;
+                          },
+                        ),
                       );
                     },
                   ),
@@ -184,8 +207,12 @@ class _ClienteFormularioState extends State<ClienteFormulario> {
                           if (text == null || text.length < 3) {
                             return 'El nombre es obligatorio';
                           }
+                          return null;
                         },
                         value: clienteController.currentRecord.nombre ?? '',
+                        onChanged: (String? value) {
+                          clienteController.currentRecord.nombre = value;
+                        },
                       ),
                     );
                   },
@@ -203,6 +230,16 @@ class _ClienteFormularioState extends State<ClienteFormulario> {
                         title: "Email",
                         placeHolder: 'Ej: hola@cube.com',
                         value: clienteController.currentRecord.email ?? '',
+                        onChanged: (String? value) {
+                          clienteController.currentRecord.email = value;
+                        },
+                        validator: (value) {
+                          if (!StringUtils.emailValidator(value!) &&
+                              value.length > 4) {
+                            return "Este campo debe de ser un e-mail";
+                          }
+                          return null;
+                        },
                       ),
                     );
                   },
@@ -214,11 +251,16 @@ class _ClienteFormularioState extends State<ClienteFormulario> {
                   builder: (_) {
                     return Expanded(
                       child: TextFormField(
-                        title: "Fecha alta",
-                        placeHolder: 'Ej: 25/12/2022',
-                        enabled: false,
-                        value: clienteController.currentRecord.fechaAlta ?? '',
-                      ),
+                          title: "Fecha alta",
+                          placeHolder: 'La fecha es definida en el servidor',
+                          enabled: false,
+                          value: clienteController.currentRecord.fechaAlta !=
+                                  null
+                              ? DateUtil.formatDate(
+                                  clienteController.currentRecord.fechaAlta!)
+                              : '',
+                          onChanged: (String? value) {},
+                          validator: (value) => null),
                     );
                   },
                 ),
@@ -234,6 +276,10 @@ class _ClienteFormularioState extends State<ClienteFormulario> {
                         title: "Celular",
                         placeHolder: 'Ej: (09xx) xxx xxx',
                         value: clienteController.currentRecord.celular ?? '',
+                        onChanged: (String? value) {
+                          clienteController.currentRecord.celular = value;
+                        },
+                        validator: ((value) => null),
                       ),
                     );
                   },
@@ -248,6 +294,10 @@ class _ClienteFormularioState extends State<ClienteFormulario> {
                         title: "Linea baja",
                         placeHolder: 'Ej: (046) xxx xxx',
                         value: clienteController.currentRecord.lineaBaja ?? '',
+                        onChanged: (String? value) {
+                          clienteController.currentRecord.lineaBaja = value;
+                        },
+                        validator: (value) => null,
                       ),
                     );
                   },
@@ -260,10 +310,13 @@ class _ClienteFormularioState extends State<ClienteFormulario> {
                 return SizedBox(
                   height: 86,
                   child: TextFormField(
-                    title: "Dirección",
-                    placeHolder: 'Ej: Av Paraguay',
-                    value: clienteController.currentRecord.direccion ?? '',
-                  ),
+                      title: "Dirección",
+                      placeHolder: 'Ej: Av Paraguay',
+                      value: clienteController.currentRecord.direccion ?? '',
+                      onChanged: (String? value) {
+                        clienteController.currentRecord.direccion = value;
+                      },
+                      validator: (value) => null),
                 );
               },
             ),
@@ -276,6 +329,10 @@ class _ClienteFormularioState extends State<ClienteFormulario> {
                     title: "Observacion",
                     placeHolder: 'Ej: Frente a la plaza',
                     value: clienteController.currentRecord.observacion ?? '',
+                    onChanged: (String? value) {
+                      clienteController.currentRecord.observacion = value;
+                    },
+                    validator: ((value) => null),
                   ),
                 );
               },

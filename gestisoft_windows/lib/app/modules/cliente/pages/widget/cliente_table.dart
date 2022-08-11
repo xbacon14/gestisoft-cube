@@ -1,7 +1,9 @@
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter_modular/flutter_modular.dart';
+import 'package:gestisoft_windows/app/components/text_field/string_utils.dart';
 import 'package:gestisoft_windows/app/modules/cliente/models/cliente.dart';
 import 'package:gestisoft_windows/app/modules/cliente/pages/cliente_controller.dart';
+import 'package:gestisoft_windows/app/modules/cliente/pages/widget/cliente_formulario.dart';
 
 class ClienteTable extends StatelessWidget {
   ClienteTable({
@@ -30,6 +32,10 @@ class ClienteTable extends StatelessWidget {
               Expanded(
                 flex: 3,
                 child: Text("Nombre"),
+              ),
+              Expanded(
+                flex: 2,
+                child: Text("CI/RUC"),
               ),
               Expanded(
                 flex: 3,
@@ -75,6 +81,13 @@ class ClienteTable extends StatelessWidget {
                         ),
                       ),
                       Expanded(
+                        flex: 2,
+                        child: Text(
+                          StringUtils.formatCiRuc(cliente.ciRuc ?? ''),
+                          style: bodyTextStyle,
+                        ),
+                      ),
+                      Expanded(
                         flex: 3,
                         child: SizedBox(
                             width: 100,
@@ -95,7 +108,16 @@ class ClienteTable extends StatelessWidget {
                         child: Row(
                           children: [
                             FilledButton(
-                              onPressed: (() => debugPrint("editar cliente")),
+                              onPressed: () {
+                                clienteController.currentRecord = cliente;
+                                showDialog(
+                                    context: context,
+                                    builder: (BuildContext ctx) {
+                                      return const ClienteFormulario(
+                                        editar: true,
+                                      );
+                                    });
+                              },
                               child: const Text("Editar"),
                             ),
                           ],
