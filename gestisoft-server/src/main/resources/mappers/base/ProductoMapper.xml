@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="py.edu.gestisoft.mapper.base.ProductoMapper">
+
+	<resultMap id="resultSimples"
+		type="py.edu.gestisoft.model.base.Producto">
+		<id property="id" column="ID_PRODUCTO" />
+		<result property="estado" column="ESTADO" />
+		<result property="nombre" column="NOMBRE" />
+		<result property="cantidad" column="CANTIDAD" />
+		<result property="precioVenta" column="PRECIO_VENTA" />
+		<result property="unidadMedida" column="UNIDAD_MEDIDA" />
+		<result property="fechaRegistro" column="FECHA_REGISTRO" />
+		<result property="existencia" column="EXISTENCIA" />
+		<result property="observacion" column="OBSERVACION" />
+
+
+	</resultMap>
+
+
+
+
+	<sql id="sqlDefault">
+		SELECT * FROM producto p
+	</sql>
+
+	<select id="findByNombre"
+		resultMap="resultSimples">
+		<include refid="sqlDefault" />
+		 WHERE p.`NOMBRE` LIKE "%${condition}%"
+	</select>
+
+
+
+
+</mapper>

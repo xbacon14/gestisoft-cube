@@ -3,4 +3,15 @@
 *.lifecyclemapping
 /JavaWorkspace
 *.class
+gestisoft_windows/linux/*
+gestisoft_windows/windows/*
 
+
+gestisoft_windows/linux/flutter/generated_plugin_registrant.cc
+gestisoft_windows/linux/flutter/generated_plugin_registrant.h
+gestisoft_windows/linux/flutter/generated_plugins.cmake
+gestisoft_windows/macos/Flutter/GeneratedPluginRegistrant.swift
+gestisoft_windows/windows/flutter/generated_plugin_registrant.cc
+gestisoft_windows/windows/flutter/generated_plugin_registrant.h
+gestisoft_windows/windows/flutter/generated_plugins.cmake
+gestisoft-server/src/main/java/py/edu/gestisoft/config/database/DatabaseConfig.java

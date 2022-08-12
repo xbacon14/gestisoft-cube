@@ -12,11 +12,11 @@ public class DatabaseConfig {
 	public DataSource getDataSource() {
 		DataSourceBuilder<?> dataSourceBuilder = DataSourceBuilder.create();
 		// dataSourceBuilder.driverClassName("com.mysql.jdbc.Driver");
-//		dataSourceBuilder
-//				.url("jdbc:mysql://localhost:3306/gestisoft_db?useSSL=false&useUnicode=true&serverTimezone=UTC");
-		dataSourceBuilder.url("jdbc:mysql://localhost:3307/gestisoft_db?useSSL=false&useUnicode=true&serverTimezone=UTC");
+		dataSourceBuilder
+				.url("jdbc:mysql://localhost:3306/gestisoft_db?useSSL=false&useUnicode=true&serverTimezone=UTC");
+//		dataSourceBuilder.url("jdbc:mysql://localhost:3307/gestisoft_db?useSSL=false&useUnicode=true&serverTimezone=UTC");
 		dataSourceBuilder.username("root");
-		dataSourceBuilder.password("84125497");
+		dataSourceBuilder.password("305305");
 		return dataSourceBuilder.build();
 	}
 
