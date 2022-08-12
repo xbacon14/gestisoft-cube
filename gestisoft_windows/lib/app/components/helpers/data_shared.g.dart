@@ -41,11 +41,28 @@ mixin _$DataShared on DataSharedBase, Store {
     });
   }
 
+  late final _$versionAtom =
+      Atom(name: 'DataSharedBase.version', context: context);
+
+  @override
+  String get version {
+    _$versionAtom.reportRead();
+    return super.version;
+  }
+
+  @override
+  set version(String value) {
+    _$versionAtom.reportWrite(value, super.version, () {
+      super.version = value;
+    });
+  }
+
   @override
   String toString() {
     return '''
 nombreEmpresa: ${nombreEmpresa},
-nombreUsuario: ${nombreUsuario}
+nombreUsuario: ${nombreUsuario},
+version: ${version}
     ''';
   }
 }

@@ -55,7 +55,8 @@ class _TextFormFieldState extends State<TextFormField> {
         TextFormBox(
           controller: textFieldController,
           enabled: widget.enabled,
-          onFieldSubmitted: (value) => widget.onSubmited!(value),
+          onFieldSubmitted: (value) =>
+              widget.onSubmited != null ? widget.onSubmited!(value) : null,
           placeholder: widget.placeHolder,
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
           onEditingComplete: () {},

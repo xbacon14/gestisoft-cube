@@ -27,4 +27,8 @@ class ClienteRepository {
     return await restClient.get('/cliente/revisarExistenciaCi',
         queryParameters: {"documento": ciRuc});
   }
+
+  Future<RestClientResponse> eliminarClienteById(int idCliente) async {
+    return await restClient.delete('/cliente/deleteCliente/$idCliente');
+  }
 }

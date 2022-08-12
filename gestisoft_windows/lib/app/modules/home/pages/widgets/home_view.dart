@@ -1,6 +1,7 @@
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_modular/flutter_modular.dart';
+import 'package:gestisoft_windows/app/components/helpers/data_shared.dart';
 import 'package:gestisoft_windows/app/modules/home/home_controller.dart';
 import 'package:gestisoft_windows/app/modules/home/pages/widgets/sin_conexion_page.dart';
 import 'package:gestisoft_windows/app/modules/producto/pages/producto_controller.dart';
@@ -15,6 +16,7 @@ class HomeView extends StatefulWidget {
 class _HomeViewState extends State<HomeView> {
   final ProductoController productoController = Modular.get();
   final HomeController homeController = Modular.get();
+  final DataShared dataShared = Modular.get();
   @override
   void initState() {
     productoController.findAllProductos();
@@ -25,6 +27,7 @@ class _HomeViewState extends State<HomeView> {
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     return Column(
+      mainAxisSize: MainAxisSize.max,
       children: [
         Center(
             child: Observer(
@@ -93,7 +96,7 @@ class _HomeViewState extends State<HomeView> {
               child: Container(),
             ),
             Text(
-              "GESTISOFT v0.1 GUILLERMO CABALLERO - ITALO GOLIN",
+              dataShared.version,
               style: FluentTheme.of(context).typography.subtitle,
             )
           ],

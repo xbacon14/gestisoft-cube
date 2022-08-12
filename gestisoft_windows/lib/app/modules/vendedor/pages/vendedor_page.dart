@@ -4,21 +4,22 @@ import 'package:flutter_modular/flutter_modular.dart';
 import 'package:gestisoft_windows/app/components/text_field/search_text_field.dart';
 import 'package:gestisoft_windows/app/components/ui/alert.dart';
 import 'package:gestisoft_windows/app/components/ui/empty_state.dart';
-import 'package:gestisoft_windows/app/modules/cliente/models/cliente.dart';
-import 'package:gestisoft_windows/app/modules/cliente/pages/cliente_controller.dart';
-import 'package:gestisoft_windows/app/modules/cliente/pages/widget/cliente_formulario.dart';
-import 'package:gestisoft_windows/app/modules/cliente/pages/widget/cliente_table.dart';
+import 'package:gestisoft_windows/app/modules/vendedor/models/vendedor.dart';
+import 'package:gestisoft_windows/app/modules/vendedor/pages/widgets/vendedor_formulario.dart';
+import 'package:gestisoft_windows/app/modules/vendedor/pages/widgets/vendedor_table.dart';
+import './vendedor_controller.dart';
 
-class ClientePage extends StatefulWidget {
-  const ClientePage({Key? key}) : super(key: key);
+class VendedorPage extends StatefulWidget {
+  const VendedorPage({
+    Key? key,
+  }) : super(key: key);
 
   @override
-  State<ClientePage> createState() => _ClientePageState();
+  State<VendedorPage> createState() => _VendedorPageState();
 }
 
-class _ClientePageState extends State<ClientePage> {
-  final ClienteController clienteController = Modular.get();
-
+class _VendedorPageState extends State<VendedorPage> {
+  final VendedorController vendedorController = Modular.get();
   int selected = 0;
   final values = [
     "Codigo",
@@ -35,7 +36,7 @@ class _ClientePageState extends State<ClientePage> {
 
   @override
   void initState() {
-    clienteController.findAllClientes();
+    vendedorController.findAllVendedores();
     super.initState();
   }
 
@@ -63,7 +64,7 @@ class _ClientePageState extends State<ClientePage> {
                         width: 360,
                         child: SearchTextField(
                           onSubmited: (value) {
-                            clienteController.findByNombreODocumento(value);
+                            vendedorController.findByNombreODocumento(value);
                             setState(() {});
                           },
                         ),
@@ -91,7 +92,7 @@ class _ClientePageState extends State<ClientePage> {
                                 onChanged: (newColor) => setState(
                                   () {
                                     if (newColor?.compareTo("Codigo") == 0) {
-                                      clienteController.clientes.sort(
+                                      vendedorController.vendedores.sort(
                                           (a, b) => a.id!.compareTo(b.id!));
                                       setState(
                                         () {
@@ -100,8 +101,9 @@ class _ClientePageState extends State<ClientePage> {
                                       );
                                     } else if (newColor?.compareTo("Nombre") ==
                                         0) {
-                                      clienteController.clientes.sort((a, b) =>
-                                          a.nombre!.compareTo(b.nombre!));
+                                      vendedorController.vendedores.sort(
+                                          (a, b) =>
+                                              a.nombre!.compareTo(b.nombre!));
                                       setState(
                                         () {
                                           selected = 1;
@@ -110,8 +112,8 @@ class _ClientePageState extends State<ClientePage> {
                                     } else if (newColor
                                             ?.compareTo("Documento") ==
                                         0) {
-                                      clienteController.clientes.sort((a, b) =>
-                                          a.ciRuc!.compareTo(b.ciRuc!));
+                                      vendedorController.vendedores.sort(
+                                          (a, b) => a.ci!.compareTo(b.ci!));
                                       setState(
                                         () {
                                           selected = 2;
@@ -148,7 +150,7 @@ class _ClientePageState extends State<ClientePage> {
                                   showDialog(
                                       context: context,
                                       builder: (BuildContext ctx) {
-                                        return const ClienteFormulario();
+                                        return const VendedorFormulario();
                                       });
                                 },
                                 child: Row(
@@ -157,17 +159,17 @@ class _ClientePageState extends State<ClientePage> {
                                     SizedBox(
                                       width: 8,
                                     ),
-                                    Text("Nuevo cliente"),
+                                    Text("Nuevo vendedor"),
                                   ],
                                 ),
                               ),
                               onPressed: () {
-                                clienteController.currentRecord =
-                                    Cliente().nuevo();
+                                vendedorController.currentRecord =
+                                    Vendedor().nuevo();
                                 showDialog(
                                     context: context,
                                     builder: (BuildContext ctx) {
-                                      return const ClienteFormulario();
+                                      return const VendedorFormulario();
                                     });
                               },
                             ),
@@ -189,39 +191,27 @@ class _ClientePageState extends State<ClientePage> {
                   ),
                   Observer(
                     builder: ((context) {
-                      return clienteController.processando
+                      return vendedorController.processando
                           ? const Center(child: Text("Cargando"))
-                          : clienteController.listaVacia
+                          : vendedorController.listaVacia
                               ? EmptyState(
                                   texto:
-                                      "No se retornado ningún cliente, deseas registar uno?",
+                                      "No se retornado ningún vendedor, deseas registar uno?",
                                   icono: const Icon(
                                     FluentIcons.remove_from_shopping_list,
                                     size: 48,
                                   ),
                                   onButtonPressed: () =>
-                                      debugPrint("registrar cliente"),
-                                  buttonTitle: 'Registrar cliente',
+                                      debugPrint("registrar vendedor"),
+                                  buttonTitle: 'Registrar vendedor',
                                 )
-                              : ClienteTable();
+                              : VendedorTable();
                     }),
                   ),
-                  Expanded(child: Container()),
                 ],
               ),
             ),
           ),
-          Row(
-            children: [
-              Expanded(
-                child: Container(),
-              ),
-              Text(
-                "GESTISOFT v0.1 GUILLERMO CABALLERO - ITALO GOLIN",
-                style: FluentTheme.of(context).typography.subtitle,
-              )
-            ],
-          )
         ],
       ),
     );

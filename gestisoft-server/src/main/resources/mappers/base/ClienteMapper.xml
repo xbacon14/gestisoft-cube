@@ -32,6 +32,11 @@
 		${condition})
 	</select>
 
+	<select id="getProximoId" resultType="long">
+		SELECT MAX(c.id_cliente)
+		FROM cliente c
+	</select>
+
 
 
 

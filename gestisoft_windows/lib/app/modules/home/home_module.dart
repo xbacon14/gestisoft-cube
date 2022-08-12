@@ -6,6 +6,7 @@ import 'package:gestisoft_windows/app/modules/home/pages/widgets/home_view.dart'
 import 'package:gestisoft_windows/app/modules/home/repositories/configuracion_repository.dart';
 import 'package:gestisoft_windows/app/modules/producto/pages/producto_controller.dart';
 import 'package:gestisoft_windows/app/modules/producto/repositories/producto_repository.dart';
+import 'package:gestisoft_windows/app/modules/vendedor/vendedor_module.dart';
 
 class HomeModule extends Module {
   @override
@@ -22,9 +23,9 @@ class HomeModule extends Module {
       ChildRoute('/home', child: (context, args) => const HomeView()),
       ChildRoute('/sin_conexion', child: (context, args) => const HomeView()),
       ModuleRoute('/cliente', module: ClienteModule()),
+      ModuleRoute('/vendedor', module: VendedorModule()),
     ]),
 
-    // ModuleRoute('/vendedor', module: HomeModule()),
     // ModuleRoute('/producto', module: HomeModule()),
     // ModuleRoute('/venta', module: HomeModule()),
     // ModuleRoute('/configuracion', module: HomeModule()),

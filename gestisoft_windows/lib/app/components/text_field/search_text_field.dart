@@ -37,7 +37,11 @@ class _SearchTextFieldState extends State<SearchTextField> {
             : const Icon(FluentIcons.search),
         onPressed: () {
           setState(() {
-            searchFieldController.clear();
+            if (searchFieldController.text.isNotEmpty) {
+              searchFieldController.clear();
+            } else {
+              widget.onSubmited(searchFieldController.text);
+            }
           });
         },
       ),
