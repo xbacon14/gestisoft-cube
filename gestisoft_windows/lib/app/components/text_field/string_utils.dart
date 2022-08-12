@@ -6,16 +6,16 @@ class StringUtils {
   }
 
   static String formatCiRuc(String documento) {
-    documento = documento.split('').reversed.join();
-    String result = "";
-    final value = documento.replaceAllMapped(
-        RegExp(r".{3}"), (match) => "${match.group(0)} ");
-    documento = value.split(' ').reversed.join(".");
-    if (documento.length > 9 ||
-        documento.length == 8 ||
-        documento.length == 4) {
-      documento = documento.substring(1);
-    }
+    // documento = documento.split('').reversed.join();
+    // String result = "";
+    // final value = documento.replaceAllMapped(
+    //     RegExp(r".{3}"), (match) => "${match.group(0)} ");
+    // documento = value.split(' ').reversed.join(".");
+    // if (documento.length > 9 ||
+    //     documento.length == 8 ||
+    //     documento.length == 4) {
+    //   documento = documento.substring(1);
+    // }
     return documento;
   }
 }

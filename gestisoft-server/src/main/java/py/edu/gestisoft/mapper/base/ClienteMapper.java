@@ -7,4 +7,6 @@ import py.edu.gestisoft.model.base.Cliente;
 public interface ClienteMapper {
 
 	List<Cliente> findClientesPorNombreODocumento(String condition);
+
+	Long getProximoId();
 }

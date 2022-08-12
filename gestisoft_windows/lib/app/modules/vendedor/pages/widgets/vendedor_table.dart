@@ -1,17 +1,16 @@
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:gestisoft_windows/app/components/text_field/string_utils.dart';
-import 'package:gestisoft_windows/app/modules/cliente/models/cliente.dart';
-import 'package:gestisoft_windows/app/modules/cliente/pages/cliente_controller.dart';
-import 'package:gestisoft_windows/app/modules/cliente/pages/widget/cliente_formulario.dart';
 import 'package:gestisoft_windows/app/modules/cliente/pages/widget/elimina_cliente_dialog.dart';
+import 'package:gestisoft_windows/app/modules/vendedor/models/vendedor.dart';
+import 'package:gestisoft_windows/app/modules/vendedor/pages/vendedor_controller.dart';
+import 'package:gestisoft_windows/app/modules/vendedor/pages/widgets/eliminar_vendedor_dialog.dart';
+import 'package:gestisoft_windows/app/modules/vendedor/pages/widgets/vendedor_formulario.dart';
 
-class ClienteTable extends StatelessWidget {
-  ClienteTable({
-    Key? key,
-  }) : super(key: key);
+class VendedorTable extends StatelessWidget {
+  VendedorTable({Key? key}) : super(key: key);
 
-  final ClienteController clienteController = Modular.get();
+  final VendedorController vendedorController = Modular.get();
 
   @override
   Widget build(BuildContext context) {
@@ -36,7 +35,7 @@ class ClienteTable extends StatelessWidget {
               ),
               Expanded(
                 flex: 2,
-                child: Text("CI/RUC"),
+                child: Text("CI"),
               ),
               Expanded(
                 flex: 3,
@@ -59,9 +58,9 @@ class ClienteTable extends StatelessWidget {
           ),
           ListView.builder(
             shrinkWrap: true,
-            itemCount: clienteController.clientes.length,
+            itemCount: vendedorController.vendedores.length,
             itemBuilder: ((context, index) {
-              Cliente cliente = clienteController.clientes[index];
+              Vendedor vendedor = vendedorController.vendedores[index];
               return Container(
                 margin: const EdgeInsets.only(bottom: 8),
                 child: Card(
@@ -73,21 +72,21 @@ class ClienteTable extends StatelessWidget {
                       SizedBox(
                         width: 48,
                         child: Text(
-                          cliente.id.toString(),
+                          vendedor.id.toString(),
                           style: bodyTextStyle,
                         ),
                       ),
                       Expanded(
                         flex: 2,
                         child: Text(
-                          cliente.nombre ?? '',
+                          vendedor.nombre ?? '',
                           style: bodyTextStyle,
                         ),
                       ),
                       Expanded(
                         flex: 2,
                         child: Text(
-                          StringUtils.formatCiRuc(cliente.ciRuc ?? ''),
+                          StringUtils.formatCiRuc(vendedor.ci ?? ''),
                           style: bodyTextStyle,
                         ),
                       ),
@@ -96,7 +95,7 @@ class ClienteTable extends StatelessWidget {
                         child: SizedBox(
                             width: 100,
                             child: Text(
-                              cliente.direccion ?? '',
+                              vendedor.direccion ?? '',
                               style: bodyTextStyle,
                               overflow: TextOverflow.ellipsis,
                             )),
@@ -104,7 +103,7 @@ class ClienteTable extends StatelessWidget {
                       Expanded(
                         flex: 2,
                         child: Text(
-                          cliente.celular ?? '',
+                          vendedor.celular ?? '',
                           style: bodyTextStyle,
                         ),
                       ),
@@ -115,11 +114,11 @@ class ClienteTable extends StatelessWidget {
                           children: [
                             FilledButton(
                               onPressed: () {
-                                clienteController.currentRecord = cliente;
+                                vendedorController.currentRecord = vendedor;
                                 showDialog(
                                     context: context,
                                     builder: (BuildContext ctx) {
-                                      return const ClienteFormulario(
+                                      return const VendedorFormulario(
                                         editar: true,
                                       );
                                     });
@@ -137,9 +136,9 @@ class ClienteTable extends StatelessWidget {
                                 showDialog(
                                     context: context,
                                     builder: (BuildContext ctx) {
-                                      return EliminaClienteDialog(
-                                        cliente:
-                                            clienteController.clientes[index],
+                                      return EliminarVendedorDialog(
+                                        vendedor: vendedorController
+                                            .vendedores[index],
                                       );
                                     });
                               },

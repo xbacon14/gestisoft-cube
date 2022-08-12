@@ -8,4 +8,6 @@ abstract class DataSharedBase with Store {
   String nombreEmpresa = "J.P. MORGAN DISTRIBUIDORA";
   @observable
   String nombreUsuario = "USUARIO 1";
+  @observable
+  String version = "GESTISOFT v0.2 GUILLERMO CABALLERO - ITALO GOLIN";
 }

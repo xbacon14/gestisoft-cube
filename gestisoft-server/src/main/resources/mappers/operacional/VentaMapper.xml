@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper
+	namespace="py.edu.gestisoft.mapper.operacional.VentaMapper">
+
+	<resultMap id="resultSimples"
+		type="py.edu.gestisoft.model.operacional.Venta">
+		<id property="id" column="ID_VENTA" />
+		<result property="chofer" column="CHOFER" />
+		<result property="docNro" column="DOC_NRO" />
+		<result property="fecha" column="FECHA" />
+		<result property="observacion" column="OBSERVACION" />
+		<result property="total" column="TOTAL" />
+		<result property="vehiculo" column="VEHICULO" />
+
+		<association property="vendedor"
+			javaType="py.edu.gestisoft.model.base.Vendedor">
+			<id property="id" column="ID_VENDEDOR" />
+			<result property="nombre" column="NOMBRE" />
+		</association>
+
+		<association property="cliente"
+			javaType="py.edu.gestisoft.model.base.Cliente">
+			<id property="id" column="ID_CLIENTE" />
+			<result property="nombre" column="NOMBRE" />
+		</association>
+
+
+	</resultMap>
+
+
+
+
+	<sql id="sqlDefault">
+		SELECT * FROM venta v
+	</sql>
+
+	<select id="findVentasPorCliente" resultType="long">
+		SELECT
+		COUNT(v.ID_VENTA) FROM venta v WHERE v.id_cliente = #{idCliente}
+	</select>
+
+
+
+
+</mapper>

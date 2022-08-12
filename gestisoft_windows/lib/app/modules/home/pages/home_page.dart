@@ -149,7 +149,7 @@ class _HomePageState extends State<HomePage> with WindowListener {
               Modular.to.pushNamed("/cliente/");
               break;
             case 2:
-              Modular.to.pushNamed("/vendedor");
+              Modular.to.pushNamed("/vendedor/");
               break;
             case 3:
               Modular.to.pushNamed("/venta");

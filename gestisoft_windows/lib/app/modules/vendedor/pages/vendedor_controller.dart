@@ -1,20 +1,21 @@
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter/foundation.dart';
 import 'package:gestisoft_windows/app/components/ui/alert.dart';
-import 'package:gestisoft_windows/app/modules/cliente/models/cliente.dart';
-import 'package:gestisoft_windows/app/modules/cliente/repositories/cliente_repository.dart';
+import 'package:gestisoft_windows/app/modules/vendedor/models/vendedor.dart';
+import 'package:gestisoft_windows/app/modules/vendedor/repositories/vendedor_repository.dart';
 import 'package:mobx/mobx.dart';
-part 'cliente_controller.g.dart';
 
-class ClienteController = ClienteControllerBase with _$ClienteController;
+part 'vendedor_controller.g.dart';
 
-abstract class ClienteControllerBase with Store {
-  final ClienteRepository clienteRepository;
+class VendedorController = _VendedorControllerBase with _$VendedorController;
 
-  ClienteControllerBase(this.clienteRepository);
+abstract class _VendedorControllerBase with Store {
+  final VendedorRepository vendedorRepository;
+
+  _VendedorControllerBase(this.vendedorRepository);
 
   @observable
-  Cliente currentRecord = Cliente().nuevo();
+  Vendedor currentRecord = Vendedor().nuevo();
 
   @observable
   bool processando = false;
@@ -23,51 +24,51 @@ abstract class ClienteControllerBase with Store {
   bool listaVacia = false;
 
   @observable
-  bool clienteExiste = false;
+  bool vendedorExiste = false;
 
-  ObservableList<Cliente> clientes = ObservableList();
+  ObservableList<Vendedor> vendedores = ObservableList();
 
-  Future<void> findAllClientes() async {
+  Future<void> findAllVendedores() async {
     processando = true;
-    final response = await clienteRepository
+    final response = await vendedorRepository
         .findAll()
         .whenComplete(() => processando = false);
     if (response.statusCode == 200) {
-      clientes.clear();
-      clientes.addAll(
-          response.data.map<Cliente>((c) => Cliente.fromMap(c)).toList());
+      vendedores.clear();
+      vendedores.addAll(
+          response.data.map<Vendedor>((c) => Vendedor.fromJson(c)).toList());
       resolveListaVacia();
     } else {
-      debugPrint("no se pudieron consultar los clientes");
+      debugPrint("no se pudieron consultar los vendedores");
     }
   }
 
   Future<void> findByNombreODocumento(String condition) async {
     processando = true;
-    final response = await clienteRepository
+    final response = await vendedorRepository
         .findByNombreODocumento(condition)
         .whenComplete(() => processando = false);
     if (response.statusCode == 200) {
-      clientes.clear();
-      clientes.addAll(
-          response.data.map<Cliente>((c) => Cliente.fromMap(c)).toList());
+      vendedores.clear();
+      vendedores.addAll(
+          response.data.map<Vendedor>((c) => Vendedor.fromJson(c)).toList());
       resolveListaVacia();
     } else {
-      debugPrint("no se pudieron consultar los clientes");
+      debugPrint("no se pudieron consultar los vendedores");
     }
   }
 
-  Future<void> saveCliente() async {
+  Future<void> saveVendedor() async {
     processando = true;
 
-    final response = await clienteRepository
-        .saveCliente(currentRecord)
+    final response = await vendedorRepository
+        .saveVendedor(currentRecord)
         .whenComplete(() => processando = false);
 
     if (response.statusCode == 200) {
       debugPrint(
           "El cliente ${currentRecord.nombre} ha sido guardado con exito");
-      currentRecord = Cliente().nuevo();
+      currentRecord = Vendedor().nuevo();
     } else {
       debugPrint("No se ha podido guardar el cliente");
     }
@@ -75,11 +76,11 @@ abstract class ClienteControllerBase with Store {
 
   Future<bool> revisarExistenciaCi(String ci) async {
     processando = true;
-    final response = await clienteRepository
+    final response = await vendedorRepository
         .revisarExistenciaCi(ci)
         .whenComplete(() => processando = false);
     if (response.statusCode == 200) {
-      clienteExiste = response.data;
+      vendedorExiste = response.data;
       return response.data;
     } else {
       debugPrint("No se ha podido consultar el ci");
@@ -87,15 +88,15 @@ abstract class ClienteControllerBase with Store {
     }
   }
 
-  Future<void> eliminaClienteById(BuildContext context, int idCliente) async {
+  Future<void> eliminaVendedorById(BuildContext context, int idVendedor) async {
     processando = true;
-    final response = await clienteRepository
-        .eliminarClienteById(idCliente)
+    final response = await vendedorRepository
+        .eliminarVendedorById(idVendedor)
         .whenComplete(() => processando = false);
 
     if (response.statusCode == 200) {
       String message = response.data;
-      if (message.startsWith("Cliente")) {
+      if (message.startsWith("Vendedor")) {
         Alert.show(context: context, message: message, type: 0);
       } else {
         Alert.show(context: context, message: message, type: 2);
@@ -104,7 +105,7 @@ abstract class ClienteControllerBase with Store {
   }
 
   resolveListaVacia() {
-    if (clientes.isEmpty) {
+    if (vendedores.isEmpty) {
       listaVacia = true;
     } else {
       listaVacia = false;

@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import py.edu.gestisoft.mapper.base.ClienteMapper;
+import py.edu.gestisoft.mapper.operacional.VentaMapper;
 import py.edu.gestisoft.model.base.Cliente;
 import py.edu.gestisoft.repositories.base.ClienteRepository;
 import py.edu.gestisoft.utils.sql.SQLUtils;
@@ -22,14 +23,13 @@ public class ClienteService {
 	@Autowired
 	private ClienteMapper clienteMapper;
 
+	@Autowired
+	private VentaMapper ventaMapper;
+
 //	PERSISTE Y GUARDA LOS DATOS RECIBIDOS EN LA TABLA CLIENTE 
 	public ResponseEntity<?> save(Cliente cliente) {
-		if (clienteRepository.findByciRuc(cliente.getCiRuc()) == null) {
-			cliente.setEstado(true);
-			return ResponseEntity.ok(clienteRepository.save(cliente));
-		} else {
-			return ResponseEntity.accepted().body(new Cliente());
-		}
+		cliente.setEstado(true);
+		return ResponseEntity.ok(clienteRepository.save(cliente));
 	}
 
 //	DEVUELVE TODOS LOS CLIENTES DE LA TABLA CLIENTE
@@ -52,6 +52,20 @@ public class ClienteService {
 		} else {
 			return true;
 		}
+	}
+
+	public Boolean deleteClienteById(Long idCliente) {
+		Long cantidadVentas = ventaMapper.findVentasPorCliente(idCliente);
+		if (cantidadVentas == 0 || cantidadVentas == null) {
+			clienteRepository.deleteById(idCliente);
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	public Long getProximoId() {
+		return clienteMapper.getProximoId();
 	}
 
 }
