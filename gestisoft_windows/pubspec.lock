@@ -204,6 +204,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.2.3"
+  date_time_picker:
+    dependency: transitive
+    description:
+      name: date_time_picker
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.1.0"
   dbus:
     dependency: transitive
     description:
@@ -253,6 +260,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.0.1"
+  flextech:
+    dependency: "direct main"
+    description:
+      name: flextech
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.0.52"
   fluent_ui:
     dependency: "direct main"
     description:
@@ -315,6 +329,13 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  font_awesome_flutter:
+    dependency: transitive
+    description:
+      name: font_awesome_flutter
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "9.2.0"
   frontend_server_client:
     dependency: transitive
     description:
@@ -670,6 +691,20 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.1.0"
+  system_theme:
+    dependency: "direct main"
+    description:
+      name: system_theme
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.0.0"
+  system_theme_web:
+    dependency: transitive
+    description:
+      name: system_theme_web
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.0.2"
   term_glyph:
     dependency: transitive
     description:

@@ -1,6 +1,7 @@
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_modular/flutter_modular.dart';
+import 'package:gestisoft_windows/app/components/helpers/data_shared.dart';
 import 'package:gestisoft_windows/app/components/text_field/search_text_field.dart';
 import 'package:gestisoft_windows/app/components/ui/alert.dart';
 import 'package:gestisoft_windows/app/components/ui/empty_state.dart';
@@ -20,6 +21,7 @@ class VendedorPage extends StatefulWidget {
 
 class _VendedorPageState extends State<VendedorPage> {
   final VendedorController vendedorController = Modular.get();
+  final DataShared dataShared = Modular.get();
   int selected = 0;
   final values = [
     "Codigo",
@@ -54,6 +56,7 @@ class _VendedorPageState extends State<VendedorPage> {
               maxHeight: 800,
             ),
             child: Acrylic(
+              tint: FluentTheme.of(context).acrylicBackgroundColor,
               elevation: 2,
               child: Column(
                 children: [
@@ -67,6 +70,9 @@ class _VendedorPageState extends State<VendedorPage> {
                             vendedorController.findByNombreODocumento(value);
                             setState(() {});
                           },
+                          onClear: () =>
+                              vendedorController.findByNombreODocumento(''),
+                          placeholder: "Consulte por nombre o documento",
                         ),
                       ),
                       SizedBox(
@@ -165,7 +171,7 @@ class _VendedorPageState extends State<VendedorPage> {
                               ),
                               onPressed: () {
                                 vendedorController.currentRecord =
-                                    Vendedor().nuevo();
+                                    Vendedor.nuevo();
                                 showDialog(
                                     context: context,
                                     builder: (BuildContext ctx) {
@@ -176,17 +182,6 @@ class _VendedorPageState extends State<VendedorPage> {
                           ],
                         ),
                       ),
-
-                      // DropDownButton(
-                      //   title: Text(
-                      //     "Ordenar por",
-                      //     style: theme.typography.body,
-                      //   ),
-                      //   items: [
-                      //     MenuFlyoutItem(
-                      //         text: const Text("Nombre"), onPressed: () {})
-                      //   ],
-                      // )
                     ],
                   ),
                   Observer(
@@ -212,6 +207,17 @@ class _VendedorPageState extends State<VendedorPage> {
               ),
             ),
           ),
+          Row(
+            children: [
+              Expanded(
+                child: Container(),
+              ),
+              Text(
+                dataShared.version,
+                style: FluentTheme.of(context).typography.subtitle,
+              )
+            ],
+          )
         ],
       ),
     );

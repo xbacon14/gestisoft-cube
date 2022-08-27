@@ -6,6 +6,7 @@ list(APPEND FLUTTER_PLUGIN_LIST
   connectivity_plus_windows
   desktop_window
   screen_retriever
+  system_theme
   window_manager
 )
 

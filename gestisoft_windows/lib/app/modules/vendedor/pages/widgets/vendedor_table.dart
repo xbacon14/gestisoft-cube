@@ -1,7 +1,6 @@
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter_modular/flutter_modular.dart';
-import 'package:gestisoft_windows/app/components/text_field/string_utils.dart';
-import 'package:gestisoft_windows/app/modules/cliente/pages/widget/elimina_cliente_dialog.dart';
+import 'package:gestisoft_windows/app/components/text_utils/string_utils.dart';
 import 'package:gestisoft_windows/app/modules/vendedor/models/vendedor.dart';
 import 'package:gestisoft_windows/app/modules/vendedor/pages/vendedor_controller.dart';
 import 'package:gestisoft_windows/app/modules/vendedor/pages/widgets/eliminar_vendedor_dialog.dart';

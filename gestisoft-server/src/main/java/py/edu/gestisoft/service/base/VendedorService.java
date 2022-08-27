@@ -6,9 +6,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import py.edu.gestisoft.model.base.Cliente;
+import py.edu.gestisoft.mapper.base.VendedorMapper;
+import py.edu.gestisoft.mapper.operacional.VentaMapper;
 import py.edu.gestisoft.model.base.Vendedor;
-import py.edu.gestisoft.repositories.base.ClienteRepository;
+import py.edu.gestisoft.utils.sql.SQLUtils;
 
 @Service
 @Transactional(rollbackFor = Exception.class)
@@ -17,13 +18,48 @@ public class VendedorService {
 	@Autowired
 	private VendedorRepository vendedorRepository;
 
+	@Autowired
+	private VendedorMapper vendedorMapper;
+
+	@Autowired
+	private VentaMapper ventaMapper;
+
 //	PERSISTE Y GUARDA LOS DATOS RECIBIDOS EN LA TABLA VENDEDOR
 	public Vendedor save(Vendedor vendedor) {
 		return vendedorRepository.save(vendedor);
 	}
 
 //	DEVUELVE TODOS LOS VENDEDORES DE LA TABLA VENDEDOR
-	public List<Vendedor> findAllClientes() {
+	public List<Vendedor> findAllVendedores() {
 		return vendedorRepository.findAll();
+	}
+
+	public List<Vendedor> findVendedorByNombreODocumento(String condition) {
+		if (condition.isEmpty() || condition == null) {
+			return findAllVendedores();
+		}
+		return vendedorMapper.findVendedorByNombreODocumento(SQLUtils.like(condition));
+
+	}
+
+//	REVISA SI YA EXISTE ALGUN VENDEDOR CON ESE CI
+	public Boolean revisarExistenciaCi(String documento) {
+		Vendedor vendedor = vendedorRepository.findByCi(documento);
+		if (vendedor == null) {
+			return false;
+		} else {
+			return true;
+		}
+	}
+
+//	ELIMINA EL VENDEDOR CASO NO TENGA NINGUN VINCULO CON VENTAS
+	public Boolean deleteById(Long idVendedor) {
+		Long cantidadVentas = ventaMapper.findVentasPorVendedor(idVendedor);
+		if (cantidadVentas == 0 || cantidadVentas == null) {
+			vendedorRepository.deleteById(idVendedor);
+			return true;
+		} else {
+			return false;
+		}
 	}
 }

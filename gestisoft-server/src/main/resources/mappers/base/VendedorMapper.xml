@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="py.edu.gestisoft.mapper.base.VendedorMapper">
+
+	<resultMap id="resultSimples"
+		type="py.edu.gestisoft.model.base.Vendedor">
+		<id property="id" column="ID_VENDEDOR" />
+		<result property="estado" column="ESTADO" />
+		<result property="nombre" column="NOMBRE" />
+		<result property="ci" column="CI" />
+		<result property="celular" column="CELULAR" />
+		<result property="lineaBaja" column="LINEA_BAJA" />
+		<result property="direccion" column="DIRECCION" />
+		<result property="observacion" column="OBSERVACION" />
+		<result property="fechaAlta" column="FECHA_ALTA" />
+
+
+	</resultMap>
+
+
+
+
+	<sql id="sqlDefault">
+		SELECT * FROM vendedor v
+	</sql>
+
+	<select id="findVendedorByNombreODocumento"
+		resultMap="resultSimples">
+		<include refid="sqlDefault" />
+		WHERE (v.NOMBRE LIKE ${condition} OR v.CI LIKE
+		${condition})
+	</select>
+
+	<select id="getProximoId" resultType="long">
+		SELECT MAX(v.id_cliente)
+		FROM vendedor v
+	</select>
+
+
+
+
+</mapper>

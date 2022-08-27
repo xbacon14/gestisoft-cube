@@ -34,4 +34,9 @@ public class VentaController {
 		return ResponseEntity.ok(ventaService.findAllVentas());
 	}
 
+	@GetMapping("/getProximoId")
+	public ResponseEntity<Long> getProximoId() {
+		return ResponseEntity.ok(ventaService.getProximoId());
+	}
+
 }

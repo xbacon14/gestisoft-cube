@@ -1,5 +1,6 @@
 import 'package:gestisoft_windows/app/components/core/rest_client/dio_rest_client.dart';
 import 'package:gestisoft_windows/app/components/core/rest_client/rest_client_response.dart';
+import 'package:gestisoft_windows/app/modules/producto/models/producto.dart';
 
 class ProductoRepository {
   final DioRestClient dioRestClient;
@@ -9,5 +10,13 @@ class ProductoRepository {
   Future<RestClientResponse> findAllProductos() async {
     final response = await dioRestClient.get("/producto/findAll");
     return response;
+  }
+
+  Future<RestClientResponse> save(Producto producto) async {
+    return await dioRestClient.post('/producto/save', data: producto.toJson());
+  }
+
+  Future<RestClientResponse> eliminarProductoById(int idProducto) async {
+    return await dioRestClient.delete('/producto/delete/$idProducto');
   }
 }

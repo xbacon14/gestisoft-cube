@@ -40,7 +40,22 @@
 		COUNT(v.ID_VENTA) FROM venta v WHERE v.id_cliente = #{idCliente}
 	</select>
 
+	<select id="findVentasPorVendedor" resultType="long">
+		SELECT
+		COUNT(v.ID_VENTA) FROM venta v WHERE v.id_vendedor = #{idVendedor}
+	</select>
 
+	<select id="findVentasPorProducto" resultType="long">
+		SELECT
+		COUNT(v.id_producto) FROM venta_detalle v WHERE v.id_producto =
+		#{idProducto}
+	</select>
+
+	<select id="getProximoId" resultType="long">
+		SELECT MAX(v.ID_VENTA)
+		FROM
+		venta v
+	</select>
 
 
 </mapper>

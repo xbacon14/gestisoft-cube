@@ -28,6 +28,6 @@ class VendedorRepository {
   }
 
   Future<RestClientResponse> eliminarVendedorById(int idVendedor) async {
-    return await restClient.delete('/vendedor/deleteVendedor/$idVendedor');
+    return await restClient.delete('/vendedor/delete/$idVendedor');
   }
 }

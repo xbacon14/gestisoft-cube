@@ -9,22 +9,6 @@ part of 'vendedor_controller.dart';
 // ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic, no_leading_underscores_for_local_identifiers
 
 mixin _$VendedorController on _VendedorControllerBase, Store {
-  late final _$currentRecordAtom =
-      Atom(name: '_VendedorControllerBase.currentRecord', context: context);
-
-  @override
-  Vendedor get currentRecord {
-    _$currentRecordAtom.reportRead();
-    return super.currentRecord;
-  }
-
-  @override
-  set currentRecord(Vendedor value) {
-    _$currentRecordAtom.reportWrite(value, super.currentRecord, () {
-      super.currentRecord = value;
-    });
-  }
-
   late final _$processandoAtom =
       Atom(name: '_VendedorControllerBase.processando', context: context);
 
@@ -76,7 +60,6 @@ mixin _$VendedorController on _VendedorControllerBase, Store {
   @override
   String toString() {
     return '''
-currentRecord: ${currentRecord},
 processando: ${processando},
 listaVacia: ${listaVacia},
 vendedorExiste: ${vendedorExiste}

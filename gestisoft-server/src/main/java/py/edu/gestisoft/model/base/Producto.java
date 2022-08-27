@@ -53,9 +53,9 @@ public class Producto {
 
 	@Column(name = "FECHA_REGISTRO")
 	private LocalDateTime fechaRegistro;
-
-	@Column(name = "EXISTENCIA")
-	private BigDecimal existencia;
+//
+//	@Column(name = "EXISTENCIA")
+//	private BigDecimal existencia;
 
 	@Column(name = "OBSERVACION")
 	private String observacion;

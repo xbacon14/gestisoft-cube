@@ -12,6 +12,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.PrePersist;
 import javax.persistence.Table;
 
 import lombok.AllArgsConstructor;
@@ -68,6 +69,11 @@ public class Venta {
 
 	@OneToMany(mappedBy = "venta")
 	private List<VentaDetalle> detalles;
+
+	@PrePersist
+	void setFecha() {
+		this.fecha = LocalDateTime.now();
+	}
 
 	public Venta(Long i) {
 		this.id = i;

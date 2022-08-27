@@ -5,10 +5,13 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import py.edu.gestisoft.model.base.Vendedor;
@@ -31,7 +34,28 @@ public class VendedorController {
 
 	@GetMapping("/findAll")
 	public ResponseEntity<List<Vendedor>> findAllVendedor() {
-		return ResponseEntity.ok(vendedorService.findAllClientes());
+		return ResponseEntity.ok(vendedorService.findAllVendedores());
 	}
 
+	@GetMapping("/findByNombreODocumento")
+	public ResponseEntity<List<Vendedor>> findByNombreODocumento(@RequestParam String condition) {
+
+		return ResponseEntity.ok(vendedorService.findVendedorByNombreODocumento(condition));
+	}
+
+	@GetMapping("/revisarExistenciaCi")
+	public ResponseEntity<Boolean> revisarExistenciaCi(@RequestParam String documento) {
+
+		return ResponseEntity.ok(vendedorService.revisarExistenciaCi(documento));
+	}
+
+	@DeleteMapping("/delete/{id}")
+	public ResponseEntity<?> deleteClienteById(@PathVariable Long id) {
+		Boolean response = vendedorService.deleteById(id);
+		if (response == true) {
+			return ResponseEntity.ok("Vendedor eliminado satisfactoriamente");
+		} else {
+			return ResponseEntity.ok("No se ha podido eliminar el vendedor");
+		}
+	}
 }

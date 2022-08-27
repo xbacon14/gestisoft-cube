@@ -33,7 +33,7 @@ public class VentaDetalle {
 //	PARA CALCULO DE CANTIDADES ES MEJOR UTILIZAR BIG DECIMAL 
 	@NonNull
 	@Column(name = "CANTIDAD")
-	private Double cantidad;
+	private BigDecimal cantidad;
 
 //	PARA CALCULO DE VALORES ES MEJOR UTILIZAR BIG DECIMAL 
 	@NonNull

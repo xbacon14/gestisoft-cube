@@ -1,6 +1,6 @@
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter_modular/flutter_modular.dart';
-import 'package:gestisoft_windows/app/components/text_field/string_utils.dart';
+import 'package:gestisoft_windows/app/components/text_utils/string_utils.dart';
 import 'package:gestisoft_windows/app/modules/cliente/models/cliente.dart';
 import 'package:gestisoft_windows/app/modules/cliente/pages/cliente_controller.dart';
 import 'package:gestisoft_windows/app/modules/cliente/pages/widget/cliente_formulario.dart';
@@ -35,7 +35,6 @@ class ClienteTable extends StatelessWidget {
                 child: Text("Nombre"),
               ),
               Expanded(
-                flex: 2,
                 child: Text("CI/RUC"),
               ),
               Expanded(
@@ -70,6 +69,7 @@ class ClienteTable extends StatelessWidget {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
+                      // CODIGO
                       SizedBox(
                         width: 48,
                         child: Text(
@@ -77,6 +77,7 @@ class ClienteTable extends StatelessWidget {
                           style: bodyTextStyle,
                         ),
                       ),
+                      // NOMBRE
                       Expanded(
                         flex: 2,
                         child: Text(
@@ -84,13 +85,14 @@ class ClienteTable extends StatelessWidget {
                           style: bodyTextStyle,
                         ),
                       ),
+                      // CI/RUC
                       Expanded(
-                        flex: 2,
                         child: Text(
                           StringUtils.formatCiRuc(cliente.ciRuc ?? ''),
                           style: bodyTextStyle,
                         ),
                       ),
+                      // DIRECCION
                       Expanded(
                         flex: 3,
                         child: SizedBox(
@@ -102,7 +104,6 @@ class ClienteTable extends StatelessWidget {
                             )),
                       ),
                       Expanded(
-                        flex: 2,
                         child: Text(
                           cliente.celular ?? '',
                           style: bodyTextStyle,

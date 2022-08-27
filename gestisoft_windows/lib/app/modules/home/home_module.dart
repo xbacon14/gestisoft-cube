@@ -5,8 +5,10 @@ import 'package:gestisoft_windows/app/modules/home/pages/home_page.dart';
 import 'package:gestisoft_windows/app/modules/home/pages/widgets/home_view.dart';
 import 'package:gestisoft_windows/app/modules/home/repositories/configuracion_repository.dart';
 import 'package:gestisoft_windows/app/modules/producto/pages/producto_controller.dart';
+import 'package:gestisoft_windows/app/modules/producto/producto_module.dart';
 import 'package:gestisoft_windows/app/modules/producto/repositories/producto_repository.dart';
 import 'package:gestisoft_windows/app/modules/vendedor/vendedor_module.dart';
+import 'package:gestisoft_windows/app/modules/venta/venta_module.dart';
 
 class HomeModule extends Module {
   @override
@@ -24,6 +26,8 @@ class HomeModule extends Module {
       ChildRoute('/sin_conexion', child: (context, args) => const HomeView()),
       ModuleRoute('/cliente', module: ClienteModule()),
       ModuleRoute('/vendedor', module: VendedorModule()),
+      ModuleRoute('/producto', module: ProductoModule()),
+      ModuleRoute('/venta', module: VentaModule()),
     ]),
 
     // ModuleRoute('/producto', module: HomeModule()),

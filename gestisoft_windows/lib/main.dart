@@ -9,8 +9,8 @@ import 'package:gestisoft_windows/app_widget.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await ApplicationStarterConfig().configureApp();
+  // if (!kIsWeb) {
+  //   await DesktopWindow.setFullScreen(true);
+  // }
   runApp(ModularApp(module: AppModule(), child: const AppWidget()));
-  if (!kIsWeb) {
-    await DesktopWindow.setFullScreen(true);
-  }
 }

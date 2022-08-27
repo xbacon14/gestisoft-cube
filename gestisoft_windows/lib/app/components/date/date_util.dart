@@ -87,7 +87,7 @@ class DateUtil {
 
   static String formatDateTimeToDate(DateTime date) {
     return DateFormat.yMd(Get.deviceLocale!.toLanguageTag())
-        .add_jm()
+        // .add_jm()
         .format(date);
   }
 

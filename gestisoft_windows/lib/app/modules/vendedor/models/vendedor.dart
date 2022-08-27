@@ -1,4 +1,9 @@
-class Vendedor {
+import 'package:mobx/mobx.dart';
+part 'vendedor.g.dart';
+
+class Vendedor = VendedorBase with _$Vendedor;
+
+abstract class VendedorBase with Store {
   int? id;
   bool? estado;
   String? nombre;
@@ -10,7 +15,7 @@ class Vendedor {
   String? observacion;
   String? fechaAlta;
 
-  Vendedor(
+  VendedorBase(
       {id,
       estado,
       nombre,
@@ -22,7 +27,7 @@ class Vendedor {
       observacion,
       fechaAlta});
 
-  Vendedor.fromJson(Map<String, dynamic> json) {
+  VendedorBase.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     estado = json['estado'];
     nombre = json['nombre'];
@@ -50,11 +55,5 @@ class Vendedor {
     return data;
   }
 
-  Vendedor nuevo() {
-    return Vendedor(
-      id: null,
-      nombre: "",
-      estado: true,
-    );
-  }
+  VendedorBase.nuevo({this.estado = true, this.nombre = ""});
 }

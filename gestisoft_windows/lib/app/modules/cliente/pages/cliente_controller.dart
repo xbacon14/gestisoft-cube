@@ -1,5 +1,4 @@
 import 'package:fluent_ui/fluent_ui.dart';
-import 'package:flutter/foundation.dart';
 import 'package:gestisoft_windows/app/components/ui/alert.dart';
 import 'package:gestisoft_windows/app/modules/cliente/models/cliente.dart';
 import 'package:gestisoft_windows/app/modules/cliente/repositories/cliente_repository.dart';
@@ -42,8 +41,9 @@ abstract class ClienteControllerBase with Store {
     }
   }
 
-  Future<void> findByNombreODocumento(String condition) async {
+  Future<List<Cliente>> findByNombreODocumento(String condition) async {
     processando = true;
+    List<Cliente> lista = [];
     final response = await clienteRepository
         .findByNombreODocumento(condition)
         .whenComplete(() => processando = false);
@@ -51,10 +51,12 @@ abstract class ClienteControllerBase with Store {
       clientes.clear();
       clientes.addAll(
           response.data.map<Cliente>((c) => Cliente.fromMap(c)).toList());
+      lista = clientes;
       resolveListaVacia();
     } else {
       debugPrint("no se pudieron consultar los clientes");
     }
+    return lista;
   }
 
   Future<void> saveCliente() async {

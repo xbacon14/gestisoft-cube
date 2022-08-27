@@ -1,6 +1,7 @@
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_modular/flutter_modular.dart';
+import 'package:gestisoft_windows/app/components/helpers/data_shared.dart';
 import 'package:gestisoft_windows/app/components/text_field/search_text_field.dart';
 import 'package:gestisoft_windows/app/components/ui/alert.dart';
 import 'package:gestisoft_windows/app/components/ui/empty_state.dart';
@@ -18,6 +19,7 @@ class ClientePage extends StatefulWidget {
 
 class _ClientePageState extends State<ClientePage> {
   final ClienteController clienteController = Modular.get();
+  final DataShared dataShared = Modular.get();
 
   int selected = 0;
   final values = [
@@ -66,6 +68,9 @@ class _ClientePageState extends State<ClientePage> {
                             clienteController.findByNombreODocumento(value);
                             setState(() {});
                           },
+                          onClear: () =>
+                              clienteController.findByNombreODocumento(''),
+                          placeholder: "Consulte por nombre o documento",
                         ),
                       ),
                       SizedBox(
@@ -217,7 +222,7 @@ class _ClientePageState extends State<ClientePage> {
                 child: Container(),
               ),
               Text(
-                "GESTISOFT v0.1 GUILLERMO CABALLERO - ITALO GOLIN",
+                dataShared.version,
                 style: FluentTheme.of(context).typography.subtitle,
               )
             ],

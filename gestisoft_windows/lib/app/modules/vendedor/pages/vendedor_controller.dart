@@ -14,8 +14,7 @@ abstract class _VendedorControllerBase with Store {
 
   _VendedorControllerBase(this.vendedorRepository);
 
-  @observable
-  Vendedor currentRecord = Vendedor().nuevo();
+  Vendedor currentRecord = Vendedor.nuevo();
 
   @observable
   bool processando = false;
@@ -68,7 +67,7 @@ abstract class _VendedorControllerBase with Store {
     if (response.statusCode == 200) {
       debugPrint(
           "El cliente ${currentRecord.nombre} ha sido guardado con exito");
-      currentRecord = Vendedor().nuevo();
+      currentRecord = Vendedor.nuevo();
     } else {
       debugPrint("No se ha podido guardar el cliente");
     }

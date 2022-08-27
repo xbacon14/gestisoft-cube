@@ -6,8 +6,8 @@ import 'package:flutter_modular/flutter_modular.dart';
 import 'package:gestisoft_windows/app/components/date/date_util.dart';
 import 'package:gestisoft_windows/app/components/text_field/text_form_field.dart';
 import 'package:gestisoft_windows/app/components/ui/alert.dart';
+import 'package:gestisoft_windows/app/modules/vendedor/models/vendedor.dart';
 import 'package:gestisoft_windows/app/modules/vendedor/pages/vendedor_controller.dart';
-import 'package:gestisoft_windows/app/modules/vendedor/repositories/vendedor_repository.dart';
 
 class VendedorFormulario extends StatefulWidget {
   const VendedorFormulario({
@@ -32,13 +32,14 @@ class _VendedorFormularioState extends State<VendedorFormulario> {
   void dispose() {
     debounce?.cancel();
     ciRucFC.dispose();
+    vendedorController.currentRecord = Vendedor.nuevo();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return ContentDialog(
-      constraints: const BoxConstraints(maxWidth: 800, maxHeight: 640),
+      constraints: const BoxConstraints(maxWidth: 800, maxHeight: 600),
       style: const ContentDialogThemeData(
         decoration: BoxDecoration(
           color: Color(0xFFFDF9E6),
@@ -71,7 +72,6 @@ class _VendedorFormularioState extends State<VendedorFormulario> {
               FilledButton(
                 child: const Text("Guardar"),
                 onPressed: () {
-                  debugPrint(vendedorController.currentRecord.toString());
                   if (formKey.currentState!.validate()) {
                     vendedorController
                         .saveVendedor()
@@ -83,7 +83,8 @@ class _VendedorFormularioState extends State<VendedorFormulario> {
                   }
                   Alert.show(
                       context: context,
-                      message: "Se ha guardado el registro satisfactoriamente",
+                      message:
+                          "Se ha guardado el registro del vendedor satisfactoriamente",
                       type: 0);
                 },
               ),
@@ -125,13 +126,9 @@ class _VendedorFormularioState extends State<VendedorFormulario> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       const Text("Activo"),
-                      Observer(
-                        builder: (_) {
-                          return Checkbox(
-                            checked: vendedorController.currentRecord.estado,
-                            onChanged: (value) {},
-                          );
-                        },
+                      Checkbox(
+                        checked: vendedorController.currentRecord.estado,
+                        onChanged: (value) {},
                       ),
                     ],
                   ),
@@ -230,11 +227,9 @@ class _VendedorFormularioState extends State<VendedorFormulario> {
                     );
                   },
                 ),
-              ],
-            ),
-            //CELULAR Y LINEA BAJA
-            Row(
-              children: [
+                const SizedBox(
+                  width: 16,
+                ),
                 Observer(
                   builder: (_) {
                     return Expanded(

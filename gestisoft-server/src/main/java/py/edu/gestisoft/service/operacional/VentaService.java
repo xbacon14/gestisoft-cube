@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import py.edu.gestisoft.mapper.operacional.VentaMapper;
 import py.edu.gestisoft.model.operacional.Venta;
 import py.edu.gestisoft.model.operacional.VentaDetalle;
 import py.edu.gestisoft.repositories.operacional.VentaDetalleRepository;
@@ -22,22 +23,32 @@ public class VentaService {
 	@Autowired
 	private VentaDetalleRepository ventaDetalleRepository;
 
+	@Autowired
+	private VentaMapper ventaMapper;
+
 //		PERSISTE Y GUARDA LOS DATOS RECIBIDOS EN LA TABLA CLIENTE 
 	public Venta save(Venta venta) {
+
 		venta = ventaRepository.save(venta);
 		BigDecimal total = BigDecimal.ZERO;
 		for (VentaDetalle detalle : venta.getDetalles()) {
+			BigDecimal valorItem = BigDecimal.ZERO;
 			detalle.setVenta(new Venta(venta.getId()));
-			total.add(detalle.getPrecio());
+			valorItem = valorItem.add(detalle.getPrecio().multiply(detalle.getCantidad()));
+			total = total.add(valorItem);
 			ventaDetalleRepository.save(detalle);
 		}
 		venta.setTotal(total);
-		return venta;
+		return ventaRepository.saveAndFlush(venta);
 	}
 
 //		DEVUELVE TODOS LOS CLIENTES DE LA TABLA CLIENTE
 	public List<Venta> findAllVentas() {
 		return ventaRepository.findAll();
+	}
+
+	public Long getProximoId() {
+		return ventaMapper.getProximoId();
 	}
 
 }

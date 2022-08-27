@@ -2,6 +2,7 @@ import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:gestisoft_windows/app/components/helpers/data_shared.dart';
+import 'package:gestisoft_windows/app/components/text_utils/number_formatter.dart';
 import 'package:gestisoft_windows/app/modules/home/home_controller.dart';
 import 'package:gestisoft_windows/app/modules/home/pages/widgets/sin_conexion_page.dart';
 import 'package:gestisoft_windows/app/modules/producto/pages/producto_controller.dart';
@@ -47,9 +48,6 @@ class _HomeViewState extends State<HomeView> {
                       width: size.width * .25,
                       height: 300,
                       child: Acrylic(
-                        elevation: 2,
-                        blurAmount: 3,
-                        shadowColor: FluentTheme.of(context).cardColor,
                         child: Padding(
                           padding: const EdgeInsets.all(16.0),
                           child: Column(
@@ -66,19 +64,55 @@ class _HomeViewState extends State<HomeView> {
                                       fontWeight: FontWeight.bold,
                                     ),
                               ),
+                              Row(
+                                children: const [
+                                  Expanded(
+                                    child: Text(
+                                      "Descripción",
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    width: 96,
+                                    child: Text(
+                                      "Stock actual",
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              Container(
+                                color: Colors.black.withOpacity(.1),
+                                margin: const EdgeInsets.symmetric(vertical: 8),
+                                height: 2,
+                                width: size.width * .24,
+                              ),
                               ListView.builder(
                                 shrinkWrap: true,
-                                itemCount:
-                                    productoController.dataProvider.length,
+                                itemCount: productoController.productos.length,
                                 itemBuilder: (context, index) {
                                   return ListTile(
-                                    title: Text(
-                                      productoController
-                                              .dataProvider[index].nombre ??
-                                          '',
-                                      style: FluentTheme.of(context)
-                                          .typography
-                                          .body,
+                                    title: Row(
+                                      children: [
+                                        Expanded(
+                                          child: Text(
+                                            productoController
+                                                    .productos[index].nombre ??
+                                                '',
+                                            style: FluentTheme.of(context)
+                                                .typography
+                                                .body,
+                                          ),
+                                        ),
+                                        SizedBox(
+                                          width: 100,
+                                          child: Text(
+                                            "${NumberFormater.format(productoController.productos[index].cantidad!, productoController.productos[index].resolvePrecisionUnidadMedida())} ${productoController.productos[index].resolveUnidadMedida()}",
+                                            textAlign: TextAlign.end,
+                                            style: FluentTheme.of(context)
+                                                .typography
+                                                .body,
+                                          ),
+                                        ),
+                                      ],
                                     ),
                                   );
                                 },

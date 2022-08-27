@@ -75,6 +75,7 @@ class _HomePageState extends State<HomePage> with WindowListener {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
+    final navBarTextStyle = FluentTheme.of(context).typography.bodyLarge;
     return NavigationView(
       key: viewKey,
       appBar: NavigationAppBar(
@@ -90,7 +91,7 @@ class _HomePageState extends State<HomePage> with WindowListener {
                     Center(
                       child: Text(
                         dataShared.nombreEmpresa,
-                        style: FluentTheme.of(context).typography.subtitle,
+                        style: FluentTheme.of(context).typography.title,
                       ),
                     ),
                     Expanded(
@@ -152,53 +153,53 @@ class _HomePageState extends State<HomePage> with WindowListener {
               Modular.to.pushNamed("/vendedor/");
               break;
             case 3:
-              Modular.to.pushNamed("/venta");
+              Modular.to.pushNamed("/producto/");
               break;
             case 4:
-              Modular.to.pushNamed("/producto");
+              Modular.to.pushNamed("/venta/");
               break;
             case 5:
-              Modular.to.pushNamed("/configuracion");
+              Modular.to.pushNamed("/configuracion/");
               break;
             case 6:
-              Modular.to.pushNamed("/about");
+              Modular.to.pushNamed("/about/");
               break;
           }
         },
         items: [
           // 0
           PaneItem(
-            title: const Text("Inicio"),
+            title: Text("Inicio", style: navBarTextStyle),
             icon: const Icon(FluentIcons.home),
           ),
           // 1
           PaneItem(
-            title: const Text("Cliente"),
+            title: Text("Cliente", style: navBarTextStyle),
             icon: const Icon(FluentIcons.people),
           ),
           // 2
           PaneItem(
-            title: const Text("Vendedor"),
-            icon: const Icon(FluentIcons.sell),
+            title: Text("Vendedor", style: navBarTextStyle),
+            icon: const Icon(FluentIcons.diamond_user),
           ),
           // 3
           PaneItem(
-            title: const Text("Venta"),
-            icon: const Icon(FluentIcons.sell),
+            title: Text("Productos", style: navBarTextStyle),
+            icon: const Icon(FluentIcons.store_logo16),
           ),
           // 4
           PaneItem(
-            title: const Text("Productos"),
-            icon: const Icon(FluentIcons.store_logo16),
+            title: Text("Venta", style: navBarTextStyle),
+            icon: const Icon(FluentIcons.shopping_cart),
           ),
           // 5
           PaneItem(
-            title: const Text("Configuración"),
+            title: Text("Configuración", style: navBarTextStyle),
             icon: const Icon(FluentIcons.settings),
           ),
           // 6
           PaneItem(
-            title: const Text("Acerca de"),
+            title: Text("Acerca de", style: navBarTextStyle),
             icon: const Icon(FluentIcons.info),
           ),
         ],

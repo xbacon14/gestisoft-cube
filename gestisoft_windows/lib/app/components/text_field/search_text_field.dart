@@ -4,9 +4,13 @@ class SearchTextField extends StatefulWidget {
   const SearchTextField({
     Key? key,
     required this.onSubmited,
+    required this.onClear,
+    required this.placeholder,
   }) : super(key: key);
 
   final Function(String value) onSubmited;
+  final Function onClear;
+  final String placeholder;
 
   @override
   State<SearchTextField> createState() => _SearchTextFieldState();
@@ -26,7 +30,7 @@ class _SearchTextFieldState extends State<SearchTextField> {
     return TextBox(
       controller: searchFieldController,
       onSubmitted: (value) => widget.onSubmited(value),
-      placeholder: "Consulte por nombre o numero de documento",
+      placeholder: widget.placeholder,
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
       onEditingComplete: () {},
       suffix: TextButton(
@@ -39,6 +43,7 @@ class _SearchTextFieldState extends State<SearchTextField> {
           setState(() {
             if (searchFieldController.text.isNotEmpty) {
               searchFieldController.clear();
+              widget.onClear();
             } else {
               widget.onSubmited(searchFieldController.text);
             }

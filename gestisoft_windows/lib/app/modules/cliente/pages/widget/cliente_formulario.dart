@@ -4,8 +4,9 @@ import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:gestisoft_windows/app/components/date/date_util.dart';
-import 'package:gestisoft_windows/app/components/text_field/string_utils.dart';
+import 'package:gestisoft_windows/app/components/text_utils/string_utils.dart';
 import 'package:gestisoft_windows/app/components/text_field/text_form_field.dart';
+import 'package:gestisoft_windows/app/components/text_utils/string_utils.dart';
 import 'package:gestisoft_windows/app/components/ui/alert.dart';
 import 'package:gestisoft_windows/app/modules/cliente/models/cliente.dart';
 import 'package:gestisoft_windows/app/modules/cliente/pages/cliente_controller.dart';
@@ -75,18 +76,23 @@ class _ClienteFormularioState extends State<ClienteFormulario> {
                 onPressed: () {
                   debugPrint(clienteController.currentRecord.toString());
                   if (formKey.currentState!.validate()) {
-                    clienteController
-                        .saveCliente()
-                        .then((value) => Modular.to.pop())
-                        .whenComplete(
-                            () => clienteController.findAllClientes());
+                    clienteController.saveCliente().then((value) {
+                      Modular.to.pop();
+                      Alert.show(
+                          context: context,
+                          message:
+                              "Se ha guardado el registro del cliente satisfactoriamente",
+                          type: 0);
+                    }).whenComplete(() => clienteController.findAllClientes());
+                  } else if (clienteController.clienteExiste) {
+                    Alert.show(
+                        context: context,
+                        message: "Este cliente ya existe",
+                        type: 2);
                   } else {
                     debugPrint("formulario no valido");
                   }
-                  Alert.show(
-                      context: context,
-                      message: "Se ha guardado el registro satisfactoriamente",
-                      type: 0);
+                  ;
                 },
               ),
             ],

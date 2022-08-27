@@ -5,7 +5,9 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -34,5 +36,15 @@ public class ProductoController {
 	@GetMapping("/findAll")
 	public ResponseEntity<List<Producto>> findAllProductos() {
 		return ResponseEntity.ok(productoService.findAllProductos());
+	}
+
+	@DeleteMapping("/delete/{id}")
+	public ResponseEntity<?> deleteProductoById(@PathVariable Long id) {
+		Boolean response = productoService.deleteProductoById(id);
+		if (response == true) {
+			return ResponseEntity.ok("Producto eliminado satisfactoriamente");
+		} else {
+			return ResponseEntity.ok("No se ha podido eliminar el producto");
+		}
 	}
 }

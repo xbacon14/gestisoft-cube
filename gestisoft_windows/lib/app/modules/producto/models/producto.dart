@@ -51,4 +51,28 @@ abstract class ProductoBase with Store {
     data['observacion'] = observacion;
     return data;
   }
+
+  ProductoBase.nuevo({
+    this.estado = true,
+    this.nombre = "",
+    this.cantidad = 0,
+    this.existencia = 0,
+    this.precioVenta = 0,
+  });
+
+  String resolveUnidadMedida() {
+    if (unidadMedida!.compareTo("METROS CÚBICOS") == 0) {
+      return "M²";
+    } else {
+      return "UN";
+    }
+  }
+
+  int resolvePrecisionUnidadMedida() {
+    if (unidadMedida!.compareTo("METROS CÚBICOS") == 0) {
+      return 2;
+    } else {
+      return 0;
+    }
+  }
 }
