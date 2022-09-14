@@ -1,16 +1,22 @@
+import 'dart:async';
+import 'dart:math';
+import 'dart:ui';
+
+import 'package:autocomplete_textfield/autocomplete_textfield.dart';
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_modular/flutter_modular.dart';
-import 'package:gestisoft_windows/app/components/auto_complete/auto_complete.dart';
+import 'package:gestisoft_windows/app/components/autocomplete/autocomplete.dart';
 import 'package:gestisoft_windows/app/components/date/date_util.dart';
 import 'package:gestisoft_windows/app/components/text_field/text_form_field.dart';
 import 'package:gestisoft_windows/app/modules/cliente/models/cliente.dart';
 import 'package:gestisoft_windows/app/modules/cliente/pages/cliente_controller.dart';
+import 'package:gestisoft_windows/app/modules/vendedor/models/vendedor.dart';
 import 'package:gestisoft_windows/app/modules/vendedor/pages/vendedor_controller.dart';
 import 'package:gestisoft_windows/app/modules/venta/pages/venta_controller.dart';
 
 class FormularioVenta extends StatefulWidget {
-  FormularioVenta({Key? key}) : super(key: key);
+  const FormularioVenta({Key? key}) : super(key: key);
 
   @override
   State<FormularioVenta> createState() => _FormularioVentaState();
@@ -32,12 +38,21 @@ class _FormularioVentaState extends State<FormularioVenta> {
   final vehiculoET = TextEditingController();
   final descripcionET = TextEditingController();
 
+  Timer? debounce;
+  GlobalKey<AutoCompleteTextFieldState<String>> key = GlobalKey();
+
   @override
   void initState() {
     ventaController.getProximoCodigo();
     fechaET.text = DateUtil.formatDateTimeToDate(DateTime.now());
     docNroET.text = "001-001-";
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    debounce?.cancel();
+    super.dispose();
   }
 
   @override
@@ -69,6 +84,7 @@ class _FormularioVentaState extends State<FormularioVenta> {
           Row(
             children: [
               Expanded(
+                flex: 2,
                 child: TextFormField(
                   title: 'Doc. nro',
                   value: docNroET.text,
@@ -94,75 +110,117 @@ class _FormularioVentaState extends State<FormularioVenta> {
           ),
           // CI/RUC Y CLIENTE
           Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Expanded(
-                  child: AutoComplete<Cliente>(
-                initialValue:
-                    ventaController.currentRecord.cliente?.ciRuc ?? '',
-                label: "Cliente",
-                notFoundMessage: "No se ha encontrado ningun cliente",
-                suggestionsBoxDecoration: SuggestionsBoxDecoration(
-                  color: Colors.red,
+              // CLIENTE AUTOSUGGEST
+              SizedBox(
+                width: 300,
+                height: 72,
+                child: AutoComplete<Cliente>(
+                  itemBuilder: (BuildContext context, itemData) {
+                    return Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 8),
+                      child: Text("${itemData.ciRuc} - ${itemData.nombre} "),
+                    );
+                  },
+                  label: 'Cliente',
+                  onSuggestionSelected: (Cliente? suggestion) {
+                    setState(() {
+                      ventaController.setCliente(cliente: suggestion!);
+                    });
+                  },
+                  initialValue: ventaController.currentRecord.cliente?.nombre,
+                  suggestionsCallback: (String pattern) async {
+                    return await clienteController
+                        .findByNombreODocumento(pattern)
+                        .then((value) {
+                      setState(() {
+                        debugPrint(value.toString());
+                      });
+                      return value;
+                    });
+                  },
                 ),
-                onSuggestionSelected: (cliente) {
-                  setState(() {
-                    ventaController.setCliente(cliente);
-                  });
-                },
-                itemBuilder: (context, suggestion) {
-                  return ListTile(
-                    title: Text(
-                      "${suggestion.ciRuc} - ${suggestion.nombre}",
-                      style: FluentTheme.of(context).typography.body,
-                    ),
-                  );
-                },
-                suggestionsCallback: (pattern) {
-                  return clienteController.findByNombreODocumento(pattern);
-                },
-                transitionBuilder: (context, suggestionsBox, controller) {
-                  return suggestionsBox;
-                },
-              )),
-              const SizedBox(
-                width: 12,
               ),
-              Observer(
-                builder: (_) {
-                  return Expanded(
-                    child: TextFormField(
-                      title: 'Cliente',
-                      value:
-                          ventaController.currentRecord.cliente?.nombre ?? "",
-                      enabled: false,
-                      onChanged: (String? value) {},
-                      placeHolder: '',
-                    ),
-                  );
-                },
-              ),
+              Container(
+                padding: const EdgeInsets.all(8),
+                child: TextButton(
+                  style: ButtonStyle(
+                      padding: ButtonState.all(const EdgeInsets.all(16)),
+                      backgroundColor: ButtonState.all(Colors.transparent)),
+                  onPressed: () {
+                    setState(() {
+                      ventaController.currentRecord.cliente = Cliente().nuevo();
+                    });
+                  },
+                  child: Icon(
+                    FluentIcons.chrome_close,
+                    color: Colors.red,
+                  ),
+                ),
+              )
             ],
           ),
           // VENDEDOR Y DESTINO
           Row(
             children: [
-              Expanded(
-                child: TextFormField(
-                  title: 'Vendedor',
-                  value: "0",
-                  onChanged: (String? value) {},
-                  placeHolder: '',
+              SizedBox(
+                width: 300,
+                height: 72,
+                child: AutoComplete<Vendedor>(
+                  itemBuilder: (BuildContext context, itemData) {
+                    return Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 8),
+                      child: Text("${itemData.ci} - ${itemData.nombre} "),
+                    );
+                  },
+                  label: 'Vendedor',
+                  onSuggestionSelected: (Vendedor? suggestion) {
+                    setState(() {
+                      ventaController.setVendedor(vendedor: suggestion!);
+                    });
+                  },
+                  initialValue: ventaController.currentRecord.vendedor?.nombre,
+                  suggestionsCallback: (String pattern) async {
+                    return await vendedorController
+                        .findByNombreODocumento(pattern)
+                        .then((value) {
+                      setState(() {
+                        debugPrint(value.toString());
+                      });
+                      return value;
+                    });
+                  },
                 ),
               ),
-              const SizedBox(
-                width: 12,
-              ),
+              Container(
+                padding: const EdgeInsets.all(8),
+                child: TextButton(
+                  style: ButtonStyle(
+                      padding: ButtonState.all(const EdgeInsets.all(16)),
+                      backgroundColor: ButtonState.all(Colors.transparent)),
+                  onPressed: () {
+                    setState(() {
+                      ventaController.currentRecord.vendedor = Vendedor.nuevo();
+                    });
+                  },
+                  child: Icon(
+                    FluentIcons.chrome_close,
+                    color: Colors.red,
+                  ),
+                ),
+              )
+            ],
+          ),
+          Row(
+            children: [
               Expanded(
                 child: TextFormField(
                   title: 'Destino',
-                  value: "0",
+                  maxChar: 20,
+                  value: destinoET.text,
                   onChanged: (String? value) {},
-                  placeHolder: '',
+                  placeHolder: 'Ingrese el destino de la venta aquí',
                 ),
               ),
             ],
@@ -173,9 +231,9 @@ class _FormularioVentaState extends State<FormularioVenta> {
               Expanded(
                 child: TextFormField(
                   title: 'Chofer',
-                  value: "0",
+                  value: choferET.text,
                   onChanged: (String? value) {},
-                  placeHolder: '',
+                  placeHolder: 'Nombre del chofer',
                 ),
               ),
               const SizedBox(
@@ -184,9 +242,9 @@ class _FormularioVentaState extends State<FormularioVenta> {
               Expanded(
                 child: TextFormField(
                   title: 'Vehiculo',
-                  value: "0",
+                  value: vehiculoET.text,
                   onChanged: (String? value) {},
-                  placeHolder: '',
+                  placeHolder: 'Ingrese el vehículo aquí',
                 ),
               ),
             ],
@@ -197,9 +255,9 @@ class _FormularioVentaState extends State<FormularioVenta> {
               Expanded(
                 child: TextFormField(
                   title: 'Descripcion',
-                  value: "0",
+                  value: descripcionET.text,
                   onChanged: (String? value) {},
-                  placeHolder: '',
+                  placeHolder: 'Ingrese alguna descripción aquí',
                 ),
               ),
             ],

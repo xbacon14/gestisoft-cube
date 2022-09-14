@@ -161,9 +161,9 @@ class _HomePageState extends State<HomePage> with WindowListener {
             case 5:
               Modular.to.pushNamed("/configuracion/");
               break;
-            case 6:
-              Modular.to.pushNamed("/about/");
-              break;
+            // case 6:
+            //   Modular.to.pushNamed("/about/");
+            //   break;
           }
         },
         items: [
@@ -203,7 +203,7 @@ class _HomePageState extends State<HomePage> with WindowListener {
             icon: const Icon(FluentIcons.info),
           ),
         ],
-        displayMode: PaneDisplayMode.top,
+        displayMode: PaneDisplayMode.compact,
       ),
       content: const RouterOutlet(),
     );

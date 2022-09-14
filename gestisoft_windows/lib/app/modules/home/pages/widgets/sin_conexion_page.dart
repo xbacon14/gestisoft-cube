@@ -16,8 +16,8 @@ class _SinConexionPageState extends State<SinConexionPage> {
     final size = MediaQuery.of(context).size;
     return ConstrainedBox(
       constraints: const BoxConstraints(
-        maxWidth: 800,
-        maxHeight: 800,
+        maxWidth: 600,
+        maxHeight: 600,
       ),
       child: SizedBox(
         width: size.width,

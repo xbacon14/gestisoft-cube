@@ -1,235 +1,12 @@
-/// # Flutter TypeAhead
-/// A TypeAhead widget for Flutter, where you can show suggestions to
-/// users as they type
-///
-/// ## Features
-/// * Shows suggestions in an overlay that floats on top of other widgets
-/// * Allows you to specify what the suggestions will look like through a
-/// builder function
-/// * Allows you to specify what happens when the user taps a suggestion
-/// * Accepts all the parameters that traditional TextFields accept, like
-/// decoration, custom TextEditingController, text styling, etc.
-/// * Provides two versions, a normal version and a [FormField](https://docs.flutter.io/flutter/widgets/FormField-class.html)
-/// version that accepts validation, submitting, etc.
-/// * Provides high customizability; you can customize the suggestion box decoration,
-/// the loading bar, the animation, the debounce duration, etc.
-///
-/// ## Installation
-/// See the [installation instructions on pub](https://pub.dartlang.org/packages/flutter_typeahead#-installing-tab-).
-///
-/// ## Usage examples
-/// You can import the package with:
-/// ```dart
-/// import 'package:flutter_typeahead/flutter_typeahead.dart';
-/// ```
-///
-/// and then use it as follows:
-///
-/// ### Example 1:
-/// ```dart
-/// TypeAheadField(
-///   textFieldConfiguration: TextFieldConfiguration(
-///     autofocus: true,
-///     style: DefaultTextStyle.of(context).style.copyWith(
-///       fontStyle: FontStyle.italic
-///     ),
-///     decoration: InputDecoration(
-///       border: OutlineInputBorder()
-///     )
-///   ),
-///   suggestionsCallback: (pattern) async {
-///     return await BackendService.getSuggestions(pattern);
-///   },
-///   itemBuilder: (context, suggestion) {
-///     return ListTile(
-///       leading: Icon(Icons.shopping_cart),
-///       title: Text(suggestion['name']),
-///       subtitle: Text('\$${suggestion['price']}'),
-///     );
-///   },
-///   onSuggestionSelected: (suggestion) {
-///     Navigator.of(context).push(MaterialPageRoute(
-///       builder: (context) => ProductPage(product: suggestion)
-///     ));
-///   },
-/// )
-/// ```
-/// In the code above, the `textFieldConfiguration` property allows us to
-/// configure the displayed `TextField` as we want. In this example, we are
-/// configuring the `autofocus`, `style` and `decoration` properties.
-///
-/// The `suggestionsCallback` is called with the search string that the user
-/// types, and is expected to return a `List` of data either synchronously or
-/// asynchronously. In this example, we are calling an asynchronous function
-/// called `BackendService.getSuggestions` which fetches the list of
-/// suggestions.
-///
-/// The `itemBuilder` is called to build a widget for each suggestion.
-/// In this example, we build a simple `ListTile` that shows the name and the
-/// price of the item. Please note that you shouldn't provide an `onTap`
-/// callback here. The TypeAhead widget takes care of that.
-///
-/// The `onSuggestionSelected` is a callback called when the user taps a
-/// suggestion. In this example, when the user taps a
-/// suggestion, we navigate to a page that shows us the information of the
-/// tapped product.
-///
-/// ### Example 2:
-/// Here's another example, where we use the TypeAheadFormField inside a `Form`:
-/// ```dart
-/// final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-/// final TextEditingController _typeAheadController = TextEditingController();
-/// String _selectedCity;
-/// ...
-/// Form(
-///   key: this._formKey,
-///   child: Padding(
-///     padding: EdgeInsets.all(32.0),
-///     child: Column(
-///       children: <Widget>[
-///         Text(
-///           'What is your favorite city?'
-///         ),
-///         TypeAheadFormField(
-///           textFieldConfiguration: TextFieldConfiguration(
-///             controller: this._typeAheadController,
-///             decoration: InputDecoration(
-///               labelText: 'City'
-///             )
-///           ),
-///           suggestionsCallback: (pattern) {
-///             return CitiesService.getSuggestions(pattern);
-///           },
-///           itemBuilder: (context, suggestion) {
-///             return ListTile(
-///               title: Text(suggestion),
-///             );
-///           },
-///           transitionBuilder: (context, suggestionsBox, controller) {
-///             return suggestionsBox;
-///           },
-///           onSuggestionSelected: (suggestion) {
-///             this._typeAheadController.text = suggestion;
-///           },
-///           validator: (value) {
-///             if (value.isEmpty) {
-///               return 'Please select a city';
-///             }
-///           },
-///           onSaved: (value) => this._selectedCity = value,
-///         ),
-///         SizedBox(height: 10.0,),
-///         RaisedButton(
-///           child: Text('Submit'),
-///           onPressed: () {
-///             if (this._formKey.currentState.validate()) {
-///               this._formKey.currentState.save();
-///               Scaffold.of(context).showSnackBar(SnackBar(
-///                 content: Text('Your Favorite City is ${this._selectedCity}')
-///               ));
-///             }
-///           },
-///         )
-///       ],
-///     ),
-///   ),
-/// )
-/// ```
-/// Here, we assign to the `controller` property of the `textFieldConfiguration`
-/// a `TextEditingController` that we call `_typeAheadController`.
-/// We use this controller in the `onSuggestionSelected` callback to set the
-/// value of the `TextField` to the selected suggestion.
-///
-/// The `validator` callback can be used like any `FormField.validator`
-/// function. In our example, it checks whether a value has been entered,
-/// and displays an error message if not. The `onSaved` callback is used to
-/// save the value of the field to the `_selectedCity` member variable.
-///
-/// The `transitionBuilder` allows us to customize the animation of the
-/// suggestion box. In this example, we are returning the suggestionsBox
-/// immediately, meaning that we don't want any animation.
-///
-/// ## Customizations
-/// TypeAhead widgets consist of a TextField and a suggestion box that shows
-/// as the user types. Both are highly customizable
-///
-/// ### Customizing the TextField
-/// You can customize the text field using the `textFieldConfiguration` property.
-/// You provide this property with an instance of `TextFieldConfiguration`,
-/// which allows you to configure all the usual properties of `TextField`, like
-/// `decoration`, `style`, `controller`, `focusNode`, `autofocus`, `enabled`,
-/// etc.
-///
-/// ### Customizing the Suggestions Box
-/// TypeAhead provides default configurations for the suggestions box. You can,
-/// however, override most of them.
-///
-/// #### Customizing the loader, the error and the "no items found" message
-/// You can use the [loadingBuilder], [errorBuilder] and [noItemsFoundBuilder] to
-/// customize their corresponding widgets. For example, to show a custom error
-/// widget:
-/// ```dart
-/// errorBuilder: (BuildContext context, Object error) =>
-///   Text(
-///     '$error',
-///     style: TextStyle(
-///       color: Theme.of(context).errorColor
-///     )
-///   )
-/// ```
-/// #### Customizing the animation
-/// You can customize the suggestion box animation through 3 parameters: the
-/// `animationDuration`, the `animationStart`, and the `transitionBuilder`.
-///
-/// The `animationDuration` specifies how long the animation should take, while the
-/// `animationStart` specified what point (between 0.0 and 1.0) the animation
-/// should start from. The `transitionBuilder` accepts the `suggestionsBox` and
-/// `animationController` as parameters, and should return a widget that uses
-/// the `animationController` to animate the display of the `suggestionsBox`.
-/// For example:
-/// ```dart
-/// transitionBuilder: (context, suggestionsBox, animationController) =>
-///   FadeTransition(
-///     child: suggestionsBox,
-///     opacity: CurvedAnimation(
-///       parent: animationController,
-///       curve: Curves.fastOutSlowIn
-///     ),
-///   )
-/// ```
-/// This uses [FadeTransition](https://docs.flutter.io/flutter/widgets/FadeTransition-class.html)
-/// to fade the `suggestionsBox` into the view. Note how the
-/// `animationController` was provided as the parent of the animation.
-///
-/// In order to fully remove the animation, `transitionBuilder` should simply
-/// return the `suggestionsBox`. This callback could also be used to wrap the
-/// `suggestionsBox` with any desired widgets, not necessarily for animation.
-///
-/// #### Customizing the debounce duration
-/// The suggestions box does not fire for each character the user types. Instead,
-/// we wait until the user is idle for a duration of time, and then call the
-/// `suggestionsCallback`. The duration defaults to 300 milliseconds, but can be
-/// configured using the `debounceDuration` parameter.
-///
-/// #### Customizing the offset of the suggestions box
-/// By default, the suggestions box is displayed 5 pixels below the `TextField`.
-/// You can change this by changing the `suggestionsBoxVerticalOffset` property.
-///
-/// #### Customizing the decoration of the suggestions box
-/// You can also customize the decoration of the suggestions box using the
-/// `suggestionsBoxDecoration` property. For example, to remove the elevation
-/// of the suggestions box, you can write:
-/// ```dart
-/// suggestionsBoxDecoration: SuggestionsBoxDecoration(
-///   elevation: 0.0
-/// )
-/// ```
 import 'dart:async';
 import 'dart:math';
 
-import 'package:flextech/inputs/autocomplete/error_builder.dart';
+import 'package:flextech/search/search_page/interfaces/i_search_tile.dart';
+import 'package:fluent_ui/fluent_ui.dart' hide Scrollbar;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+
+import 'error_builder.dart';
 
 /// A [FormField](https://docs.flutter.io/flutter/widgets/FormField-class.html)
 /// implementation of [TypeAheadField], that allows the value to be saved,
@@ -248,15 +25,15 @@ class AutoComplete<T> extends FormField<String> {
   AutoComplete({
     Key? key,
     required String label,
-    required String notFoundMessage,
+    String notFoundMessage = 'Sin datos disponible',
     String? initialValue,
     bool getImmediateSuggestions: false,
     @Deprecated('Use autovalidateMode parameter which provides more specific '
         'behavior related to auto validation. '
         'This feature was deprecated after Flutter v1.19.0.')
-        bool autovalidate: false,
-    bool enabled: true,
-    AutovalidateMode autovalidateMode: AutovalidateMode.disabled,
+        bool autovalidate = true,
+    bool enabled = true,
+    AutovalidateMode autovalidateMode: AutovalidateMode.onUserInteraction,
     FormFieldSetter<String>? onSaved,
     FormFieldValidator<String>? validator,
     ErrorBuilder? errorBuilder,
@@ -285,7 +62,6 @@ class AutoComplete<T> extends FormField<String> {
     bool autoFlipDirection: false,
     bool hideKeyboard: false,
     int order: 0,
-    onClear,
   })  : assert(
             initialValue == null || textFieldConfiguration.controller == null),
         super(
@@ -305,7 +81,7 @@ class AutoComplete<T> extends FormField<String> {
                   validator: validator,
                   initialValue: initialValue,
                   superValidator: (String value) {
-                    state.didChange(value);
+                    //  state.didChange(value);
                   },
                   notFoundMessage: notFoundMessage,
                   getImmediateSuggestions: getImmediateSuggestions,
@@ -318,9 +94,8 @@ class AutoComplete<T> extends FormField<String> {
                   suggestionsBoxController: suggestionsBoxController,
                   noSuggestionSelected: noSuggestionSelected,
                   textFieldConfiguration: textFieldConfiguration.copyWith(
-                    decoration: textFieldConfiguration.decoration.copyWith(
-                      errorText: state.errorText,
-                    ),
+                    decoration: textFieldConfiguration.decoration
+                        .copyWith(errorText: state.errorText),
                     onChanged: (text) {
                       state.didChange(text);
                       textFieldConfiguration.onChanged?.call(text);
@@ -833,17 +608,19 @@ class _TypeAheadFieldState<T> extends State<TypeAheadField<T>>
     if (widget.initialValue != null) {
       WidgetsBinding.instance.addPostFrameCallback((duration) {
         if (oldWidget.initialValue != widget.initialValue) {
-/*           if (this._textEditingController != null) {
-            this._textEditingController!.text = this.widget.initialValue!;
+          if (_textEditingController != null) {
+            _textEditingController!.text = widget.initialValue!;
           } else {
             widget.textFieldConfiguration.controller!.text =
-                this.widget.initialValue!;
-          } */
+                widget.initialValue!;
+          }
           _effectiveController!.text = widget.initialValue!;
           /*  this.widget.validator!(this.widget.initialValue); */
           widget.superValidator(widget.initialValue!);
         }
       });
+    } else {
+      widget.superValidator(widget.textFieldConfiguration.controller!.text);
     }
     super.didUpdateWidget(oldWidget);
   }
@@ -951,7 +728,7 @@ class _TypeAheadFieldState<T> extends State<TypeAheadField<T>>
               ? suggestionsList
               : FractionalTranslation(
                   translation:
-                      const Offset(0.0, -1.0), // visually flips list to go up
+                      Offset(0.0, -1.0), // visually flips list to go up
                   child: suggestionsList,
                 ),
         ),
@@ -971,22 +748,47 @@ class _TypeAheadFieldState<T> extends State<TypeAheadField<T>>
                 baseOffset: 0, extentOffset: _effectiveController!.text.length);
           }
         },
-        child: TextFormField(
-          // order: widget.order,
-          // label: widget.label,
+        child: TextFormBox(
+          header: widget.label,
           validator: widget.validator,
+          onChanged: widget.textFieldConfiguration.onChanged,
           focusNode: _effectiveFocusNode,
           controller: _effectiveController,
+          inputFormatters: widget.textFieldConfiguration.inputFormatters,
+          enabled: widget.textFieldConfiguration.enabled,
+          textInputAction: widget.textFieldConfiguration.textInputAction,
+          decoration: BoxDecoration(
+            border: Border.all(
+              color: const Color.fromARGB(255, 255, 6, 6),
+              width: 1,
+            ),
+          ),
+        ),
+/*         child: TextFormInputCustom(
+          order: this.widget.order,
+          label: this.widget.label,
+          validator: this.widget.validator,
+          focusNode: this._effectiveFocusNode,
+          controller: this._effectiveController,
           style: widget.textFieldConfiguration.style,
           enabled: widget.textFieldConfiguration.enabled,
           keyboardType: widget.textFieldConfiguration.keyboardType,
-          // autoFocus: widget.textFieldConfiguration.autofocus,
+          autoFocus: widget.textFieldConfiguration.autofocus,
           inputFormatters: widget.textFieldConfiguration.inputFormatters,
           maxLines: widget.textFieldConfiguration.maxLines,
           maxLength: widget.textFieldConfiguration.maxLength,
           onChanged: widget.textFieldConfiguration.onChanged,
           textInputAction: widget.textFieldConfiguration.textInputAction,
-        ),
+          icon: Visibility(
+            visible: searching,
+            child: Transform.scale(
+              scale: 0.5,
+              child: CircularProgressIndicator(
+                color: Get.theme.colorScheme.secondaryVariant,
+              ),
+            ),
+          ),
+        ), */
       ),
     );
   }
@@ -1015,7 +817,7 @@ class _SuggestionsList<T> extends StatefulWidget {
   final String notFoundMessage;
   final Function(bool) onSearch;
 
-  _SuggestionsList({
+  const _SuggestionsList({
     required this.suggestionsBox,
     this.controller,
     this.getImmediateSuggestions: false,
@@ -1280,22 +1082,30 @@ class _SuggestionsListState<T> extends State<_SuggestionsList<T>>
   }
 
   Widget createSuggestionsWidget() {
-    Widget child = ListView(
-      padding: EdgeInsets.zero,
-      primary: false,
-      shrinkWrap: true,
-      controller: _scrollController,
-      reverse: widget.suggestionsBox!.direction == AxisDirection.down
-          ? false
-          : true, // reverses the list to start at the bottom
-      children: _suggestions!.map((T suggestion) {
-        return InkWell(
-          child: widget.itemBuilder!(context, suggestion),
-          onTap: () {
-            widget.onSuggestionSelected!(suggestion);
-          },
-        );
-      }).toList(),
+    Widget child = Padding(
+      padding: const EdgeInsets.only(left: 8.0, right: 8.0, top: 0.0),
+      child: ListView(
+        padding: EdgeInsets.zero,
+        primary: false,
+        shrinkWrap: true,
+
+        controller: _scrollController,
+        reverse: widget.suggestionsBox!.direction == AxisDirection.down
+            ? false
+            : true, // reverses the list to start at the bottom
+        children: _suggestions!.map((T suggestion) {
+          return InkWell(
+            child: widget.itemBuilder!(context, suggestion),
+            onTap: () {
+              widget.onSuggestionSelected!(suggestion);
+              if ((suggestion is ISearchTile) == false) {
+                throw Exception("Deve implementar ISearchTile");
+              }
+              widget.controller?.text = (suggestion as ISearchTile).title;
+            },
+          );
+        }).toList(),
+      ),
     );
 
     if (widget.decoration!.hasScrollbar) {

@@ -16,9 +16,10 @@ public class ProductoService {
 
 	@Autowired
 	private ProductoRepository productoRepository;
-	
+
 	@Autowired
 	private ProductoMapper productoMapper;
+
 //	PERSISTE Y GUARDA LOS DATOS RECIBIDOS EN LA TABLA PRODUCTO
 	public Producto save(Producto producto) {
 		return productoRepository.save(producto);
@@ -28,13 +29,13 @@ public class ProductoService {
 	public List<Producto> findAllProductos() {
 		return productoRepository.findAll();
 	}
-	
-	public List<Producto> findByNombre(String condition){
-		if(condition.isEmpty()|| condition == null) {
+
+	public List<Producto> findByNombre(String condition) {
+		if (condition.isEmpty() || condition == null) {
 			return findAllProductos();
 		}
 		return productoMapper.findByNombre(condition);
-		
+
 	}
 
 }

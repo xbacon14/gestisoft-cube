@@ -42,19 +42,23 @@ abstract class _VendedorControllerBase with Store {
     }
   }
 
-  Future<void> findByNombreODocumento(String condition) async {
+  Future<List<Vendedor>> findByNombreODocumento(String condition) async {
     processando = true;
+    List<Vendedor> lista = [];
     final response = await vendedorRepository
         .findByNombreODocumento(condition)
         .whenComplete(() => processando = false);
     if (response.statusCode == 200) {
-      vendedores.clear();
-      vendedores.addAll(
+      lista.addAll(
           response.data.map<Vendedor>((c) => Vendedor.fromJson(c)).toList());
+      vendedores.clear();
+
+      vendedores.addAll(lista);
       resolveListaVacia();
     } else {
       debugPrint("no se pudieron consultar los vendedores");
     }
+    return lista;
   }
 
   Future<void> saveVendedor() async {

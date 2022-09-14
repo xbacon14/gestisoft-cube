@@ -11,6 +11,7 @@ class TextFormField extends StatefulWidget {
     this.validator,
     this.value,
     required this.onChanged,
+    this.maxChar,
   }) : super(key: key);
 
   final String title;
@@ -21,6 +22,7 @@ class TextFormField extends StatefulWidget {
   final Widget? suffix;
   final bool? enabled;
   final String? value;
+  final int? maxChar;
 
   @override
   State<TextFormField> createState() => _TextFormFieldState();
@@ -53,6 +55,7 @@ class _TextFormFieldState extends State<TextFormField> {
           height: 4,
         ),
         TextFormBox(
+          maxLength: widget.maxChar,
           controller: textFieldController,
           enabled: widget.enabled,
           onFieldSubmitted: (value) =>
@@ -68,10 +71,11 @@ class _TextFormFieldState extends State<TextFormField> {
           validator: (value) =>
               widget.validator != null ? widget.validator!(value) : null,
           decoration: BoxDecoration(
-              border: Border.all(
-            color: Colors.red,
-            width: 1,
-          )),
+            border: Border.all(
+              color: Colors.red,
+              width: 1,
+            ),
+          ),
         ),
       ],
     );

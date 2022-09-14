@@ -12,9 +12,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import py.edu.gestisoft.model.base.Cliente;
 import py.edu.gestisoft.model.base.Producto;
 import py.edu.gestisoft.service.base.ProductoService;
+import py.edu.gestisoft.utils.sql.SQLUtils;
 
 @RestController
 @CrossOrigin
@@ -36,11 +36,17 @@ public class ProductoController {
 	public ResponseEntity<List<Producto>> findAllProductos() {
 		return ResponseEntity.ok(productoService.findAllProductos());
 	}
-	
+
 	@GetMapping("/findByNombre")
-	public ResponseEntity<List<Producto>> findByNombre(@RequestParam String condition){
-		
+	public ResponseEntity<List<Producto>> findByNombre(@RequestParam String condition) {
+
 		return ResponseEntity.ok(productoService.findByNombre(condition));
-		
+
+	}
+
+	@GetMapping("/findByNombreOCodigo")
+	public ResponseEntity<List<Producto>> findByNombreOCodigo(@RequestParam String condition) {
+		return ResponseEntity.ok(productoService.findByNombre(SQLUtils.like(condition)));
+
 	}
 }

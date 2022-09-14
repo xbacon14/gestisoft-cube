@@ -26,7 +26,10 @@ class VentaModule extends Module {
           (i) => VentaRepository(i.get()),
         ),
         Bind.singleton(
-          (i) => VentaController(i.get()),
+          (i) => VentaController(
+            clienteRepository: i.get(),
+            ventaRepository: i.get(),
+          ),
         ),
       ];
 

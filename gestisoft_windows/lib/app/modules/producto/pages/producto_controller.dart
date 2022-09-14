@@ -33,6 +33,8 @@ abstract class _ProductoControllerBase with Store {
 
   ObservableList<Producto> productos = ObservableList();
 
+  ObservableList<Producto> dataProvider = ObservableList();
+
   Future<void> findAllProductos() async {
     processando = true;
     final response = await productoRepository
@@ -74,5 +76,32 @@ abstract class _ProductoControllerBase with Store {
         Alert.show(context: context, message: message, type: 2);
       }
     }
+  }
+
+  resolveListaVacia() {
+    if (dataProvider.isEmpty) {
+      listaVacia = true;
+    } else {
+      listaVacia = false;
+    }
+  }
+
+  Future<List<Producto>> findByNombreOCodigo(String condition) async {
+    processando = true;
+    List<Producto> lista = [];
+    final response = await productoRepository
+        .findByNombreOCodigo(condition)
+        .whenComplete(() => processando = false);
+
+    if (response.statusCode == 200) {
+      dataProvider.clear();
+      dataProvider.addAll(
+          response.data.map<Producto>((c) => Producto.fromJson(c)).toList());
+      lista = dataProvider;
+      resolveListaVacia();
+    } else {
+      debugPrint("no se pudieron consultar los clientes");
+    }
+    return lista;
   }
 }

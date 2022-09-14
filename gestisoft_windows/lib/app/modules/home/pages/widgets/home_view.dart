@@ -18,6 +18,7 @@ class _HomeViewState extends State<HomeView> {
   final ProductoController productoController = Modular.get();
   final HomeController homeController = Modular.get();
   final DataShared dataShared = Modular.get();
+  final mainScrollController = ScrollController();
   @override
   void initState() {
     productoController.findAllProductos();
@@ -28,7 +29,6 @@ class _HomeViewState extends State<HomeView> {
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     return Column(
-      mainAxisSize: MainAxisSize.max,
       children: [
         Center(
             child: Observer(
@@ -45,11 +45,11 @@ class _HomeViewState extends State<HomeView> {
                           8,
                         ),
                       ),
-                      width: size.width * .25,
+                      width: size.width * .3,
                       height: 300,
                       child: Acrylic(
                         child: Padding(
-                          padding: const EdgeInsets.all(16.0),
+                          padding: const EdgeInsets.all(8.0),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.center,
                             mainAxisAlignment: MainAxisAlignment.start,

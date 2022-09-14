@@ -19,4 +19,11 @@ class ProductoRepository {
   Future<RestClientResponse> eliminarProductoById(int idProducto) async {
     return await dioRestClient.delete('/producto/delete/$idProducto');
   }
+
+  Future<RestClientResponse> findByNombreOCodigo(String condition) async {
+    return await dioRestClient
+        .get("/producto/findByNombreOCodigo", queryParameters: {
+      "condition": condition,
+    });
+  }
 }

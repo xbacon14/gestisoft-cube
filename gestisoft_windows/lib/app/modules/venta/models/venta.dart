@@ -7,6 +7,7 @@ part 'venta.g.dart';
 class Venta = VentaBase with _$Venta;
 
 abstract class VentaBase with Store {
+  @observable
   int? id;
   String? chofer;
   String? docNro;
