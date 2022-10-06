@@ -16,7 +16,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> with WindowListener {
   final viewKey = GlobalKey();
-  int index = 0;
+
   final DataShared dataShared = Modular.get();
   final HomeController homeController = Modular.get();
 
@@ -136,13 +136,13 @@ class _HomePageState extends State<HomePage> with WindowListener {
               ),
       ),
       pane: NavigationPane(
-        selected: index,
+        selected: homeController.index,
         onChanged: (i) {
           setState(() {
-            index = i;
+            homeController.index = i;
           });
 
-          switch (index) {
+          switch (homeController.index) {
             case 0:
               Modular.to.pushNamed("/home");
               break;
@@ -156,9 +156,12 @@ class _HomePageState extends State<HomePage> with WindowListener {
               Modular.to.pushNamed("/producto/");
               break;
             case 4:
-              Modular.to.pushNamed("/venta/");
+              Modular.to.pushNamed("/venta/reporte");
               break;
             case 5:
+              Modular.to.pushNamed("/venta/");
+              break;
+            case 6:
               Modular.to.pushNamed("/configuracion/");
               break;
             // case 6:
@@ -185,14 +188,19 @@ class _HomePageState extends State<HomePage> with WindowListener {
           // 3
           PaneItem(
             title: Text("Productos", style: navBarTextStyle),
-            icon: const Icon(FluentIcons.store_logo16),
+            icon: const Icon(FluentIcons.product_list),
           ),
           // 4
+          PaneItem(
+            title: Text("Reporte ventas", style: navBarTextStyle),
+            icon: const Icon(FluentIcons.shop_server),
+          ),
+          // 5
           PaneItem(
             title: Text("Venta", style: navBarTextStyle),
             icon: const Icon(FluentIcons.shopping_cart),
           ),
-          // 5
+          //6
           PaneItem(
             title: Text("Configuración", style: navBarTextStyle),
             icon: const Icon(FluentIcons.settings),

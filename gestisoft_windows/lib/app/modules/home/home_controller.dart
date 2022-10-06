@@ -11,6 +11,9 @@ abstract class HomeControllerBase with Store {
   @observable
   bool online = false;
 
+  @observable
+  int index = 0;
+
   Future<bool> verificarConexion() async {
     online = await configuracionRepository.verificarConexion();
     if (online) {

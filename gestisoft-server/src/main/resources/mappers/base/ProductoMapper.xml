@@ -11,7 +11,7 @@
 		<result property="precioVenta" column="PRECIO_VENTA" />
 		<result property="unidadMedida" column="UNIDAD_MEDIDA" />
 		<result property="fechaRegistro" column="FECHA_REGISTRO" />
-		<result property="existencia" column="EXISTENCIA" />
+<!-- 		<result property="exi	stencia" column="EXISTENCIA" /> -->
 		<result property="observacion" column="OBSERVACION" />
 
 

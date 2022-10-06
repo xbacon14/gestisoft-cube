@@ -12,5 +12,10 @@ void main() async {
   // if (!kIsWeb) {
   //   await DesktopWindow.setFullScreen(true);
   // }
-  runApp(ModularApp(module: AppModule(), child: const AppWidget()));
+  runApp(
+    ModularApp(
+      module: AppModule(),
+      child: const AppWidget(),
+    ),
+  );
 }

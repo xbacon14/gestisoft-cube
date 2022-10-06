@@ -9,6 +9,150 @@ part of 'venta_controller.dart';
 // ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic, no_leading_underscores_for_local_identifiers
 
 mixin _$VentaController on _VentaControllerBase, Store {
+  late final _$dataProviderAtom =
+      Atom(name: '_VentaControllerBase.dataProvider', context: context);
+
+  @override
+  ObservableList<Venta> get dataProvider {
+    _$dataProviderAtom.reportRead();
+    return super.dataProvider;
+  }
+
+  @override
+  set dataProvider(ObservableList<Venta> value) {
+    _$dataProviderAtom.reportWrite(value, super.dataProvider, () {
+      super.dataProvider = value;
+    });
+  }
+
+  late final _$idVentaETAtom =
+      Atom(name: '_VentaControllerBase.idVentaET', context: context);
+
+  @override
+  TextEditingController get idVentaET {
+    _$idVentaETAtom.reportRead();
+    return super.idVentaET;
+  }
+
+  @override
+  set idVentaET(TextEditingController value) {
+    _$idVentaETAtom.reportWrite(value, super.idVentaET, () {
+      super.idVentaET = value;
+    });
+  }
+
+  late final _$docNroETAtom =
+      Atom(name: '_VentaControllerBase.docNroET', context: context);
+
+  @override
+  TextEditingController get docNroET {
+    _$docNroETAtom.reportRead();
+    return super.docNroET;
+  }
+
+  @override
+  set docNroET(TextEditingController value) {
+    _$docNroETAtom.reportWrite(value, super.docNroET, () {
+      super.docNroET = value;
+    });
+  }
+
+  late final _$fechaETAtom =
+      Atom(name: '_VentaControllerBase.fechaET', context: context);
+
+  @override
+  TextEditingController get fechaET {
+    _$fechaETAtom.reportRead();
+    return super.fechaET;
+  }
+
+  @override
+  set fechaET(TextEditingController value) {
+    _$fechaETAtom.reportWrite(value, super.fechaET, () {
+      super.fechaET = value;
+    });
+  }
+
+  late final _$choferETAtom =
+      Atom(name: '_VentaControllerBase.choferET', context: context);
+
+  @override
+  TextEditingController get choferET {
+    _$choferETAtom.reportRead();
+    return super.choferET;
+  }
+
+  @override
+  set choferET(TextEditingController value) {
+    _$choferETAtom.reportWrite(value, super.choferET, () {
+      super.choferET = value;
+    });
+  }
+
+  late final _$vehiculoETAtom =
+      Atom(name: '_VentaControllerBase.vehiculoET', context: context);
+
+  @override
+  TextEditingController get vehiculoET {
+    _$vehiculoETAtom.reportRead();
+    return super.vehiculoET;
+  }
+
+  @override
+  set vehiculoET(TextEditingController value) {
+    _$vehiculoETAtom.reportWrite(value, super.vehiculoET, () {
+      super.vehiculoET = value;
+    });
+  }
+
+  late final _$descripcionETAtom =
+      Atom(name: '_VentaControllerBase.descripcionET', context: context);
+
+  @override
+  TextEditingController get descripcionET {
+    _$descripcionETAtom.reportRead();
+    return super.descripcionET;
+  }
+
+  @override
+  set descripcionET(TextEditingController value) {
+    _$descripcionETAtom.reportWrite(value, super.descripcionET, () {
+      super.descripcionET = value;
+    });
+  }
+
+  late final _$precioVentaETAtom =
+      Atom(name: '_VentaControllerBase.precioVentaET', context: context);
+
+  @override
+  TextEditingController get precioVentaET {
+    _$precioVentaETAtom.reportRead();
+    return super.precioVentaET;
+  }
+
+  @override
+  set precioVentaET(TextEditingController value) {
+    _$precioVentaETAtom.reportWrite(value, super.precioVentaET, () {
+      super.precioVentaET = value;
+    });
+  }
+
+  late final _$cantETAtom =
+      Atom(name: '_VentaControllerBase.cantET', context: context);
+
+  @override
+  TextEditingController get cantET {
+    _$cantETAtom.reportRead();
+    return super.cantET;
+  }
+
+  @override
+  set cantET(TextEditingController value) {
+    _$cantETAtom.reportWrite(value, super.cantET, () {
+      super.cantET = value;
+    });
+  }
+
   late final _$listaVaciaAtom =
       Atom(name: '_VentaControllerBase.listaVacia', context: context);
 
@@ -41,6 +185,22 @@ mixin _$VentaController on _VentaControllerBase, Store {
     });
   }
 
+  late final _$produtoSeleccionadoAtom =
+      Atom(name: '_VentaControllerBase.produtoSeleccionado', context: context);
+
+  @override
+  bool get produtoSeleccionado {
+    _$produtoSeleccionadoAtom.reportRead();
+    return super.produtoSeleccionado;
+  }
+
+  @override
+  set produtoSeleccionado(bool value) {
+    _$produtoSeleccionadoAtom.reportWrite(value, super.produtoSeleccionado, () {
+      super.produtoSeleccionado = value;
+    });
+  }
+
   late final _$currentRecordAtom =
       Atom(name: '_VentaControllerBase.currentRecord', context: context);
 
@@ -57,19 +217,19 @@ mixin _$VentaController on _VentaControllerBase, Store {
     });
   }
 
-  late final _$productoAtom =
-      Atom(name: '_VentaControllerBase.producto', context: context);
+  late final _$detalleActualAtom =
+      Atom(name: '_VentaControllerBase.detalleActual', context: context);
 
   @override
-  Producto get producto {
-    _$productoAtom.reportRead();
-    return super.producto;
+  VentaDetalle get detalleActual {
+    _$detalleActualAtom.reportRead();
+    return super.detalleActual;
   }
 
   @override
-  set producto(Producto value) {
-    _$productoAtom.reportWrite(value, super.producto, () {
-      super.producto = value;
+  set detalleActual(VentaDetalle value) {
+    _$detalleActualAtom.reportWrite(value, super.detalleActual, () {
+      super.detalleActual = value;
     });
   }
 
@@ -100,6 +260,14 @@ mixin _$VentaController on _VentaControllerBase, Store {
         .run(() => super.addItemProducto(item: item));
   }
 
+  late final _$getProximoCodigoAsyncAction =
+      AsyncAction('_VentaControllerBase.getProximoCodigo', context: context);
+
+  @override
+  Future<void> getProximoCodigo() {
+    return _$getProximoCodigoAsyncAction.run(() => super.getProximoCodigo());
+  }
+
   late final _$_VentaControllerBaseActionController =
       ActionController(name: '_VentaControllerBase', context: context);
 
@@ -115,12 +283,55 @@ mixin _$VentaController on _VentaControllerBase, Store {
   }
 
   @override
+  dynamic setCantidadActual({required double cantActual}) {
+    final _$actionInfo = _$_VentaControllerBaseActionController.startAction(
+        name: '_VentaControllerBase.setCantidadActual');
+    try {
+      return super.setCantidadActual(cantActual: cantActual);
+    } finally {
+      _$_VentaControllerBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  dynamic setPrecioActual({required double precioActual}) {
+    final _$actionInfo = _$_VentaControllerBaseActionController.startAction(
+        name: '_VentaControllerBase.setPrecioActual');
+    try {
+      return super.setPrecioActual(precioActual: precioActual);
+    } finally {
+      _$_VentaControllerBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  void limpiarCampos() {
+    final _$actionInfo = _$_VentaControllerBaseActionController.startAction(
+        name: '_VentaControllerBase.limpiarCampos');
+    try {
+      return super.limpiarCampos();
+    } finally {
+      _$_VentaControllerBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   String toString() {
     return '''
+dataProvider: ${dataProvider},
+idVentaET: ${idVentaET},
+docNroET: ${docNroET},
+fechaET: ${fechaET},
+choferET: ${choferET},
+vehiculoET: ${vehiculoET},
+descripcionET: ${descripcionET},
+precioVentaET: ${precioVentaET},
+cantET: ${cantET},
 listaVacia: ${listaVacia},
 processando: ${processando},
+produtoSeleccionado: ${produtoSeleccionado},
 currentRecord: ${currentRecord},
-producto: ${producto}
+detalleActual: ${detalleActual}
     ''';
   }
 }

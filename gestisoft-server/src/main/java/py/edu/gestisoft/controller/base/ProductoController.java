@@ -46,7 +46,7 @@ public class ProductoController {
 
 	@GetMapping("/findByNombreOCodigo")
 	public ResponseEntity<List<Producto>> findByNombreOCodigo(@RequestParam String condition) {
-		return ResponseEntity.ok(productoService.findByNombre(SQLUtils.like(condition)));
+		return ResponseEntity.ok(productoService.findByNombre(condition));
 
 	}
 }

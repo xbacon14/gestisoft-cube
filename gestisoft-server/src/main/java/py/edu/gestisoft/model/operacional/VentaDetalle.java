@@ -11,6 +11,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -40,6 +42,7 @@ public class VentaDetalle {
 	@Column(name = "PRECIO")
 	private BigDecimal precio;
 
+	@JsonIgnore
 	@ManyToOne
 	@JoinColumn(name = "ID_VENTA", referencedColumnName = "ID_VENTA")
 	private Venta venta;

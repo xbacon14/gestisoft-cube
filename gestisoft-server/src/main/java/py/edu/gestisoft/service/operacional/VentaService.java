@@ -1,6 +1,7 @@
 package py.edu.gestisoft.service.operacional;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,18 +29,18 @@ public class VentaService {
 
 //		PERSISTE Y GUARDA LOS DATOS RECIBIDOS EN LA TABLA CLIENTE 
 	public Venta save(Venta venta) {
-
-		venta = ventaRepository.save(venta);
+		venta.setFecha();
+		Venta ventaPersist = ventaRepository.save(venta);
 		BigDecimal total = BigDecimal.ZERO;
 		for (VentaDetalle detalle : venta.getDetalles()) {
 			BigDecimal valorItem = BigDecimal.ZERO;
-			detalle.setVenta(new Venta(venta.getId()));
+			detalle.setVenta(new Venta(ventaPersist.getId()));
 			valorItem = valorItem.add(detalle.getPrecio().multiply(detalle.getCantidad()));
 			total = total.add(valorItem);
 			ventaDetalleRepository.save(detalle);
 		}
-		venta.setTotal(total);
-		return ventaRepository.saveAndFlush(venta);
+		ventaPersist.setTotal(total);
+		return ventaRepository.save(ventaPersist);
 	}
 
 //		DEVUELVE TODOS LOS CLIENTES DE LA TABLA CLIENTE
@@ -48,7 +49,7 @@ public class VentaService {
 	}
 
 	public Long getProximoId() {
-		return ventaMapper.getProximoId();
+		return ventaMapper.getProximoId() + 1l;
 	}
 
 }

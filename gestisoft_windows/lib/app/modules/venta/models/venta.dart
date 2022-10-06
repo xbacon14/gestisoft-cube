@@ -20,20 +20,22 @@ abstract class VentaBase with Store {
   Vendedor? vendedor;
   @observable
   Cliente? cliente;
+  @observable
   ObservableList<VentaDetalle>? detalles;
 
-  VentaBase(
-      {this.id,
-      this.chofer,
-      this.docNro,
-      this.fecha,
-      this.observacion,
-      this.total,
-      this.vehiculo,
-      this.estado,
-      this.vendedor,
-      this.cliente,
-      this.detalles});
+  VentaBase({
+    this.id,
+    this.chofer,
+    this.docNro,
+    this.fecha,
+    this.observacion,
+    this.total,
+    this.vehiculo,
+    this.estado,
+    this.vendedor,
+    this.cliente,
+    this.detalles,
+  });
 
   VentaBase.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -51,7 +53,7 @@ abstract class VentaBase with Store {
     if (json['detalles'] != null) {
       detalles = ObservableList<VentaDetalle>();
       json['detalles'].forEach((v) {
-        detalles!.add(VentaDetalle.fromJson(v));
+        detalles?.add(VentaDetalle.fromJson(v));
       });
     }
   }
@@ -70,7 +72,7 @@ abstract class VentaBase with Store {
       data['vendedor'] = vendedor!.toJson();
     }
     if (cliente != null) {
-      data['cliente'] = cliente!.toJson();
+      data['cliente'] = cliente!.toMap();
     }
     if (detalles != null) {
       data['detalles'] = detalles!.map((v) => v.toJson()).toList();
@@ -85,6 +87,7 @@ abstract class VentaBase with Store {
       estado: true,
       cliente: Cliente().nuevo(),
       vendedor: Vendedor.nuevo(),
+      detalles: ObservableList(),
     );
   }
 }

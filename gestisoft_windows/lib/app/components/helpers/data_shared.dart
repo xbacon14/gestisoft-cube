@@ -9,5 +9,5 @@ abstract class DataSharedBase with Store {
   @observable
   String nombreUsuario = "USUARIO 1";
   @observable
-  String version = "GESTISOFT v0.3 GUILLERMO CABALLERO - ITALO GOLIN";
+  String version = "GESTISOFT v0.4 GUILLERMO CABALLERO - ITALO GOLIN";
 }

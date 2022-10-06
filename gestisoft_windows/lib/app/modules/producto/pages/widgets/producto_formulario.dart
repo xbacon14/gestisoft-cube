@@ -158,11 +158,14 @@ class _ProductoFormularioState extends State<ProductoFormulario> {
                       return TextFormField(
                         title: "Nombre",
                         placeHolder: 'Ej: Arena',
+                        maxChar: 8,
                         value: productoController.currentRecord.nombre ?? '',
                         onSubmited: (value) {},
                         validator: (text) {
                           if (text == null || text.length < 3) {
                             return 'El nombre es obligatorio';
+                          } else if (text.length > 8) {
+                            return 'El nombre no puede tener mas que 8 caracteres';
                           }
                           return null;
                         },

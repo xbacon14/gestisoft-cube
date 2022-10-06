@@ -71,7 +71,7 @@ public class Venta {
 	private List<VentaDetalle> detalles;
 
 	@PrePersist
-	void setFecha() {
+	public void setFecha() {
 		this.fecha = LocalDateTime.now();
 	}
 

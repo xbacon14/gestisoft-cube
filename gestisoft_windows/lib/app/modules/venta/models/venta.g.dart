@@ -55,12 +55,29 @@ mixin _$Venta on VentaBase, Store {
     });
   }
 
+  late final _$detallesAtom =
+      Atom(name: 'VentaBase.detalles', context: context);
+
+  @override
+  ObservableList<VentaDetalle>? get detalles {
+    _$detallesAtom.reportRead();
+    return super.detalles;
+  }
+
+  @override
+  set detalles(ObservableList<VentaDetalle>? value) {
+    _$detallesAtom.reportWrite(value, super.detalles, () {
+      super.detalles = value;
+    });
+  }
+
   @override
   String toString() {
     return '''
 id: ${id},
 vendedor: ${vendedor},
-cliente: ${cliente}
+cliente: ${cliente},
+detalles: ${detalles}
     ''';
   }
 }

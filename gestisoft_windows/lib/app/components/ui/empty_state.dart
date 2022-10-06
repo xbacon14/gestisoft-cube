@@ -5,14 +5,14 @@ class EmptyState extends StatelessWidget {
     Key? key,
     required this.texto,
     required this.icono,
-    required this.onButtonPressed,
-    required this.buttonTitle,
+    this.onButtonPressed,
+    this.buttonTitle,
   }) : super(key: key);
 
   final String texto;
   final Widget icono;
-  final String buttonTitle;
-  final Function onButtonPressed;
+  final String? buttonTitle;
+  final Function? onButtonPressed;
 
   @override
   Widget build(BuildContext context) {
@@ -34,16 +34,17 @@ class EmptyState extends StatelessWidget {
             const SizedBox(
               height: 16,
             ),
-            FilledButton(
-              onPressed: onButtonPressed(),
-              style: FluentTheme.of(context).buttonTheme.defaultButtonStyle,
-              child: Text(
-                buttonTitle,
-                style: FluentTheme.of(context).typography.body!.copyWith(
-                      color: Colors.white,
-                    ),
+            if (buttonTitle != null)
+              FilledButton(
+                onPressed: onButtonPressed != null ? onButtonPressed!() : () {},
+                style: FluentTheme.of(context).buttonTheme.defaultButtonStyle,
+                child: Text(
+                  buttonTitle ?? "",
+                  style: FluentTheme.of(context).typography.body!.copyWith(
+                        color: Colors.white,
+                      ),
+                ),
               ),
-            ),
           ],
         ),
       ),

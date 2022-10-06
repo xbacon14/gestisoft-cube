@@ -44,18 +44,18 @@ class _VendedorPageState extends State<VendedorPage> {
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: Column(
-        children: [
-          const SizedBox(
-            height: 24,
-          ),
-          ConstrainedBox(
-            constraints: const BoxConstraints(
-              maxWidth: 1200,
-              maxHeight: 800,
+    return ConstrainedBox(
+      constraints: const BoxConstraints(
+        maxWidth: 1200,
+        maxHeight: 800,
+      ),
+      child: SingleChildScrollView(
+        child: Column(
+          children: [
+            const SizedBox(
+              height: 24,
             ),
-            child: Acrylic(
+            Acrylic(
               tint: FluentTheme.of(context).acrylicBackgroundColor,
               elevation: 2,
               child: Column(
@@ -206,19 +206,19 @@ class _VendedorPageState extends State<VendedorPage> {
                 ],
               ),
             ),
-          ),
-          Row(
-            children: [
-              Expanded(
-                child: Container(),
-              ),
-              Text(
-                dataShared.version,
-                style: FluentTheme.of(context).typography.subtitle,
-              )
-            ],
-          )
-        ],
+            Row(
+              children: [
+                Expanded(
+                  child: Container(),
+                ),
+                Text(
+                  dataShared.version,
+                  style: FluentTheme.of(context).typography.subtitle,
+                )
+              ],
+            )
+          ],
+        ),
       ),
     );
   }

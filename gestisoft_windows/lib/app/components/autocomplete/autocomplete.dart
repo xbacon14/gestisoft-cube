@@ -1,10 +1,10 @@
 import 'dart:async';
 import 'dart:math';
 
-import 'package:flextech/search/search_page/interfaces/i_search_tile.dart';
 import 'package:fluent_ui/fluent_ui.dart' hide Scrollbar;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:gestisoft_windows/app/components/text_utils/i_search_tile.dart';
 
 import 'error_builder.dart';
 

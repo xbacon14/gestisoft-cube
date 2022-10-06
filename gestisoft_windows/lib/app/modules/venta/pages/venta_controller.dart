@@ -1,3 +1,8 @@
+import 'package:autocomplete_textfield/autocomplete_textfield.dart';
+import 'package:fluent_ui/fluent_ui.dart';
+import 'package:gestisoft_windows/app/components/date/date_util.dart';
+import 'package:gestisoft_windows/app/components/text_utils/number_formatter.dart';
+import 'package:gestisoft_windows/app/components/ui/alert.dart';
 import 'package:gestisoft_windows/app/modules/cliente/models/cliente.dart';
 import 'package:gestisoft_windows/app/modules/cliente/repositories/cliente_repository.dart';
 import 'package:gestisoft_windows/app/modules/producto/models/producto.dart';
@@ -18,17 +23,38 @@ abstract class _VentaControllerBase with Store {
     required this.ventaRepository,
     required this.clienteRepository,
   });
+  @observable
+  ObservableList<Venta> dataProvider = ObservableList();
 
   @observable
-  bool listaVacia = false;
+  TextEditingController idVentaET = TextEditingController();
+  @observable
+  TextEditingController docNroET = TextEditingController(text: "001-001-000");
+  @observable
+  TextEditingController fechaET = TextEditingController();
+  @observable
+  TextEditingController choferET = TextEditingController();
+  @observable
+  TextEditingController vehiculoET = TextEditingController();
+  @observable
+  TextEditingController descripcionET = TextEditingController();
+  @observable
+  TextEditingController precioVentaET = TextEditingController();
+  @observable
+  TextEditingController cantET = TextEditingController();
+
+  @observable
+  bool listaVacia = true;
   @observable
   bool processando = false;
+  @observable
+  bool produtoSeleccionado = false;
 
   @observable
   Venta currentRecord = Venta().nuevo();
 
   @observable
-  Producto producto = Producto.nuevo();
+  VentaDetalle detalleActual = VentaDetalle.nuevo();
 
   @action
   setCliente({required Cliente cliente}) {
@@ -46,13 +72,85 @@ abstract class _VentaControllerBase with Store {
   }
 
   @action
-  addItemProducto({required VentaDetalle item}) async {
-    currentRecord.detalles!.add(item);
+  setCantidadActual({required double cantActual}) {
+    detalleActual.cantidad = cantActual;
   }
 
+  @action
+  setPrecioActual({required double precioActual}) {
+    detalleActual.precio = precioActual;
+  }
+
+  @action
+  addItemProducto({required VentaDetalle item}) async {
+    currentRecord.detalles?.add(item);
+
+    listaVacia = false;
+  }
+
+  @action
+  void limpiarCampos() {
+    docNroET.text = "001-001-000";
+    fechaET.text = DateUtil.formatDateTimeToDate(DateTime.now());
+    choferET.clear();
+    vehiculoET.clear();
+    descripcionET.clear();
+    precioVentaET.clear();
+    cantET.clear();
+    currentRecord = Venta().nuevo();
+    listaVacia = true;
+  }
+
+  String vlTotalListaDetalle() {
+    double result = 0;
+    if (currentRecord.detalles != null) {
+      for (VentaDetalle element in currentRecord.detalles!) {
+        result += element.precio! * element.cantidad!;
+      }
+    }
+    return NumberFormater.format(result, 0);
+  }
+
+  @action
   Future<void> getProximoCodigo() async {
     await ventaRepository.getProximoId().then((value) {
       currentRecord.id = value.data;
+      idVentaET.text = value.data.toString();
     });
+  }
+
+  Future<void> guardarVenta(BuildContext context) async {
+    // debugPrint("valido");
+    // debugPrint(currentRecord.toString());
+    processando = true;
+    final response = await ventaRepository
+        .saveVenta(venta: currentRecord)
+        .whenComplete(() => processando = false);
+
+    if (response.statusCode == 200) {
+      Alert.show(
+          context: context,
+          message: "Se ha guardado exito con éxito la venta",
+          type: 0);
+    } else {
+      Alert.show(
+          context: context, message: "No se ha guardar la venta", type: 2);
+    }
+  }
+
+  Future<void> findAllVentas(BuildContext context) async {
+    processando = true;
+    final response =
+        await ventaRepository.findAll().whenComplete(() => processando = false);
+    if (response.statusCode == 200) {
+      dataProvider.clear();
+      dataProvider
+          .addAll(response.data.map<Venta>((v) => Venta.fromJson(v)).toList());
+    } else {
+      Alert.show(
+          context: context,
+          message: "No se ha logrado consultar las ventas",
+          type: 2);
+    }
   }
 }

@@ -9,9 +9,12 @@ class VentaDetalle = VentaDetalleBase with _$VentaDetalle;
 
 abstract class VentaDetalleBase with Store {
   int? id;
+  @observable
   double? cantidad;
+  @observable
   double? precio;
   Venta? venta;
+  @observable
   Producto? producto;
 
   VentaDetalleBase(
@@ -24,6 +27,13 @@ abstract class VentaDetalleBase with Store {
     venta = json['venta'] != null ? Venta.fromJson(json['venta']) : null;
     producto =
         json['producto'] != null ? Producto.fromJson(json['producto']) : null;
+  }
+
+  VentaDetalleBase.nuevo() {
+    id = null;
+    cantidad = 1;
+    precio = 0;
+    producto = Producto.nuevo();
   }
 
   Map<String, dynamic> toJson() {

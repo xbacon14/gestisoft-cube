@@ -1,5 +1,6 @@
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:gestisoft_windows/app/modules/cliente/cliente_module.dart';
+import 'package:gestisoft_windows/app/modules/configuracion/configuracion_module.dart';
 import 'package:gestisoft_windows/app/modules/home/home_controller.dart';
 import 'package:gestisoft_windows/app/modules/home/pages/home_page.dart';
 import 'package:gestisoft_windows/app/modules/home/pages/widgets/home_view.dart';
@@ -28,6 +29,7 @@ class HomeModule extends Module {
       ModuleRoute('/vendedor', module: VendedorModule()),
       ModuleRoute('/producto', module: ProductoModule()),
       ModuleRoute('/venta', module: VentaModule()),
+      ModuleRoute('/configuracion', module: ConfiguracionModule()),
     ]),
 
     // ModuleRoute('/producto', module: HomeModule()),

@@ -34,7 +34,7 @@ public class ProductoService {
 		if (condition.isEmpty() || condition == null) {
 			return findAllProductos();
 		}
-		return productoMapper.findByNombre(condition);
+ 		return productoMapper.findByNombre(condition);
 
 	}
 

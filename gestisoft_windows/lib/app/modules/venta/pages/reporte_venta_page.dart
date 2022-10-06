@@ -6,31 +6,31 @@ import 'package:gestisoft_windows/app/components/text_field/search_text_field.da
 import 'package:gestisoft_windows/app/components/ui/alert.dart';
 import 'package:gestisoft_windows/app/components/ui/empty_state.dart';
 import 'package:gestisoft_windows/app/components/ui/loading_render.dart';
-import 'package:gestisoft_windows/app/modules/cliente/models/cliente.dart';
-import 'package:gestisoft_windows/app/modules/cliente/pages/cliente_controller.dart';
-import 'package:gestisoft_windows/app/modules/cliente/pages/widget/cliente_formulario.dart';
-import 'package:gestisoft_windows/app/modules/cliente/pages/widget/cliente_table.dart';
 import 'package:gestisoft_windows/app/modules/home/home_controller.dart';
 import 'package:gestisoft_windows/app/modules/home/pages/widgets/sin_conexion_page.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'package:gestisoft_windows/app/modules/venta/pages/venta_controller.dart';
 
-class ClientePage extends StatefulWidget {
-  const ClientePage({Key? key}) : super(key: key);
+import 'widgets/venta_table.dart';
+
+class ReporteVentaPage extends StatefulWidget {
+  const ReporteVentaPage({Key? key}) : super(key: key);
 
   @override
-  State<ClientePage> createState() => _ClientePageState();
+  State<ReporteVentaPage> createState() => _ReporteVentaPageState();
 }
 
-class _ClientePageState extends State<ClientePage> {
-  final ClienteController clienteController = Modular.get();
+class _ReporteVentaPageState extends State<ReporteVentaPage> {
+  final VentaController ventaController = Modular.get();
   final HomeController homeController = Modular.get();
   final DataShared dataShared = Modular.get();
 
   int selected = 0;
   final values = [
     "Codigo",
-    "Nombre",
-    "Documento",
+    "Vendedor",
+    "Cliente",
+    "Chofer",
+    "Monto venta",
   ];
 
   bool isSelected(int value) {
@@ -42,7 +42,7 @@ class _ClientePageState extends State<ClientePage> {
 
   @override
   void initState() {
-    clienteController.findAllClientes();
+    ventaController.findAllVentas(context);
     super.initState();
   }
 
@@ -50,7 +50,7 @@ class _ClientePageState extends State<ClientePage> {
   Widget build(BuildContext context) {
     return Observer(
       builder: (_) {
-        return clienteController.processando
+        return ventaController.processando
             ? const LoadingRender()
             : !homeController.online
                 ? const SinConexionPage()
@@ -76,14 +76,15 @@ class _ClientePageState extends State<ClientePage> {
                                       width: 360,
                                       child: SearchTextField(
                                         onSubmited: (value) {
-                                          clienteController
-                                              .findByNombreODocumento(value);
-                                          setState(() {});
+                                          // clienteController
+                                          //     .findByNombreODocumento(value);
+                                          // setState(() {});
                                         },
-                                        onClear: () => clienteController
-                                            .findByNombreODocumento(''),
+                                        onClear: () {
+// ventaController.findByNombreODocumento('');
+                                        },
                                         placeholder:
-                                            "Consulte por nombre o documento",
+                                            "Consulte por nombre de cliente",
                                       ),
                                     ),
                                     SizedBox(
@@ -112,7 +113,7 @@ class _ClientePageState extends State<ClientePage> {
                                                   if (newColor?.compareTo(
                                                           "Codigo") ==
                                                       0) {
-                                                    clienteController.clientes
+                                                    ventaController.dataProvider
                                                         .sort((a, b) => a.id!
                                                             .compareTo(b.id!));
                                                     setState(
@@ -122,12 +123,14 @@ class _ClientePageState extends State<ClientePage> {
                                                     );
                                                   } else if (newColor
                                                           ?.compareTo(
-                                                              "Nombre") ==
+                                                              "Vendedor") ==
                                                       0) {
-                                                    clienteController.clientes
-                                                        .sort((a, b) =>
-                                                            a.nombre!.compareTo(
-                                                                b.nombre!));
+                                                    ventaController.dataProvider
+                                                        .sort((a, b) => a
+                                                            .vendedor!.nombre!
+                                                            .compareTo(b
+                                                                .vendedor!
+                                                                .nombre!));
                                                     setState(
                                                       () {
                                                         selected = 1;
@@ -135,12 +138,40 @@ class _ClientePageState extends State<ClientePage> {
                                                     );
                                                   } else if (newColor
                                                           ?.compareTo(
-                                                              "Documento") ==
+                                                              "Cliente") ==
                                                       0) {
-                                                    clienteController.clientes
-                                                        .sort((a, b) => a.ciRuc!
+                                                    ventaController.dataProvider
+                                                        .sort((a, b) => a
+                                                            .cliente!.nombre!
+                                                            .compareTo(b
+                                                                .cliente!
+                                                                .nombre!));
+                                                    setState(
+                                                      () {
+                                                        selected = 1;
+                                                      },
+                                                    );
+                                                  } else if (newColor
+                                                          ?.compareTo(
+                                                              "Chofer") ==
+                                                      0) {
+                                                    ventaController.dataProvider
+                                                        .sort((a, b) =>
+                                                            a.chofer!.compareTo(
+                                                                b.chofer!));
+                                                    setState(
+                                                      () {
+                                                        selected = 2;
+                                                      },
+                                                    );
+                                                  } else if (newColor
+                                                          ?.compareTo(
+                                                              "Monto venta") ==
+                                                      0) {
+                                                    ventaController.dataProvider
+                                                        .sort((a, b) => a.total!
                                                             .compareTo(
-                                                                b.ciRuc!));
+                                                                b.total!));
                                                     setState(
                                                       () {
                                                         selected = 2;
@@ -184,12 +215,7 @@ class _ClientePageState extends State<ClientePage> {
                                                         Colors.magenta),
                                               ),
                                               onPressed: () {
-                                                showDialog(
-                                                    context: context,
-                                                    builder:
-                                                        (BuildContext ctx) {
-                                                      return const ClienteFormulario();
-                                                    });
+                                                Modular.to.pushNamed("/venta");
                                               },
                                               child: Row(
                                                 children: const [
@@ -198,7 +224,7 @@ class _ClientePageState extends State<ClientePage> {
                                                     width: 8,
                                                   ),
                                                   Text(
-                                                    "Nuevo cliente",
+                                                    "Nueva venta",
                                                     style: TextStyle(
                                                         fontFamily: 'Consolas'),
                                                   ),
@@ -206,39 +232,22 @@ class _ClientePageState extends State<ClientePage> {
                                               ),
                                             ),
                                             onPressed: () {
-                                              clienteController.currentRecord =
-                                                  Cliente().nuevo();
-                                              showDialog(
-                                                  context: context,
-                                                  builder: (BuildContext ctx) {
-                                                    return const ClienteFormulario();
-                                                  });
+                                              Modular.to.pushNamed("/venta");
                                             },
                                           ),
                                         ],
                                       ),
                                     ),
-
-                                    // DropDownButton(
-                                    //   title: Text(
-                                    //     "Ordenar por",
-                                    //     style: theme.typography.body,
-                                    //   ),
-                                    //   items: [
-                                    //     MenuFlyoutItem(
-                                    //         text: const Text("Nombre"), onPressed: () {})
-                                    //   ],
-                                    // )
                                   ],
                                 ),
                                 Observer(
                                   builder: ((context) {
-                                    return clienteController.processando
+                                    return ventaController.processando
                                         ? const Center(child: Text("Cargando"))
-                                        : clienteController.listaVacia
+                                        : ventaController.listaVacia
                                             ? EmptyState(
                                                 texto:
-                                                    "No se retornado ningún cliente, deseas registar uno?",
+                                                    "No se retornado ninguna venta, deseas registar una?",
                                                 icono: const Icon(
                                                   FluentIcons
                                                       .remove_from_shopping_list,
@@ -246,11 +255,10 @@ class _ClientePageState extends State<ClientePage> {
                                                 ),
                                                 onButtonPressed: () =>
                                                     debugPrint(
-                                                        "registrar cliente"),
-                                                buttonTitle:
-                                                    'Registrar cliente',
+                                                        "registrar venta"),
+                                                buttonTitle: 'Registrar venta',
                                               )
-                                            : ClienteTable();
+                                            : VentaTable();
                                   }),
                                 ),
                                 Expanded(child: Container()),

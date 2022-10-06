@@ -25,10 +25,27 @@ mixin _$HomeController on HomeControllerBase, Store {
     });
   }
 
+  late final _$indexAtom =
+      Atom(name: 'HomeControllerBase.index', context: context);
+
+  @override
+  int get index {
+    _$indexAtom.reportRead();
+    return super.index;
+  }
+
+  @override
+  set index(int value) {
+    _$indexAtom.reportWrite(value, super.index, () {
+      super.index = value;
+    });
+  }
+
   @override
   String toString() {
     return '''
-online: ${online}
+online: ${online},
+index: ${index}
     ''';
   }
 }

@@ -1,11 +1,14 @@
 import 'package:mobx/mobx.dart';
+
+import '../../../components/text_utils/i_search_tile.dart';
 part 'producto.g.dart';
 
 class Producto = ProductoBase with _$Producto;
 
-abstract class ProductoBase with Store {
+abstract class ProductoBase with Store implements ISearchTile {
   int? id;
   bool? estado;
+  @observable
   String? nombre;
   double? cantidad;
   double? precioVenta;
@@ -75,4 +78,10 @@ abstract class ProductoBase with Store {
       return 0;
     }
   }
+
+  @override
+  get title => nombre!;
+
+  @override
+  get isActive => estado!;
 }
