@@ -7,10 +7,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import py.edu.gestisoft.model.base.Producto;
 import py.edu.gestisoft.model.operacional.Venta;
 import py.edu.gestisoft.service.operacional.VentaService;
 
@@ -39,4 +42,15 @@ public class VentaController {
 		return ResponseEntity.ok(ventaService.getProximoId());
 	}
 
+	@GetMapping("/findByNombre")
+	public ResponseEntity<List<Venta>> findByNombre(@RequestParam String condition) {
+
+		return ResponseEntity.ok(ventaService.findByNombre(condition));
+
+	}
+
+	@PutMapping("/cancelar")
+	public ResponseEntity<Venta> cancelaVenta(@RequestParam Long venta) {
+		return ResponseEntity.ok(ventaService.cancelaVenta(venta));
+	}
 }

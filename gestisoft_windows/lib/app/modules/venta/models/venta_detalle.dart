@@ -23,7 +23,7 @@ abstract class VentaDetalleBase with Store {
   VentaDetalleBase.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     cantidad = json['cantidad'];
-    precio = json['precio'];
+    precio = json['precio'].toDouble() ?? 0.0;
     venta = json['venta'] != null ? Venta.fromJson(json['venta']) : null;
     producto =
         json['producto'] != null ? Producto.fromJson(json['producto']) : null;

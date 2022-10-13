@@ -9,8 +9,7 @@ import 'package:gestisoft_windows/app/components/ui/loading_render.dart';
 import 'package:gestisoft_windows/app/modules/home/home_controller.dart';
 import 'package:gestisoft_windows/app/modules/home/pages/widgets/sin_conexion_page.dart';
 import 'package:gestisoft_windows/app/modules/venta/pages/venta_controller.dart';
-
-import 'widgets/venta_table.dart';
+import 'package:gestisoft_windows/app/modules/venta/pages/widgets/venta_table.dart';
 
 class ReporteVentaPage extends StatefulWidget {
   const ReporteVentaPage({Key? key}) : super(key: key);
@@ -76,12 +75,13 @@ class _ReporteVentaPageState extends State<ReporteVentaPage> {
                                       width: 360,
                                       child: SearchTextField(
                                         onSubmited: (value) {
-                                          // clienteController
-                                          //     .findByNombreODocumento(value);
-                                          // setState(() {});
+                                          ventaController
+                                              .findVentasPorNombreCliente(
+                                                  context, value);
+                                          setState(() {});
                                         },
                                         onClear: () {
-// ventaController.findByNombreODocumento('');
+                                          // ventaController.findByNombreODocumento('');
                                         },
                                         placeholder:
                                             "Consulte por nombre de cliente",
@@ -191,8 +191,9 @@ class _ReporteVentaPageState extends State<ReporteVentaPage> {
                                             MainAxisAlignment.start,
                                         primaryItems: [
                                           CommandBarButton(
-                                            icon: const Icon(FluentIcons.pdf),
-                                            label: const Text("Exportar a pdf"),
+                                            icon: const Icon(
+                                                FluentIcons.filter_solid),
+                                            label: const Text("Filtros"),
                                             onPressed: () {
                                               Alert.show(
                                                   message: "Info",
@@ -201,19 +202,7 @@ class _ReporteVentaPageState extends State<ReporteVentaPage> {
                                             },
                                           ),
                                           CommandBarButton(
-                                            icon: const Icon(
-                                                FluentIcons.excel_logo),
-                                            label:
-                                                const Text("Exportar a excel"),
-                                            onPressed: () {},
-                                          ),
-                                          CommandBarButton(
                                             label: FilledButton(
-                                              style: ButtonStyle(
-                                                backgroundColor:
-                                                    ButtonState.all(
-                                                        Colors.magenta),
-                                              ),
                                               onPressed: () {
                                                 Modular.to.pushNamed("/venta");
                                               },
@@ -225,8 +214,6 @@ class _ReporteVentaPageState extends State<ReporteVentaPage> {
                                                   ),
                                                   Text(
                                                     "Nueva venta",
-                                                    style: TextStyle(
-                                                        fontFamily: 'Consolas'),
                                                   ),
                                                 ],
                                               ),

@@ -153,4 +153,45 @@ abstract class _VentaControllerBase with Store {
           type: 2);
     }
   }
+
+  Future<void> findVentasPorNombreCliente(
+      BuildContext context, String condition) async {
+    processando = true;
+    final response = await ventaRepository
+        .findVentasPorNombreCliente(condition)
+        .whenComplete(() => processando = false);
+    if (response.statusCode == 200) {
+      dataProvider.clear();
+      dataProvider
+          .addAll(response.data.map<Venta>((v) => Venta.fromJson(v)).toList());
+      if (dataProvider.isEmpty) {
+        listaVacia = true;
+      } else {
+        listaVacia = false;
+      }
+    } else {
+      Alert.show(
+          context: context,
+          message: "No se ha logrado consultar las ventas",
+          type: 2);
+    }
+  }
+
+  Future<void> cancelarVenta(BuildContext context, int idVenta) async {
+    processando = true;
+    final response = await ventaRepository
+        .cancelaVentaById(idVenta)
+        .whenComplete(() => processando = false);
+    if (response.statusCode == 200) {
+      Alert.show(
+          context: context,
+          message: "La venta ha sido cancelada exitosamente",
+          type: 0);
+    } else {
+      Alert.show(
+          context: context,
+          message: "La venta no se ha podido cancelar",
+          type: 1);
+    }
+  }
 }

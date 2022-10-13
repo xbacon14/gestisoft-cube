@@ -541,23 +541,6 @@ class _VentaPageState extends State<VentaPage> {
                                                   ],
                                                 ),
                                               ),
-                                              // child: Observer(
-                                              //   builder: (_) {
-                                              //     return TextFormField(
-                                              //       title: 'Descripcion',
-                                              //       value: ventaController
-                                              //           .descripcionET.text,
-                                              //       onChanged:
-                                              //           (String? value) =>
-                                              //               ventaController
-                                              //                   .descripcionET
-                                              //                   .text = value!,
-                                              //       placeHolder:
-                                              //           'Ingrese alguna descripción aquí',
-                                              //       validator: (text) => null,
-                                              //     );
-                                              //   },
-                                              // ),
                                             ),
                                           ],
                                         )

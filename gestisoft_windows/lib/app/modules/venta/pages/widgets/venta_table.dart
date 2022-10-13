@@ -1,8 +1,10 @@
 import 'package:fluent_ui/fluent_ui.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_modular/flutter_modular.dart';
-import 'package:gestisoft_windows/app/components/text_utils/string_utils.dart';
+import 'package:gestisoft_windows/app/components/date/date_util.dart';
 import 'package:gestisoft_windows/app/modules/venta/models/venta.dart';
 import 'package:gestisoft_windows/app/modules/venta/pages/venta_controller.dart';
+import 'package:gestisoft_windows/app/modules/venta/pages/widgets/cancelar_venta_dialog.dart';
 
 class VentaTable extends StatelessWidget {
   VentaTable({Key? key}) : super(key: key);
@@ -23,25 +25,47 @@ class VentaTable extends StatelessWidget {
             children: const [
               SizedBox(
                 width: 48,
-                child: Text("Cod"),
+                child: Text(
+                  "Cod",
+                  textAlign: TextAlign.center,
+                ),
+              ),
+              Expanded(
+                child: Text(
+                  "Nombre cliente",
+                  textAlign: TextAlign.center,
+                ),
+              ),
+              Expanded(
+                child: Text(
+                  "Nombre vendedor",
+                  textAlign: TextAlign.center,
+                ),
+              ),
+              Expanded(
+                child: Text(
+                  "Fecha venta",
+                  textAlign: TextAlign.center,
+                ),
               ),
               Expanded(
                 flex: 2,
-                child: Text("Nombre"),
+                child: Text(
+                  "Direccion",
+                  textAlign: TextAlign.center,
+                ),
               ),
               Expanded(
-                child: Text("CI/RUC"),
+                child: Text(
+                  "Estado",
+                  textAlign: TextAlign.center,
+                ),
               ),
               Expanded(
-                flex: 3,
-                child: Text("Dirección"),
-              ),
-              Expanded(
-                flex: 2,
-                child: Text("Celular"),
-              ),
-              Expanded(
-                child: Text("Acciones"),
+                child: Text(
+                  "Acciones",
+                  textAlign: TextAlign.center,
+                ),
               ),
               SizedBox(
                 width: 24,
@@ -51,105 +75,119 @@ class VentaTable extends StatelessWidget {
           const SizedBox(
             height: 8,
           ),
-          ListView.builder(
-            shrinkWrap: true,
-            itemCount: ventaController.dataProvider.length,
-            itemBuilder: ((context, index) {
-              Venta venta = ventaController.dataProvider[index];
-              return Container(
-                margin: const EdgeInsets.only(bottom: 8),
-                child: Card(
-                  elevation: 0,
-                  backgroundColor: Colors.grey.withOpacity(.1),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      // CODIGO
-                      SizedBox(
-                        width: 48,
-                        child: Text(
-                          venta.id.toString(),
-                          style: bodyTextStyle,
-                        ),
-                      ),
-                      // NOMBRE
-                      Expanded(
-                        flex: 2,
-                        child: Text(
-                          venta.cliente?.nombre ?? '',
-                          style: bodyTextStyle,
-                        ),
-                      ),
-                      // CI/RUC
-                      Expanded(
-                        child: Text(
-                          StringUtils.formatCiRuc(venta.cliente?.ciRuc ?? ''),
-                          style: bodyTextStyle,
-                        ),
-                      ),
-                      // DIRECCION
-                      Expanded(
-                        flex: 3,
-                        child: SizedBox(
-                            width: 100,
-                            child: Text(
-                              venta.direccion ?? '',
-                              style: bodyTextStyle,
-                              overflow: TextOverflow.ellipsis,
-                            )),
-                      ),
-                      Expanded(
-                        child: Text(
-                          cliente.celular ?? '',
-                          style: bodyTextStyle,
-                        ),
-                      ),
-                      Expanded(
-                        flex: 2,
+          Observer(
+            builder: (_) {
+              return SizedBox(
+                width: MediaQuery.of(context).size.width,
+                height: 690,
+                child: ListView.builder(
+                  shrinkWrap: true,
+                  itemCount: ventaController.dataProvider.length,
+                  itemBuilder: ((context, index) {
+                    Venta venta = ventaController.dataProvider[index];
+                    return Container(
+                      margin: const EdgeInsets.only(bottom: 8),
+                      child: Card(
+                        elevation: 0,
+                        backgroundColor: Colors.grey.withOpacity(.1),
                         child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            FilledButton(
-                              onPressed: () {
-                                clienteController.currentRecord = cliente;
-                                showDialog(
-                                    context: context,
-                                    builder: (BuildContext ctx) {
-                                      return const ClienteFormulario(
-                                        editar: true,
-                                      );
-                                    });
-                              },
-                              child: const Text("Editar"),
+                            // CODIGO
+                            SizedBox(
+                              width: 48,
+                              child: Text(
+                                venta.id.toString(),
+                                style: bodyTextStyle,
+                              ),
+                            ),
+                            // NOMBRE
+                            Expanded(
+                              child: Text(
+                                venta.cliente?.nombre ?? '',
+                                style: bodyTextStyle,
+                              ),
+                            ),
+                            // CI/RUC
+                            Expanded(
+                              child: Text(
+                                venta.vendedor?.nombre ?? "",
+                                style: bodyTextStyle,
+                              ),
+                            ),
+                            // DIRECCION
+                            Expanded(
+                              child: SizedBox(
+                                  width: 100,
+                                  child: Text(
+                                    DateUtil.formatDate(venta.fecha!),
+                                    style: bodyTextStyle,
+                                    overflow: TextOverflow.ellipsis,
+                                  )),
+                            ),
+                            Expanded(
+                              child: Text(
+                                venta.observacion ?? '',
+                                style: bodyTextStyle,
+                              ),
                             ),
                             const SizedBox(
-                              width: 16,
+                              width: 24,
                             ),
-                            FilledButton(
-                              style: ButtonStyle(
-                                backgroundColor: ButtonState.all(Colors.red),
+                            SizedBox(
+                              height: 36,
+                              width: 36,
+                              child: Checkbox(
+                                checked: !venta.estado!,
+                                onChanged: (value) {},
                               ),
-                              onPressed: () {
-                                showDialog(
-                                    context: context,
-                                    builder: (BuildContext ctx) {
-                                      return EliminaClienteDialog(
-                                        cliente:
-                                            clienteController.clientes[index],
-                                      );
-                                    });
-                              },
-                              child: const Text("Eliminar"),
+                            ),
+                            const SizedBox(
+                              width: 24,
+                            ),
+                            Expanded(
+                              child: !venta.estado!
+                                  ? Container(
+                                      padding: const EdgeInsets.all(8),
+                                      decoration: BoxDecoration(
+                                        color: Colors.grey.withOpacity(.5),
+                                        borderRadius: BorderRadius.circular(4),
+                                      ),
+                                      child: const Text(
+                                        "Cancelado",
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle(
+                                          color: Colors.white,
+                                        ),
+                                      ),
+                                    )
+                                  : FilledButton(
+                                      style: ButtonStyle(
+                                        backgroundColor:
+                                            ButtonState.all(Colors.red),
+                                      ),
+                                      onPressed: () {
+                                        showDialog(
+                                            context: context,
+                                            builder: (BuildContext ctx) {
+                                              return CancelarVentaDialog(
+                                                venta: ventaController
+                                                    .dataProvider[index],
+                                              );
+                                            });
+                                      },
+                                      child: const Text("Cancelar"),
+                                    ),
                             ),
                           ],
                         ),
                       ),
-                    ],
-                  ),
+                    );
+                  }),
                 ),
               );
-            }),
-          ),
+            },
+          )
         ],
       ),
     );

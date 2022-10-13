@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import py.edu.gestisoft.mapper.operacional.VentaMapper;
+import py.edu.gestisoft.model.base.Producto;
 import py.edu.gestisoft.model.operacional.Venta;
 import py.edu.gestisoft.model.operacional.VentaDetalle;
 import py.edu.gestisoft.repositories.operacional.VentaDetalleRepository;
@@ -50,6 +51,21 @@ public class VentaService {
 
 	public Long getProximoId() {
 		return ventaMapper.getProximoId() + 1l;
+	}
+
+	public List<Venta> findByNombre(String condition) {
+		if (condition.isEmpty() || condition == null) {
+			return findAllVentas();
+		}
+		return ventaMapper.findVentaPorNombreCliente(condition);
+
+	}
+
+	public Venta cancelaVenta(Long venta) {
+		Venta v = ventaRepository.findById(venta).get();
+		v.setEstado(false);
+		v = ventaRepository.save(v);
+		return v;
 	}
 
 }

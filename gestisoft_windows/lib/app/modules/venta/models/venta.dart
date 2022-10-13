@@ -48,8 +48,7 @@ abstract class VentaBase with Store {
     estado = json['estado'];
     vendedor =
         json['vendedor'] != null ? Vendedor.fromJson(json['vendedor']) : null;
-    cliente =
-        json['cliente'] != null ? Cliente.fromJson(json['cliente']) : null;
+    cliente = json['cliente'] != null ? Cliente.fromMap(json['cliente']) : null;
     if (json['detalles'] != null) {
       detalles = ObservableList<VentaDetalle>();
       json['detalles'].forEach((v) {
