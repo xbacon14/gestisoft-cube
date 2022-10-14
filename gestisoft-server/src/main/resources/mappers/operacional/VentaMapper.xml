@@ -12,6 +12,7 @@
 		<result property="observacion" column="OBSERVACION" />
 		<result property="total" column="TOTAL" />
 		<result property="vehiculo" column="VEHICULO" />
+		<result property="estado" column="ESTADO" />
 
 		<association property="vendedor"
 			javaType="py.edu.gestisoft.model.base.Vendedor">
@@ -25,6 +26,10 @@
 			<result property="nombre" column="NOMBRE" />
 		</association>
 
+		<collection property="detalles"
+			ofType="py.edu.gestisoft.model.operacional.VentaDetalle"
+			select="py.edu.gestisoft.mapper.operacional.VentaDetalleMapper.findDetalleByVenta"
+			column="{venta=ID_VENTA}" />
 
 	</resultMap>
 
@@ -56,6 +61,26 @@
 		FROM
 		venta v
 	</select>
+
+	<select id="findVentaPorNombreCliente" resultMap="resultSimples">
+		<include refid="sqlDefault" />
+		INNER JOIN cliente c
+		ON c.ID_CLIENTE = v.ID_CLIENTE
+		WHERE (c.NOMBRE LIKE
+		${condition} OR c.CI_RUC LIKE
+		${condition})
+	</select>
+
+	<select id="findVentasPorFecha" resultMap="resultSimples">
+		<include refid="sqlDefault" />
+		INNER JOIN cliente c
+		ON c.ID_CLIENTE = v.ID_CLIENTE
+		INNER JOIN vendedor
+		ve
+		ON ve.ID_VENDEDOR = v.ID_vendedor
+		WHERE (${condition})
+	</select>
+
 
 
 </mapper>

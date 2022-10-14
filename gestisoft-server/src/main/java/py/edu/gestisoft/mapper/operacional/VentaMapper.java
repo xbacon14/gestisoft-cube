@@ -15,4 +15,6 @@ public interface VentaMapper {
 	Long getProximoId();
 
 	List<Venta> findVentaPorNombreCliente(String condition);
+
+	List<Venta> findVentasPorFecha(String condition);
 }

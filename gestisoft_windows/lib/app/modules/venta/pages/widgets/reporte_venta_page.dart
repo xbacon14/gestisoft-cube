@@ -9,6 +9,7 @@ import 'package:gestisoft_windows/app/components/ui/loading_render.dart';
 import 'package:gestisoft_windows/app/modules/home/home_controller.dart';
 import 'package:gestisoft_windows/app/modules/home/pages/widgets/sin_conexion_page.dart';
 import 'package:gestisoft_windows/app/modules/venta/pages/venta_controller.dart';
+import 'package:gestisoft_windows/app/modules/venta/pages/widgets/filtros_dialog.dart';
 import 'package:gestisoft_windows/app/modules/venta/pages/widgets/venta_table.dart';
 
 class ReporteVentaPage extends StatefulWidget {
@@ -191,9 +192,28 @@ class _ReporteVentaPageState extends State<ReporteVentaPage> {
                                             MainAxisAlignment.start,
                                         primaryItems: [
                                           CommandBarButton(
-                                            icon: const Icon(
-                                                FluentIcons.filter_solid),
-                                            label: const Text("Filtros"),
+                                            label: FilledButton(
+                                              onPressed: () {
+                                                showDialog(
+                                                    context: context,
+                                                    builder:
+                                                        (BuildContext ctx) {
+                                                      return const FiltroVentaDialog();
+                                                    });
+                                              },
+                                              child: Row(
+                                                children: const [
+                                                  Icon(
+                                                      FluentIcons.filter_solid),
+                                                  SizedBox(
+                                                    width: 8,
+                                                  ),
+                                                  Text(
+                                                    "Filtros",
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
                                             onPressed: () {
                                               Alert.show(
                                                   message: "Info",

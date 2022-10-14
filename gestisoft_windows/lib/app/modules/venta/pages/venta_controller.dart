@@ -25,7 +25,6 @@ abstract class _VentaControllerBase with Store {
   });
   @observable
   ObservableList<Venta> dataProvider = ObservableList();
-
   @observable
   TextEditingController idVentaET = TextEditingController();
   @observable
@@ -42,11 +41,14 @@ abstract class _VentaControllerBase with Store {
   TextEditingController precioVentaET = TextEditingController();
   @observable
   TextEditingController cantET = TextEditingController();
+  @observable
+  DateTimeRange filtroPeriod =
+      DateTimeRange(start: DateTime.now(), end: DateTime.now());
 
   @observable
   bool listaVacia = true;
   @observable
-  bool processando = false;
+  bool processando = true;
   @observable
   bool produtoSeleccionado = false;
 
@@ -146,6 +148,11 @@ abstract class _VentaControllerBase with Store {
       dataProvider.clear();
       dataProvider
           .addAll(response.data.map<Venta>((v) => Venta.fromJson(v)).toList());
+      if (dataProvider.isEmpty) {
+        listaVacia = true;
+      } else {
+        listaVacia = false;
+      }
     } else {
       Alert.show(
           context: context,

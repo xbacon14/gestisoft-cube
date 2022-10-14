@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper
+	namespace="py.edu.gestisoft.mapper.operacional.VentaDetalleMapper">
+
+	<resultMap id="resultSimples"
+		type="py.edu.gestisoft.model.operacional.VentaDetalle">
+		<id property="id" column="ID_VENTA_DETALLE" />
+		<result property="cantidad" column="CANTIDAD" />
+		<result property="precio" column="PRECIO" />
+
+		<association property="producto"
+			javaType="py.edu.gestisoft.model.base.Producto">
+			<id property="id" column="ID_PRODUCTO" />
+			<result property="nombre" column="NOMBRE" />
+		</association>
+
+
+
+	</resultMap>
+
+
+
+
+	<sql id="sqlDefault">
+		SELECT * FROM venta_detalle vd
+	</sql>
+
+
+	<select id="findDetalleByVenta" resultMap="resultSimples">
+		<include refid="sqlDefault" />
+		WHERE vd.ID_VENTA = #{venta}
+	</select>
+
+
+
+</mapper>

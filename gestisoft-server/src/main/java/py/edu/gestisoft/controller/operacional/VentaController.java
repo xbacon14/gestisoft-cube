@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import py.edu.gestisoft.model.base.Producto;
 import py.edu.gestisoft.model.operacional.Venta;
 import py.edu.gestisoft.service.operacional.VentaService;
 
@@ -52,5 +51,11 @@ public class VentaController {
 	@PutMapping("/cancelar")
 	public ResponseEntity<Venta> cancelaVenta(@RequestParam Long venta) {
 		return ResponseEntity.ok(ventaService.cancelaVenta(venta));
+	}
+
+	@GetMapping("/generaReporte")
+	public ResponseEntity<?> generaReporte(@RequestParam Long cliente, @RequestParam String dtInicio,
+			@RequestParam String dtFinal, @RequestParam boolean verPdf) {
+		return ResponseEntity.ok(ventaService.generaReporteVenta(cliente, dtFinal, dtInicio, dtFinal, verPdf));
 	}
 }

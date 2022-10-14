@@ -10,6 +10,8 @@ class LoadingRender extends StatefulWidget {
 class _LoadingRenderState extends State<LoadingRender> {
   @override
   Widget build(BuildContext context) {
-    return const ProgressRing();
+    return const Center(
+      child: ProgressRing(),
+    );
   }
 }
