@@ -8,7 +8,7 @@ public class FiltroUtil {
 
 	public static String geraFiltroRelatorio(String dtInicio, String dtFim, String nome) {
 		String result = "DESDE EL " + formatDateTimeCurto(dtInicio, offSet) + " HASTA "
-				+ formatDateTimeCurto(dtFim, offSet) + nome;
+				+ formatDateTimeCurto(dtFim, offSet) + " " + nome;
 		return result.toUpperCase();
 	}
 
@@ -55,6 +55,10 @@ public class FiltroUtil {
 			e.printStackTrace();
 		}
 		return result.toString();
+	}
+
+	public static String stringToChar(String value) {
+		return "\"" + value + "\"";
 	}
 
 }

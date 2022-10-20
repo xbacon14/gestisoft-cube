@@ -77,10 +77,17 @@ public class VentaService {
 	public ResponseEntity<?> generaReporteVenta(Long cliente, String docNro, String dtInicio, String dtFinal,
 			boolean verPdf) {
 		String nombreReporte = "ReporteVenta";
-		String condition = "DATE(v.FECHA) " + FiltroUtil.toBetween(dtInicio, dtFinal);
-
+		String condition = "1=1";
+		if (!dtInicio.isEmpty() && !dtFinal.isEmpty() && dtInicio != null && dtFinal != null) {
+			condition = "DATE(v.FECHA) " + FiltroUtil.toBetween(dtInicio, dtFinal);
+		}
+		if (cliente != 0) {
+			condition += " AND c.ID_CLIENTE = " + cliente;
+		}
+		if (docNro != null && !docNro.isEmpty()) {
+			condition = "v.DOC_NRO = " + FiltroUtil.stringToChar(docNro);
+		}
 		String filtro = FiltroUtil.geraFiltroRelatorio(dtInicio, dtFinal, nombreReporte);
-		List<?> ventas = new ArrayList<Object>();
 		List<Venta> ventasReporte = ventaMapper.findVentasPorFecha(condition);
 
 		if (verPdf == true) {

@@ -4,6 +4,8 @@
 
 list(APPEND FLUTTER_PLUGIN_LIST
   desktop_window
+  file_saver
+  printing
   screen_retriever
   window_manager
 )

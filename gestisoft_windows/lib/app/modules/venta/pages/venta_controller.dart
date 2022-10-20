@@ -1,3 +1,7 @@
+import 'dart:convert';
+import 'dart:io';
+import 'dart:typed_data';
+
 import 'package:autocomplete_textfield/autocomplete_textfield.dart';
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:gestisoft_windows/app/components/date/date_util.dart';
@@ -41,6 +45,7 @@ abstract class _VentaControllerBase with Store {
   TextEditingController precioVentaET = TextEditingController();
   @observable
   TextEditingController cantET = TextEditingController();
+
   @observable
   DateTimeRange filtroPeriod =
       DateTimeRange(start: DateTime.now(), end: DateTime.now());
@@ -57,6 +62,13 @@ abstract class _VentaControllerBase with Store {
 
   @observable
   VentaDetalle detalleActual = VentaDetalle.nuevo();
+
+// REPORTE
+  @observable
+  Uint8List? pdf;
+
+  @observable
+  File pdfFile = File('');
 
   @action
   setCliente({required Cliente cliente}) {
@@ -199,6 +211,30 @@ abstract class _VentaControllerBase with Store {
           context: context,
           message: "La venta no se ha podido cancelar",
           type: 1);
+    }
+  }
+
+  Future<Uint8List> geraRelatorio({
+    required BuildContext context,
+    String? docNro,
+    required bool isPdf,
+  }) async {
+    processando = true;
+    final response = await ventaRepository
+        .geraRelatorio(
+            dtInicio:
+                DateUtil.sqlDateFormat(filtroPeriod.start.toIso8601String()),
+            dtFinal: DateUtil.sqlDateFormat(filtroPeriod.end.toIso8601String()),
+            isPdf: isPdf)
+        .whenComplete(() => processando = false);
+    if (response.compareTo('error') == 0) {
+      Alert.show(
+          context: context,
+          message: "Error, no se pudo generar el reporte",
+          type: 2);
+      throw Error();
+    } else {
+      return base64.decode(response);
     }
   }
 }

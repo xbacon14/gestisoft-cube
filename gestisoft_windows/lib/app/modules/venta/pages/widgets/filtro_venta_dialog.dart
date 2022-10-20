@@ -1,9 +1,16 @@
+import 'dart:io';
+import 'dart:typed_data';
+
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:gestisoft_windows/app/components/autocomplete/autocomplete.dart';
+import 'package:gestisoft_windows/app/components/popups/pdf_viewer.dart';
+import 'package:gestisoft_windows/app/components/ui/alert.dart';
 import 'package:gestisoft_windows/app/modules/cliente/pages/cliente_controller.dart';
+import 'package:gestisoft_windows/app/modules/venta/models/venta.dart';
 import 'package:gestisoft_windows/app/modules/venta/pages/venta_controller.dart';
+import 'package:path_provider/path_provider.dart';
 
 import '../../../cliente/models/cliente.dart';
 
@@ -18,9 +25,19 @@ class _FiltroVentaDialogState extends State<FiltroVentaDialog> {
   final VentaController ventaController = Modular.get();
   final ClienteController clienteController = Modular.get();
 
+  final TextEditingController docNroET = TextEditingController();
+
   DateTime dtInicio = DateTime.now();
   DateTime dtFim = DateTime.now();
   bool isPdf = true;
+
+  @override
+  void dispose() {
+    docNroET.clear();
+    ventaController.currentRecord = Venta().nuevo();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return ContentDialog(
@@ -111,7 +128,7 @@ class _FiltroVentaDialogState extends State<FiltroVentaDialog> {
                 ),
                 TextFormBox(
                   maxLength: 20,
-                  controller: ventaController.docNroET,
+                  controller: docNroET,
                   enabled: true,
                   padding:
                       const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
@@ -201,10 +218,42 @@ class _FiltroVentaDialogState extends State<FiltroVentaDialog> {
         ),
         FilledButton(
           child: const Text("Generar"),
-          onPressed: () {
-            // ventaController
-            //     .cancelarVenta(context, widget.venta.id!)
-            //     .whenComplete(() => ventaController.findAllVentas(context));
+          onPressed: () async {
+            ventaController.filtroPeriod =
+                DateTimeRange(start: dtInicio, end: dtFim);
+            Uint8List _bytes = await ventaController.geraRelatorio(
+                context: context, docNro: docNroET.text, isPdf: isPdf);
+            String fileName =
+                "REPORTE-DE-VENTAS ${DateTime.now().millisecondsSinceEpoch.toString()}";
+
+            if (isPdf) {
+              final directory = await getApplicationDocumentsDirectory();
+              String dir = '${directory.path}\\$fileName.pdf';
+              if (_bytes.isNotEmpty) {
+                await File(dir).writeAsBytes(_bytes).then((file) async {
+                  setState(() {
+                    ventaController.pdf = file.readAsBytesSync();
+                    ventaController.pdfFile = file;
+                  });
+                });
+              } else {
+                Alert.show(
+                    context: context,
+                    message: "No se ha podido generar el reporte",
+                    type: 2);
+              }
+            }
+            Modular.to.push(
+              FluentPageRoute(
+                builder: (_) {
+                  return PdfViewer(
+                      bytes: _bytes,
+                      fileName: fileName,
+                      extension: 'pdf',
+                      title: "Reporte de ventas");
+                },
+              ),
+            );
             // Modular.to.pop();
           },
         ),

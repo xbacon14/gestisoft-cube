@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:gestisoft_windows/app/components/core/rest_client/dio_rest_client.dart';
 import 'package:gestisoft_windows/app/components/core/rest_client/rest_client_response.dart';
 
@@ -29,5 +30,25 @@ class VentaRepository {
   Future<RestClientResponse> cancelaVentaById(int id) async {
     return await dioRestClient
         .put("/venta/cancelar", queryParameters: {"venta": id});
+  }
+
+  Future<String> geraRelatorio({
+    int? idCliente,
+    String? docNro,
+    required String dtInicio,
+    required String dtFinal,
+    required bool isPdf,
+  }) async {
+    // debugPrint("$idCliente $docNro $dtInicio $dtFinal $isPdf");
+    // return "";
+    final response =
+        await dioRestClient.get('/venta/generaReporte', queryParameters: {
+      "dtInicio": dtInicio,
+      "dtFinal": dtFinal,
+      "docNro": docNro,
+      "verPdf": isPdf,
+      "cliente": idCliente ?? 0,
+    });
+    return response.data['body'];
   }
 }

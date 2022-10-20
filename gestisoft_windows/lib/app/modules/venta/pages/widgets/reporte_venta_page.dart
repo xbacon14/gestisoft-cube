@@ -9,7 +9,7 @@ import 'package:gestisoft_windows/app/components/ui/loading_render.dart';
 import 'package:gestisoft_windows/app/modules/home/home_controller.dart';
 import 'package:gestisoft_windows/app/modules/home/pages/widgets/sin_conexion_page.dart';
 import 'package:gestisoft_windows/app/modules/venta/pages/venta_controller.dart';
-import 'package:gestisoft_windows/app/modules/venta/pages/widgets/filtros_dialog.dart';
+import 'package:gestisoft_windows/app/modules/venta/pages/widgets/filtro_venta_dialog.dart';
 import 'package:gestisoft_windows/app/modules/venta/pages/widgets/venta_table.dart';
 
 class ReporteVentaPage extends StatefulWidget {

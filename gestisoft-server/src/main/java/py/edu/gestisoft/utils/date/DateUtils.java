@@ -18,7 +18,7 @@ public class DateUtils {
 		if (locale.getDisplayLanguage().contains("en")) {
 			pattern = "yyy-MM-dd HH:mm";
 		}
-		LocalDateTime localDateTime = date.atZone(ZoneOffset.UTC).withZoneSameInstant(ZoneId.of("UTC" + "-04:00"))
+		LocalDateTime localDateTime = date.atZone(ZoneOffset.UTC).withZoneSameInstant(ZoneId.of("UTC" + "-00:00"))
 				.toLocalDateTime();
 
 		String dateFormatted = DateTimeFormatter.ofPattern(pattern).format(localDateTime);

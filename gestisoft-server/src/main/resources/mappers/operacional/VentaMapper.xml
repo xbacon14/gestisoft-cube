@@ -66,9 +66,7 @@
 		<include refid="sqlDefault" />
 		INNER JOIN cliente c
 		ON c.ID_CLIENTE = v.ID_CLIENTE
-		WHERE (c.NOMBRE LIKE
-		${condition} OR c.CI_RUC LIKE
-		${condition})
+		WHERE (${condition})
 	</select>
 
 	<select id="findVentasPorFecha" resultMap="resultSimples">
