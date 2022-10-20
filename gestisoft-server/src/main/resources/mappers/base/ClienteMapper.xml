@@ -37,6 +37,10 @@
 		FROM cliente c
 	</select>
 
+	<select id="findClientesReporte" resultMap="resultSimples">
+		<include refid="sqlDefault" />
+		WHERE (${condition}) ${orderBy}
+	</select>
 
 
 

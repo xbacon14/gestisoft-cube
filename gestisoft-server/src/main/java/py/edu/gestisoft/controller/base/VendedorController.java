@@ -58,4 +58,11 @@ public class VendedorController {
 			return ResponseEntity.ok("No se ha podido eliminar el vendedor");
 		}
 	}
+
+	@GetMapping("/generaReporte")
+	public ResponseEntity<?> generaReporte(@RequestParam String filtroDesde, @RequestParam String filtroHasta,
+			@RequestParam String orderByCondition, @RequestParam boolean verInactivos, @RequestParam boolean verPdf) {
+		return ResponseEntity.ok(vendedorService.generaReporteVendedores(filtroDesde, filtroHasta, verInactivos,
+				orderByCondition, verPdf));
+	}
 }

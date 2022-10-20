@@ -10,6 +10,7 @@ import 'package:gestisoft_windows/app/modules/cliente/models/cliente.dart';
 import 'package:gestisoft_windows/app/modules/cliente/pages/cliente_controller.dart';
 import 'package:gestisoft_windows/app/modules/cliente/pages/widget/cliente_formulario.dart';
 import 'package:gestisoft_windows/app/modules/cliente/pages/widget/cliente_table.dart';
+import 'package:gestisoft_windows/app/modules/cliente/pages/widget/filtro_cliente_dialog.dart';
 import 'package:gestisoft_windows/app/modules/home/home_controller.dart';
 import 'package:gestisoft_windows/app/modules/home/pages/widgets/sin_conexion_page.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -160,8 +161,28 @@ class _ClientePageState extends State<ClientePage> {
                                             MainAxisAlignment.start,
                                         primaryItems: [
                                           CommandBarButton(
-                                            icon: const Icon(FluentIcons.pdf),
-                                            label: const Text("Exportar a pdf"),
+                                            label: FilledButton(
+                                              onPressed: () {
+                                                showDialog(
+                                                    context: context,
+                                                    builder:
+                                                        (BuildContext ctx) {
+                                                      return const FiltroClienteDialog();
+                                                    });
+                                              },
+                                              child: Row(
+                                                children: const [
+                                                  Icon(
+                                                      FluentIcons.filter_solid),
+                                                  SizedBox(
+                                                    width: 8,
+                                                  ),
+                                                  Text(
+                                                    "Filtros",
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
                                             onPressed: () {
                                               Alert.show(
                                                   message: "Info",
@@ -170,19 +191,7 @@ class _ClientePageState extends State<ClientePage> {
                                             },
                                           ),
                                           CommandBarButton(
-                                            icon: const Icon(
-                                                FluentIcons.excel_logo),
-                                            label:
-                                                const Text("Exportar a excel"),
-                                            onPressed: () {},
-                                          ),
-                                          CommandBarButton(
                                             label: FilledButton(
-                                              style: ButtonStyle(
-                                                backgroundColor:
-                                                    ButtonState.all(
-                                                        Colors.magenta),
-                                              ),
                                               onPressed: () {
                                                 showDialog(
                                                     context: context,
@@ -197,11 +206,7 @@ class _ClientePageState extends State<ClientePage> {
                                                   SizedBox(
                                                     width: 8,
                                                   ),
-                                                  Text(
-                                                    "Nuevo cliente",
-                                                    style: TextStyle(
-                                                        fontFamily: 'Consolas'),
-                                                  ),
+                                                  Text("Nuevo cliente"),
                                                 ],
                                               ),
                                             ),
@@ -218,17 +223,6 @@ class _ClientePageState extends State<ClientePage> {
                                         ],
                                       ),
                                     ),
-
-                                    // DropDownButton(
-                                    //   title: Text(
-                                    //     "Ordenar por",
-                                    //     style: theme.typography.body,
-                                    //   ),
-                                    //   items: [
-                                    //     MenuFlyoutItem(
-                                    //         text: const Text("Nombre"), onPressed: () {})
-                                    //   ],
-                                    // )
                                   ],
                                 ),
                                 Observer(

@@ -8,8 +8,25 @@ public class FiltroUtil {
 
 	public static String geraFiltroRelatorio(String dtInicio, String dtFim, String nome) {
 		String result = "DESDE EL " + formatDateTimeCurto(dtInicio, offSet) + " HASTA "
-				+ formatDateTimeCurto(dtFim, offSet) + " " + nome;
+				+ formatDateTimeCurto(dtFim, offSet);
 		return result.toUpperCase();
+	}
+
+	public static String geraFiltroRelatorioPessoas(String filtroDesde, String filtroHasta, String nome) {
+		String result = "DESDE LA \"" + filtroDesde + "\" HASTA LA \"" + filtroHasta + "\" ";
+
+		if (filtroDesde.isEmpty() && filtroHasta.isEmpty()) {
+			result = "NO POSEE FILTROS";
+		}
+		return result.toUpperCase();
+	}
+
+	public static String geraConditionRelatorio(String aliasTabla, String filtroDesde, String filtroHasta,
+			String orderBy, boolean verInactivos) {
+		String estado = " AND " + aliasTabla + ".ESTADO IS TRUE";
+
+		return aliasTabla + ".NOMBRE LIKE \"" + filtroDesde + "%\" OR " + aliasTabla + ".NOMBRE LIKE \"" + filtroHasta
+				+ "%\" " + estado;
 	}
 
 	public static String toBetween(String dtInicial, String dtFinal) {

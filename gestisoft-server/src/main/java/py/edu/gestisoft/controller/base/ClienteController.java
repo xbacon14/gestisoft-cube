@@ -62,4 +62,11 @@ public class ClienteController {
 	public ResponseEntity<Long> getProximoId() {
 		return ResponseEntity.ok(clienteService.getProximoId());
 	}
+
+	@GetMapping("/generaReporte")
+	public ResponseEntity<?> generaReporte(@RequestParam String filtroDesde, @RequestParam String filtroHasta,
+			@RequestParam String orderByCondition, @RequestParam boolean verInactivos, @RequestParam boolean verPdf) {
+		return ResponseEntity.ok(
+				clienteService.generaReporteCliente(filtroDesde, filtroHasta, verInactivos, orderByCondition, verPdf));
+	}
 }

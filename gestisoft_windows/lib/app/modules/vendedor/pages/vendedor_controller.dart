@@ -1,3 +1,7 @@
+import 'dart:convert';
+import 'dart:io';
+import 'dart:typed_data';
+
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter/foundation.dart';
 import 'package:gestisoft_windows/app/components/ui/alert.dart';
@@ -26,6 +30,16 @@ abstract class _VendedorControllerBase with Store {
   bool vendedorExiste = false;
 
   ObservableList<Vendedor> vendedores = ObservableList();
+
+  // REPORTE
+  @observable
+  Uint8List? pdf;
+
+  @observable
+  File pdfFile = File('');
+
+  @observable
+  bool verInactivos = false;
 
   Future<void> findAllVendedores() async {
     processando = true;
@@ -105,6 +119,32 @@ abstract class _VendedorControllerBase with Store {
         Alert.show(context: context, message: message, type: 2);
       }
     }
+  }
+
+  Future<Uint8List> geraRelatorio({
+    required BuildContext context,
+    String? filtroDesde,
+    String? filtroHasta,
+    String? orderBy,
+    required bool isPdf,
+  }) async {
+    processando = true;
+    final response = await vendedorRepository
+        .geraRelatorio(
+            filtroDesde: filtroDesde,
+            filtroHasta: filtroHasta,
+            orderBy: orderBy,
+            verInactivos: verInactivos,
+            isPdf: isPdf)
+        .whenComplete(() => processando = false);
+    if (response.compareTo('error') == 0) {
+      Alert.show(
+          context: context,
+          message: "Error, no se pudo generar el reporte",
+          type: 2);
+      throw Error();
+    } else {}
+    return base64.decode(response);
   }
 
   resolveListaVacia() {

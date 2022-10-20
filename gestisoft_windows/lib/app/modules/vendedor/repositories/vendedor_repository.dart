@@ -30,4 +30,22 @@ class VendedorRepository {
   Future<RestClientResponse> eliminarVendedorById(int idVendedor) async {
     return await restClient.delete('/vendedor/delete/$idVendedor');
   }
+
+  Future<String> geraRelatorio({
+    String? filtroDesde,
+    String? filtroHasta,
+    String? orderBy,
+    required bool verInactivos,
+    required bool isPdf,
+  }) async {
+    final response =
+        await restClient.get("/vendedor/generaReporte", queryParameters: {
+      "filtroDesde": filtroDesde,
+      "filtroHasta": filtroHasta,
+      "orderByCondition": orderBy,
+      "verInactivos": verInactivos,
+      "verPdf": isPdf,
+    });
+    return response.data['body'];
+  }
 }

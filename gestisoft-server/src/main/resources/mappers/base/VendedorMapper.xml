@@ -37,6 +37,9 @@
 	</select>
 
 
-
+	<select id="findVendedorReporte" resultMap="resultSimples">
+		<include refid="sqlDefault" />
+		WHERE (${condition}) ${orderBy}
+	</select>
 
 </mapper>

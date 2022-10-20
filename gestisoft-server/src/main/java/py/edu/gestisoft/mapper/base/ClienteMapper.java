@@ -9,4 +9,6 @@ public interface ClienteMapper {
 	List<Cliente> findClientesPorNombreODocumento(String condition);
 
 	Long getProximoId();
+
+	List<Cliente> findClientesReporte(String condition, String orderBy);
 }

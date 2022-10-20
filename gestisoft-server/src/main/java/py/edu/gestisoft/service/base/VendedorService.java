@@ -3,13 +3,16 @@ package py.edu.gestisoft.service.base;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import py.edu.gestisoft.mapper.base.VendedorMapper;
 import py.edu.gestisoft.mapper.operacional.VentaMapper;
 import py.edu.gestisoft.model.base.Vendedor;
+import py.edu.gestisoft.utils.reporte.CreaReporte;
 import py.edu.gestisoft.utils.sql.SQLUtils;
+import py.edu.gestisoft.utils.text.FiltroUtil;
 
 @Service
 @Transactional(rollbackFor = Exception.class)
@@ -23,6 +26,9 @@ public class VendedorService {
 
 	@Autowired
 	private VentaMapper ventaMapper;
+
+	@Autowired
+	private CreaReporte creaReporte;
 
 //	PERSISTE Y GUARDA LOS DATOS RECIBIDOS EN LA TABLA VENDEDOR
 	public Vendedor save(Vendedor vendedor) {
@@ -60,6 +66,34 @@ public class VendedorService {
 			return true;
 		} else {
 			return false;
+		}
+	}
+
+	public ResponseEntity<?> generaReporteVendedores(String filtroDesde, String filtroHasta, boolean verInactivos,
+			String orderByCondition, boolean verPdf) {
+		String nombreReporte = "ReporteVendedor";
+		String condition = "1=1";
+		String order = "ORDER BY v.NOMBRE";
+		if (!orderByCondition.isEmpty()) {
+			if (orderByCondition.compareTo("Codigo") == 0) {
+				order = "ORDER BY v.ID_VENDEDOR";
+			} else if (orderByCondition.compareTo("Documento") == 0) {
+				order = "ORDER BY v.CI";
+			} else {
+				order = "ORDER BY v." + orderByCondition;
+			}
+		}
+		if (filtroDesde != null && !filtroDesde.isEmpty() && filtroHasta != null && !filtroHasta.isEmpty()) {
+			condition = FiltroUtil.geraConditionRelatorio("v", filtroDesde, filtroHasta, orderByCondition,
+					verInactivos);
+		}
+		String filtro = FiltroUtil.geraFiltroRelatorioPessoas(filtroDesde, filtroHasta, nombreReporte);
+		List<Vendedor> vendedoresReporte = vendedorMapper.findVendedorReporte(condition, order);
+
+		if (verPdf == true) {
+			return creaReporte.generaReporte(filtro, nombreReporte, vendedoresReporte);
+		} else {
+			return creaReporte.generaXLS(filtro, nombreReporte, vendedoresReporte);
 		}
 	}
 }

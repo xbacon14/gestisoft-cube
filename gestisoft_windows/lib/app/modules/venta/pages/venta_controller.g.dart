@@ -153,6 +153,22 @@ mixin _$VentaController on _VentaControllerBase, Store {
     });
   }
 
+  late final _$filtroPeriodAtom =
+      Atom(name: '_VentaControllerBase.filtroPeriod', context: context);
+
+  @override
+  DateTimeRange get filtroPeriod {
+    _$filtroPeriodAtom.reportRead();
+    return super.filtroPeriod;
+  }
+
+  @override
+  set filtroPeriod(DateTimeRange value) {
+    _$filtroPeriodAtom.reportWrite(value, super.filtroPeriod, () {
+      super.filtroPeriod = value;
+    });
+  }
+
   late final _$listaVaciaAtom =
       Atom(name: '_VentaControllerBase.listaVacia', context: context);
 
@@ -230,6 +246,38 @@ mixin _$VentaController on _VentaControllerBase, Store {
   set detalleActual(VentaDetalle value) {
     _$detalleActualAtom.reportWrite(value, super.detalleActual, () {
       super.detalleActual = value;
+    });
+  }
+
+  late final _$pdfAtom =
+      Atom(name: '_VentaControllerBase.pdf', context: context);
+
+  @override
+  Uint8List? get pdf {
+    _$pdfAtom.reportRead();
+    return super.pdf;
+  }
+
+  @override
+  set pdf(Uint8List? value) {
+    _$pdfAtom.reportWrite(value, super.pdf, () {
+      super.pdf = value;
+    });
+  }
+
+  late final _$pdfFileAtom =
+      Atom(name: '_VentaControllerBase.pdfFile', context: context);
+
+  @override
+  File get pdfFile {
+    _$pdfFileAtom.reportRead();
+    return super.pdfFile;
+  }
+
+  @override
+  set pdfFile(File value) {
+    _$pdfFileAtom.reportWrite(value, super.pdfFile, () {
+      super.pdfFile = value;
     });
   }
 
@@ -327,11 +375,14 @@ vehiculoET: ${vehiculoET},
 descripcionET: ${descripcionET},
 precioVentaET: ${precioVentaET},
 cantET: ${cantET},
+filtroPeriod: ${filtroPeriod},
 listaVacia: ${listaVacia},
 processando: ${processando},
 produtoSeleccionado: ${produtoSeleccionado},
 currentRecord: ${currentRecord},
-detalleActual: ${detalleActual}
+detalleActual: ${detalleActual},
+pdf: ${pdf},
+pdfFile: ${pdfFile}
     ''';
   }
 }
