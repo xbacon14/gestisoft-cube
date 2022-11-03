@@ -14,8 +14,6 @@
 		<result property="direccion" column="DIRECCION" />
 		<result property="observacion" column="OBSERVACION" />
 		<result property="fechaAlta" column="FECHA_ALTA" />
-
-
 	</resultMap>
 
 

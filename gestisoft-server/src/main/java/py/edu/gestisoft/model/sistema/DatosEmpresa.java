@@ -32,6 +32,7 @@ public class DatosEmpresa {
 	@Column(name = "NOMBRE")
 	private String nombre;
 
+	@NonNull
 	@Column(name = "RUC")
 	private String ruc;
 
@@ -55,6 +56,9 @@ public class DatosEmpresa {
 
 	@Column(name = "FECHA_REGISTRO")
 	private LocalDateTime fechaRegistro;
+
+	@Column(name = "BO_CONFIGURACION_EFECTUADA")
+	private Boolean configuracionEfectuada;
 
 	@PrePersist
 	void setFechaRegistro() {

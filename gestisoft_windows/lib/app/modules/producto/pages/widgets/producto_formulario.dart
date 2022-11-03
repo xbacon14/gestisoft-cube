@@ -158,7 +158,6 @@ class _ProductoFormularioState extends State<ProductoFormulario> {
                       return TextFormField(
                         title: "Nombre",
                         placeHolder: 'Ej: Arena',
-                        maxChar: 8,
                         value: productoController.currentRecord.nombre ?? '',
                         onSubmited: (value) {},
                         validator: (text) {

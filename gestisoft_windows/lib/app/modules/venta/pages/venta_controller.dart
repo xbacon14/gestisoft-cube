@@ -2,7 +2,6 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
 
-import 'package:autocomplete_textfield/autocomplete_textfield.dart';
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:gestisoft_windows/app/components/date/date_util.dart';
 import 'package:gestisoft_windows/app/components/text_utils/number_formatter.dart';

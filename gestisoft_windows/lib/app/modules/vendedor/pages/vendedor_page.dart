@@ -5,6 +5,9 @@ import 'package:gestisoft_windows/app/components/helpers/data_shared.dart';
 import 'package:gestisoft_windows/app/components/text_field/search_text_field.dart';
 import 'package:gestisoft_windows/app/components/ui/alert.dart';
 import 'package:gestisoft_windows/app/components/ui/empty_state.dart';
+import 'package:gestisoft_windows/app/components/ui/loading_render.dart';
+import 'package:gestisoft_windows/app/modules/home/home_controller.dart';
+import 'package:gestisoft_windows/app/modules/home/pages/widgets/sin_conexion_page.dart';
 import 'package:gestisoft_windows/app/modules/vendedor/models/vendedor.dart';
 import 'package:gestisoft_windows/app/modules/vendedor/pages/widgets/filtro_vendedor_dialog.dart';
 import 'package:gestisoft_windows/app/modules/vendedor/pages/widgets/vendedor_formulario.dart';
@@ -23,6 +26,7 @@ class VendedorPage extends StatefulWidget {
 class _VendedorPageState extends State<VendedorPage> {
   final VendedorController vendedorController = Modular.get();
   final DataShared dataShared = Modular.get();
+  final HomeController homeController = Modular.get();
   int selected = 0;
   final values = [
     "Codigo",
@@ -45,187 +49,232 @@ class _VendedorPageState extends State<VendedorPage> {
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: Column(
-        children: [
-          const SizedBox(
-            height: 24,
-          ),
-          Acrylic(
-            tint: FluentTheme.of(context).acrylicBackgroundColor,
-            elevation: 2,
-            child: Column(
-              children: [
-                Row(
-                  children: [
-                    Container(
-                      margin: const EdgeInsets.all(16),
-                      width: 360,
-                      child: SearchTextField(
-                        onSubmited: (value) {
-                          vendedorController.findByNombreODocumento(value);
-                          setState(() {});
-                        },
-                        onClear: () =>
-                            vendedorController.findByNombreODocumento(''),
-                        placeholder: "Consulte por nombre o documento",
-                      ),
-                    ),
-                    SizedBox(
-                      width: 240,
-                      child: Row(
-                        children: [
-                          const Text("Ordenar por:"),
-                          const SizedBox(
-                            width: 8,
+    return Observer(
+      builder: (_) {
+        return vendedorController.processando
+            ? const LoadingRender()
+            : !homeController.online
+                ? const SinConexionPage()
+                : SingleChildScrollView(
+                    child: Column(
+                      children: [
+                        const SizedBox(
+                          height: 24,
+                        ),
+                        ConstrainedBox(
+                          constraints: const BoxConstraints(
+                            maxWidth: 1200,
+                            maxHeight: 800,
                           ),
-                          Expanded(
-                            child: Combobox<String>(
-                              icon: const Icon(FluentIcons.sort),
-                              value: values[selected],
-                              items: values
-                                  .map(
-                                    (e) => ComboboxItem<String>(
-                                      value: e,
-                                      child: Text(e),
+                          child: Acrylic(
+                            tint:
+                                FluentTheme.of(context).acrylicBackgroundColor,
+                            elevation: 2,
+                            child: Column(
+                              children: [
+                                Row(
+                                  children: [
+                                    Container(
+                                      margin: const EdgeInsets.all(16),
+                                      width: 360,
+                                      child: SearchTextField(
+                                        onSubmited: (value) {
+                                          vendedorController
+                                              .findByNombreODocumento(value);
+                                          setState(() {});
+                                        },
+                                        onClear: () => vendedorController
+                                            .findByNombreODocumento(''),
+                                        placeholder:
+                                            "Consulte por nombre o documento",
+                                      ),
                                     ),
-                                  )
-                                  .toList(),
-                              onChanged: (newColor) => setState(
-                                () {
-                                  if (newColor?.compareTo("Codigo") == 0) {
-                                    vendedorController.vendedores
-                                        .sort((a, b) => a.id!.compareTo(b.id!));
-                                    setState(
-                                      () {
-                                        selected = 0;
-                                      },
-                                    );
-                                  } else if (newColor?.compareTo("Nombre") ==
-                                      0) {
-                                    vendedorController.vendedores.sort((a, b) =>
-                                        a.nombre!.compareTo(b.nombre!));
-                                    setState(
-                                      () {
-                                        selected = 1;
-                                      },
-                                    );
-                                  } else if (newColor?.compareTo("Documento") ==
-                                      0) {
-                                    vendedorController.vendedores
-                                        .sort((a, b) => a.ci!.compareTo(b.ci!));
-                                    setState(
-                                      () {
-                                        selected = 2;
-                                      },
-                                    );
-                                  }
-                                },
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    Expanded(
-                      child: CommandBar(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        primaryItems: [
-                          CommandBarButton(
-                            label: FilledButton(
-                              onPressed: () {
-                                showDialog(
-                                    context: context,
-                                    builder: (BuildContext ctx) {
-                                      return const FiltroVendedorDialog();
-                                    });
-                              },
-                              child: Row(
-                                children: const [
-                                  Icon(FluentIcons.filter_solid),
-                                  SizedBox(
-                                    width: 8,
-                                  ),
-                                  Text(
-                                    "Filtros",
-                                  ),
-                                ],
-                              ),
-                            ),
-                            onPressed: () {
-                              Alert.show(
-                                  message: "Info", type: 0, context: context);
-                            },
-                          ),
-                          CommandBarButton(
-                            label: FilledButton(
-                              onPressed: () {
-                                showDialog(
-                                    context: context,
-                                    builder: (BuildContext ctx) {
-                                      return const VendedorFormulario();
-                                    });
-                              },
-                              child: Row(
-                                children: const [
-                                  Icon(FluentIcons.add),
-                                  SizedBox(
-                                    width: 8,
-                                  ),
-                                  Text("Nuevo vendedor"),
-                                ],
-                              ),
-                            ),
-                            onPressed: () {
-                              vendedorController.currentRecord =
-                                  Vendedor.nuevo();
-                              showDialog(
-                                  context: context,
-                                  builder: (BuildContext ctx) {
-                                    return const VendedorFormulario();
-                                  });
-                            },
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-                Observer(
-                  builder: ((context) {
-                    return vendedorController.processando
-                        ? const Center(child: Text("Cargando"))
-                        : vendedorController.listaVacia
-                            ? EmptyState(
-                                texto:
-                                    "No se retornado ningún vendedor, deseas registar uno?",
-                                icono: const Icon(
-                                  FluentIcons.remove_from_shopping_list,
-                                  size: 48,
+                                    SizedBox(
+                                      width: 240,
+                                      child: Row(
+                                        children: [
+                                          const Text("Ordenar por:"),
+                                          const SizedBox(
+                                            width: 8,
+                                          ),
+                                          Expanded(
+                                            child: Combobox<String>(
+                                              icon:
+                                                  const Icon(FluentIcons.sort),
+                                              value: values[selected],
+                                              items: values
+                                                  .map(
+                                                    (e) => ComboboxItem<String>(
+                                                      value: e,
+                                                      child: Text(e),
+                                                    ),
+                                                  )
+                                                  .toList(),
+                                              onChanged: (newColor) => setState(
+                                                () {
+                                                  if (newColor?.compareTo(
+                                                          "Codigo") ==
+                                                      0) {
+                                                    vendedorController
+                                                        .vendedores
+                                                        .sort((a, b) => a.id!
+                                                            .compareTo(b.id!));
+                                                    setState(
+                                                      () {
+                                                        selected = 0;
+                                                      },
+                                                    );
+                                                  } else if (newColor
+                                                          ?.compareTo(
+                                                              "Nombre") ==
+                                                      0) {
+                                                    vendedorController
+                                                        .vendedores
+                                                        .sort((a, b) =>
+                                                            a.nombre!.compareTo(
+                                                                b.nombre!));
+                                                    setState(
+                                                      () {
+                                                        selected = 1;
+                                                      },
+                                                    );
+                                                  } else if (newColor
+                                                          ?.compareTo(
+                                                              "Documento") ==
+                                                      0) {
+                                                    vendedorController
+                                                        .vendedores
+                                                        .sort((a, b) => a.ci!
+                                                            .compareTo(b.ci!));
+                                                    setState(
+                                                      () {
+                                                        selected = 2;
+                                                      },
+                                                    );
+                                                  }
+                                                },
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    Expanded(
+                                      child: CommandBar(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                        primaryItems: [
+                                          CommandBarButton(
+                                            label: FilledButton(
+                                              onPressed: () {
+                                                showDialog(
+                                                    context: context,
+                                                    builder:
+                                                        (BuildContext ctx) {
+                                                      return const FiltroVendedorDialog();
+                                                    });
+                                              },
+                                              child: Row(
+                                                children: const [
+                                                  Icon(
+                                                      FluentIcons.filter_solid),
+                                                  SizedBox(
+                                                    width: 8,
+                                                  ),
+                                                  Text(
+                                                    "Filtros",
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                            onPressed: () {
+                                              Alert.show(
+                                                  message: "Info",
+                                                  type: 0,
+                                                  context: context);
+                                            },
+                                          ),
+                                          CommandBarButton(
+                                            label: FilledButton(
+                                              onPressed: () {
+                                                showDialog(
+                                                    context: context,
+                                                    builder:
+                                                        (BuildContext ctx) {
+                                                      return const VendedorFormulario();
+                                                    });
+                                              },
+                                              child: Row(
+                                                children: const [
+                                                  Icon(FluentIcons.add),
+                                                  SizedBox(
+                                                    width: 8,
+                                                  ),
+                                                  Text("Nuevo vendedor"),
+                                                ],
+                                              ),
+                                            ),
+                                            onPressed: () {
+                                              vendedorController.currentRecord =
+                                                  Vendedor.nuevo();
+                                              showDialog(
+                                                  context: context,
+                                                  builder: (BuildContext ctx) {
+                                                    return const VendedorFormulario();
+                                                  });
+                                            },
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ],
                                 ),
-                                onButtonPressed: () =>
-                                    debugPrint("registrar vendedor"),
-                                buttonTitle: 'Registrar vendedor',
-                              )
-                            : VendedorTable();
-                  }),
-                ),
-              ],
-            ),
-          ),
-          Row(
-            children: [
-              Expanded(
-                child: Container(),
-              ),
-              Text(
-                dataShared.version,
-                style: FluentTheme.of(context).typography.subtitle,
-              )
-            ],
-          )
-        ],
-      ),
+                                Observer(
+                                  builder: ((context) {
+                                    return vendedorController.processando
+                                        ? const Center(child: Text("Cargando"))
+                                        : vendedorController.listaVacia
+                                            ? EmptyState(
+                                                texto:
+                                                    "No se retornado ningún vendedor, deseas registar uno?",
+                                                icono: const Icon(
+                                                  FluentIcons
+                                                      .remove_from_shopping_list,
+                                                  size: 48,
+                                                ),
+                                                onButtonPressed: () =>
+                                                    showDialog(
+                                                  context: context,
+                                                  builder: (context) =>
+                                                      const VendedorFormulario(),
+                                                ),
+                                                buttonTitle:
+                                                    'Registrar vendedor',
+                                              )
+                                            : VendedorTable();
+                                  }),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                        Row(
+                          children: [
+                            Expanded(
+                              child: Container(),
+                            ),
+                            Text(
+                              dataShared.version,
+                              style:
+                                  FluentTheme.of(context).typography.subtitle,
+                            )
+                          ],
+                        )
+                      ],
+                    ),
+                  );
+        ;
+      },
     );
   }
 }

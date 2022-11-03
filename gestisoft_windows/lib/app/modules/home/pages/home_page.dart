@@ -1,8 +1,10 @@
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:gestisoft_windows/app/components/date/date_util.dart';
 import 'package:gestisoft_windows/app/components/helpers/data_shared.dart';
+import 'package:gestisoft_windows/app/modules/configuracion/pages/configuracion_controller.dart';
 import 'package:gestisoft_windows/app/modules/home/home_controller.dart';
 import 'package:mobx/mobx.dart';
 import 'package:window_manager/window_manager.dart';
@@ -19,19 +21,28 @@ class _HomePageState extends State<HomePage> with WindowListener {
 
   final DataShared dataShared = Modular.get();
   final HomeController homeController = Modular.get();
+  final ConfiguracionController configuracionController = Modular.get();
 
   @override
   void initState() {
     windowManager.addListener(this);
     homeController.verificarConexion();
+    configuracionController.verificaConfiguracionEfectuada().then((value) {
+      if (value.configuracionEfectuada != null &&
+          value.configuracionEfectuada == true) {
+        dataShared.nombreEmpresa = value.nombre!;
+      } else {
+        homeController.index = 6;
+        Modular.to.pushNamed('/configuracion');
+        return;
+      }
+    });
     reaction<bool>((r) => homeController.online, ((p0) {
       if (p0 == false) {
         Modular.to.pushNamed('/sin_conexion');
-      } else {
-        Modular.to.pushNamed('/home');
       }
     }));
-    Modular.to.pushNamed('/home');
+    // Modular.to.pushNamed('/home');
     super.initState();
   }
 
@@ -76,144 +87,160 @@ class _HomePageState extends State<HomePage> with WindowListener {
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     final navBarTextStyle = FluentTheme.of(context).typography.bodyLarge;
-    return NavigationView(
-      key: viewKey,
-      appBar: NavigationAppBar(
-        title: !kReleaseMode
-            ? SizedBox(
-                height: 120,
-                width: size.width * .96,
-                child: Row(
-                  children: [
-                    Expanded(
-                      child: Container(),
-                    ),
-                    Center(
-                      child: Text(
-                        dataShared.nombreEmpresa,
-                        style: FluentTheme.of(context).typography.title,
-                      ),
-                    ),
-                    Expanded(
-                      child: Row(
-                        children: [
-                          Expanded(child: Container()),
-                          const Icon(FluentIcons.people),
-                          const SizedBox(width: 12),
-                          Text(
-                            dataShared.nombreUsuario,
-                            style: FluentTheme.of(context)
-                                .typography
-                                .body!
-                                .copyWith(
-                                  fontWeight: FontWeight.bold,
-                                ),
+    return Observer(
+      builder: (_) {
+        return NavigationView(
+          key: viewKey,
+          appBar: NavigationAppBar(
+            title: kReleaseMode
+                ? SizedBox(
+                    height: 120,
+                    width: size.width * .96,
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: Container(),
+                        ),
+                        Center(
+                          child: Observer(
+                            builder: (_) {
+                              return Text(
+                                dataShared.nombreEmpresa,
+                                style: FluentTheme.of(context).typography.title,
+                              );
+                            },
                           ),
-                          const SizedBox(
-                            width: 16,
-                          ),
-                          const Icon(FluentIcons.calendar),
-                          const SizedBox(width: 12),
-                          Text(
-                            DateUtil().formatDateString(
-                              DateTime.now().toIso8601String(),
-                            ),
-                            style: FluentTheme.of(context)
-                                .typography
-                                .body!
-                                .copyWith(
-                                  fontWeight: FontWeight.bold,
+                        ),
+                        Expanded(
+                          child: Row(
+                            children: [
+                              Expanded(child: Container()),
+                              const Icon(FluentIcons.people),
+                              const SizedBox(width: 12),
+                              Text(
+                                dataShared.nombreUsuario,
+                                style: FluentTheme.of(context)
+                                    .typography
+                                    .body!
+                                    .copyWith(
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                              ),
+                              const SizedBox(
+                                width: 16,
+                              ),
+                              const Icon(FluentIcons.calendar),
+                              const SizedBox(width: 12),
+                              Text(
+                                DateUtil().formatDateString(
+                                  DateTime.now().toIso8601String(),
                                 ),
-                          )
-                        ],
-                      ),
-                    )
-                  ],
-                ),
-              )
-            : Text(
-                Modular.to.path,
-              ),
-      ),
-      pane: NavigationPane(
-        selected: homeController.index,
-        onChanged: (i) {
-          setState(() {
-            homeController.index = i;
-          });
+                                style: FluentTheme.of(context)
+                                    .typography
+                                    .body!
+                                    .copyWith(
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                              )
+                            ],
+                          ),
+                        )
+                      ],
+                    ),
+                  )
+                : Text(
+                    Modular.to.path,
+                  ),
+          ),
+          pane: NavigationPane(
+            selected: homeController.index,
+            onChanged: (i) {
+              if (configuracionController
+                      .currentRecord!.configuracionEfectuada ==
+                  false) {
+                return;
+              }
+              setState(() {
+                homeController.index = i;
+              });
 
-          switch (homeController.index) {
-            case 0:
-              Modular.to.pushNamed("/home");
-              break;
-            case 1:
-              Modular.to.pushNamed("/cliente/");
-              break;
-            case 2:
-              Modular.to.pushNamed("/vendedor/");
-              break;
-            case 3:
-              Modular.to.pushNamed("/producto/");
-              break;
-            case 4:
-              Modular.to.pushNamed("/venta/reporte");
-              break;
-            case 5:
-              Modular.to.pushNamed("/venta/");
-              break;
-            case 6:
-              Modular.to.pushNamed("/configuracion/");
-              break;
-            // case 6:
-            //   Modular.to.pushNamed("/about/");
-            //   break;
-          }
-        },
-        items: [
-          // 0
-          PaneItem(
-            title: Text("Inicio", style: navBarTextStyle),
-            icon: const Icon(FluentIcons.home),
+              switch (homeController.index) {
+                case 0:
+                  Modular.to.pushNamed("/home");
+                  break;
+                case 1:
+                  Modular.to.pushNamed("/cliente/");
+                  break;
+                case 2:
+                  Modular.to.pushNamed("/vendedor/");
+                  break;
+                case 3:
+                  Modular.to.pushNamed("/producto/");
+                  break;
+                case 4:
+                  Modular.to.pushNamed("/venta/reporte");
+                  break;
+                case 5:
+                  Modular.to.pushNamed("/venta/");
+                  break;
+                case 6:
+                  Modular.to.pushNamed("/configuracion/");
+                  break;
+                case 7:
+                  Modular.to.pushNamed("/info/");
+                  break;
+                // case 6:
+                //   Modular.to.pushNamed("/about/");
+                //   break;
+              }
+            },
+            items: [
+              // 0
+              PaneItem(
+                title: Text("Inicio", style: navBarTextStyle),
+                icon: const Icon(FluentIcons.home),
+              ),
+              // 1
+              PaneItem(
+                title: Text("Cliente", style: navBarTextStyle),
+                icon: const Icon(FluentIcons.people),
+              ),
+              // 2
+              PaneItem(
+                title: Text("Vendedor", style: navBarTextStyle),
+                icon: const Icon(FluentIcons.diamond_user),
+              ),
+              // 3
+              PaneItem(
+                title: Text("Productos", style: navBarTextStyle),
+                icon: const Icon(FluentIcons.product_list),
+              ),
+              // 4
+              PaneItem(
+                title: Text("Reporte ventas", style: navBarTextStyle),
+                icon: const Icon(FluentIcons.shop_server),
+              ),
+              // 5
+              PaneItem(
+                title: Text("Venta", style: navBarTextStyle),
+                icon: const Icon(FluentIcons.shopping_cart),
+              ),
+              //6
+              PaneItem(
+                title: Text("Configuración", style: navBarTextStyle),
+                icon: const Icon(FluentIcons.settings),
+              ),
+              // 6
+              PaneItem(
+                title: Text("Acerca de", style: navBarTextStyle),
+                icon: const Icon(FluentIcons.info),
+              ),
+            ],
+            displayMode: PaneDisplayMode.compact,
           ),
-          // 1
-          PaneItem(
-            title: Text("Cliente", style: navBarTextStyle),
-            icon: const Icon(FluentIcons.people),
-          ),
-          // 2
-          PaneItem(
-            title: Text("Vendedor", style: navBarTextStyle),
-            icon: const Icon(FluentIcons.diamond_user),
-          ),
-          // 3
-          PaneItem(
-            title: Text("Productos", style: navBarTextStyle),
-            icon: const Icon(FluentIcons.product_list),
-          ),
-          // 4
-          PaneItem(
-            title: Text("Reporte ventas", style: navBarTextStyle),
-            icon: const Icon(FluentIcons.shop_server),
-          ),
-          // 5
-          PaneItem(
-            title: Text("Venta", style: navBarTextStyle),
-            icon: const Icon(FluentIcons.shopping_cart),
-          ),
-          //6
-          PaneItem(
-            title: Text("Configuración", style: navBarTextStyle),
-            icon: const Icon(FluentIcons.settings),
-          ),
-          // 6
-          PaneItem(
-            title: Text("Acerca de", style: navBarTextStyle),
-            icon: const Icon(FluentIcons.info),
-          ),
-        ],
-        displayMode: PaneDisplayMode.compact,
-      ),
-      content: const RouterOutlet(),
+          content: const RouterOutlet(),
+        );
+      },
     );
   }
 }

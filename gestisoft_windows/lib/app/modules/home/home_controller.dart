@@ -1,6 +1,7 @@
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:gestisoft_windows/app/modules/home/repositories/configuracion_repository.dart';
 import 'package:mobx/mobx.dart';
+
 part 'home_controller.g.dart';
 
 class HomeController = HomeControllerBase with _$HomeController;

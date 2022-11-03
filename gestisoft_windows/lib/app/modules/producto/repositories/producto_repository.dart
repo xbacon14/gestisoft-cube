@@ -26,4 +26,22 @@ class ProductoRepository {
       "condition": condition,
     });
   }
+
+  Future<String> geraRelatorio({
+    String? filtroDesde,
+    String? filtroHasta,
+    String? orderBy,
+    required bool verInactivos,
+    required bool isPdf,
+  }) async {
+    final response =
+        await dioRestClient.get("/producto/generaReporte", queryParameters: {
+      "filtroDesde": filtroDesde,
+      "filtroHasta": filtroHasta,
+      "orderByCondition": orderBy,
+      "verInactivos": verInactivos,
+      "verPdf": isPdf,
+    });
+    return response.data['body'];
+  }
 }

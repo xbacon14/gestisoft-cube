@@ -3,9 +3,11 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:gestisoft_windows/app/components/helpers/data_shared.dart';
 import 'package:gestisoft_windows/app/components/text_utils/number_formatter.dart';
+import 'package:gestisoft_windows/app/components/ui/empty_state.dart';
 import 'package:gestisoft_windows/app/modules/home/home_controller.dart';
 import 'package:gestisoft_windows/app/modules/home/pages/widgets/sin_conexion_page.dart';
 import 'package:gestisoft_windows/app/modules/producto/pages/producto_controller.dart';
+import 'package:gestisoft_windows/app/modules/producto/pages/widgets/producto_formulario.dart';
 
 class HomeView extends StatefulWidget {
   const HomeView({Key? key}) : super(key: key);
@@ -48,7 +50,7 @@ class _HomeViewState extends State<HomeView> {
                             ),
                           ),
                           width: size.width * .3,
-                          height: 300,
+                          height: 400,
                           child: Acrylic(
                             child: Padding(
                               padding: const EdgeInsets.all(8.0),
@@ -88,39 +90,61 @@ class _HomeViewState extends State<HomeView> {
                                     height: 2,
                                     width: size.width * .24,
                                   ),
-                                  ListView.builder(
-                                    shrinkWrap: true,
-                                    itemCount:
-                                        productoController.productos.length,
-                                    itemBuilder: (context, index) {
-                                      return ListTile(
-                                        title: Row(
-                                          children: [
-                                            Expanded(
-                                              child: Text(
-                                                productoController
-                                                        .productos[index]
-                                                        .nombre ??
-                                                    '',
-                                                style: FluentTheme.of(context)
-                                                    .typography
-                                                    .body,
-                                              ),
+                                  Observer(
+                                    builder: (context) => productoController
+                                            .productos.isEmpty
+                                        ? EmptyState(
+                                            texto:
+                                                "No se ha encontrado ningún producto, deseas registar uno?",
+                                            icono: const Icon(
+                                              FluentIcons
+                                                  .remove_from_shopping_list,
+                                              size: 48,
                                             ),
-                                            SizedBox(
-                                              width: 100,
-                                              child: Text(
-                                                "${NumberFormater.format(productoController.productos[index].cantidad!, productoController.productos[index].resolvePrecisionUnidadMedida())} ${productoController.productos[index].resolveUnidadMedida()}",
-                                                textAlign: TextAlign.end,
-                                                style: FluentTheme.of(context)
-                                                    .typography
-                                                    .body,
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      );
-                                    },
+                                            onButtonPressed: () {
+                                              Modular.to
+                                                  .pushNamed('/producto/');
+                                            },
+                                            buttonTitle: 'Productos',
+                                          )
+                                        : ListView.builder(
+                                            shrinkWrap: true,
+                                            itemCount: productoController
+                                                .productos.length,
+                                            itemBuilder: (context, index) {
+                                              return ListTile(
+                                                title: Row(
+                                                  children: [
+                                                    Expanded(
+                                                      child: Text(
+                                                        productoController
+                                                                .productos[
+                                                                    index]
+                                                                .nombre ??
+                                                            '',
+                                                        style: FluentTheme.of(
+                                                                context)
+                                                            .typography
+                                                            .body,
+                                                      ),
+                                                    ),
+                                                    SizedBox(
+                                                      width: 100,
+                                                      child: Text(
+                                                        "${NumberFormater.format(productoController.productos[index].cantidad!, productoController.productos[index].resolvePrecisionUnidadMedida())} ${productoController.productos[index].resolveUnidadMedida()}",
+                                                        textAlign:
+                                                            TextAlign.end,
+                                                        style: FluentTheme.of(
+                                                                context)
+                                                            .typography
+                                                            .body,
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                              );
+                                            },
+                                          ),
                                   ),
                                 ],
                               ),

@@ -36,7 +36,11 @@ class EmptyState extends StatelessWidget {
             ),
             if (buttonTitle != null)
               FilledButton(
-                onPressed: onButtonPressed != null ? onButtonPressed!() : () {},
+                onPressed: () {
+                  if (onButtonPressed != null) {
+                    onButtonPressed!();
+                  }
+                },
                 style: FluentTheme.of(context).buttonTheme.defaultButtonStyle,
                 child: Text(
                   buttonTitle ?? "",

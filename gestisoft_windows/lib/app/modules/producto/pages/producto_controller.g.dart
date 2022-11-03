@@ -89,6 +89,54 @@ mixin _$ProductoController on _ProductoControllerBase, Store {
     });
   }
 
+  late final _$pdfAtom =
+      Atom(name: '_ProductoControllerBase.pdf', context: context);
+
+  @override
+  Uint8List? get pdf {
+    _$pdfAtom.reportRead();
+    return super.pdf;
+  }
+
+  @override
+  set pdf(Uint8List? value) {
+    _$pdfAtom.reportWrite(value, super.pdf, () {
+      super.pdf = value;
+    });
+  }
+
+  late final _$pdfFileAtom =
+      Atom(name: '_ProductoControllerBase.pdfFile', context: context);
+
+  @override
+  File get pdfFile {
+    _$pdfFileAtom.reportRead();
+    return super.pdfFile;
+  }
+
+  @override
+  set pdfFile(File value) {
+    _$pdfFileAtom.reportWrite(value, super.pdfFile, () {
+      super.pdfFile = value;
+    });
+  }
+
+  late final _$verInactivosAtom =
+      Atom(name: '_ProductoControllerBase.verInactivos', context: context);
+
+  @override
+  bool get verInactivos {
+    _$verInactivosAtom.reportRead();
+    return super.verInactivos;
+  }
+
+  @override
+  set verInactivos(bool value) {
+    _$verInactivosAtom.reportWrite(value, super.verInactivos, () {
+      super.verInactivos = value;
+    });
+  }
+
   @override
   String toString() {
     return '''
@@ -96,7 +144,10 @@ selected: ${selected},
 values: ${values},
 currentRecord: ${currentRecord},
 processando: ${processando},
-listaVacia: ${listaVacia}
+listaVacia: ${listaVacia},
+pdf: ${pdf},
+pdfFile: ${pdfFile},
+verInactivos: ${verInactivos}
     ''';
   }
 }

@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import py.edu.gestisoft.model.base.Producto;
 import py.edu.gestisoft.service.base.ProductoService;
-import py.edu.gestisoft.utils.sql.SQLUtils;
 
 @RestController
 @CrossOrigin
@@ -48,5 +47,12 @@ public class ProductoController {
 	public ResponseEntity<List<Producto>> findByNombreOCodigo(@RequestParam String condition) {
 		return ResponseEntity.ok(productoService.findByNombre(condition));
 
+	}
+
+	@GetMapping("/generaReporte")
+	public ResponseEntity<?> generaReporte(@RequestParam String filtroDesde, @RequestParam String filtroHasta,
+			@RequestParam String orderByCondition, @RequestParam boolean verInactivos, @RequestParam boolean verPdf) {
+		return ResponseEntity.ok(
+				productoService.generaReporteCliente(filtroDesde, filtroHasta, verInactivos, orderByCondition, verPdf));
 	}
 }

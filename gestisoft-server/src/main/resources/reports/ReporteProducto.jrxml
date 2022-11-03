@@ -14,21 +14,24 @@
 	<field name="estado" class="java.lang.Boolean">
 		<fieldDescription><![CDATA[estado]]></fieldDescription>
 	</field>
-	<field name="direccion" class="java.lang.String">
-		<fieldDescription><![CDATA[direccion]]></fieldDescription>
+	<field name="unidadMedida" class="java.lang.String">
+		<fieldDescription><![CDATA[unidadMedida]]></fieldDescription>
 	</field>
-	<field name="celular" class="java.lang.String">
-		<fieldDescription><![CDATA[celular]]></fieldDescription>
+	<field name="cantidad" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[cantidad]]></fieldDescription>
 	</field>
 	<field name="id" class="java.lang.Long">
 		<fieldDescription><![CDATA[id]]></fieldDescription>
 	</field>
+	<field name="precioVenta" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[precioVenta]]></fieldDescription>
+	</field>
 	<field name="nombre" class="java.lang.String">
 		<fieldDescription><![CDATA[nombre]]></fieldDescription>
 	</field>
-	<field name="ciRuc" class="java.lang.String">
-		<fieldDescription><![CDATA[ciRuc]]></fieldDescription>
-	</field>
+	<variable name="V_TOTAL_VALORES" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{precioVenta}.multiply( $F{cantidad} )]]></variableExpression>
+	</variable>
 	<variable name="V_TOTAL_REGISTROS" class="java.math.BigDecimal" calculation="Count">
 		<variableExpression><![CDATA[$F{id}]]></variableExpression>
 	</variable>
@@ -48,7 +51,7 @@
 				<textElement textAlignment="Center">
 					<font size="16" isBold="true"/>
 				</textElement>
-				<text><![CDATA[Reporte de Clientes
+				<text><![CDATA[Reporte de Productos
 ]]></text>
 			</staticText>
 			<textField>
@@ -99,7 +102,7 @@
 				<text><![CDATA[Código]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="30" y="0" width="130" height="12" uuid="faef00a2-cae9-492f-a296-d44b04368862">
+				<reportElement x="30" y="0" width="193" height="12" uuid="faef00a2-cae9-492f-a296-d44b04368862">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 				<box>
@@ -111,7 +114,7 @@
 				<text><![CDATA[Nombre]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="160" y="0" width="64" height="12" uuid="59eabc77-ad82-468c-bc7e-87e2e7d81e49">
+				<reportElement x="223" y="0" width="64" height="12" uuid="59eabc77-ad82-468c-bc7e-87e2e7d81e49">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 				</reportElement>
@@ -121,10 +124,10 @@
 				<textElement textAlignment="Center">
 					<font size="8"/>
 				</textElement>
-				<text><![CDATA[CI/RUC]]></text>
+				<text><![CDATA[Stock]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="224" y="0" width="72" height="12" uuid="ec649cc1-6f35-4a94-8440-8dd42de0e7f8">
+				<reportElement x="287" y="0" width="112" height="12" uuid="ec649cc1-6f35-4a94-8440-8dd42de0e7f8">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 				</reportElement>
@@ -134,10 +137,10 @@
 				<textElement textAlignment="Center">
 					<font size="8"/>
 				</textElement>
-				<text><![CDATA[Celular]]></text>
+				<text><![CDATA[Unidad de medida]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="296" y="0" width="194" height="12" uuid="5d6ee8f3-f224-46a5-baaa-93785d3aeff5">
+				<reportElement x="400" y="0" width="90" height="12" uuid="5d6ee8f3-f224-46a5-baaa-93785d3aeff5">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 				<box>
@@ -146,7 +149,7 @@
 				<textElement textAlignment="Center">
 					<font size="8"/>
 				</textElement>
-				<text><![CDATA[Direccion]]></text>
+				<text><![CDATA[Precio Venta]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="490" y="0" width="64" height="12" uuid="4cbcdc55-12bf-41d7-b1c9-3806b20d324a">
@@ -173,7 +176,7 @@
 				<textFieldExpression><![CDATA[$F{id}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement style="zebrado" x="30" y="0" width="130" height="12" uuid="582dc2cc-df1b-40b5-a49e-db3ebe90cd6e">
+				<reportElement style="zebrado" x="30" y="0" width="193" height="12" uuid="582dc2cc-df1b-40b5-a49e-db3ebe90cd6e">
 					<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
 				</reportElement>
 				<textElement textAlignment="Left">
@@ -183,18 +186,18 @@
 				<textFieldExpression><![CDATA[$F{nombre}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement style="zebrado" x="160" y="0" width="64" height="12" uuid="16018439-345c-4552-83ad-7818fe2f1841">
+				<reportElement style="zebrado" x="223" y="0" width="64" height="12" uuid="16018439-345c-4552-83ad-7818fe2f1841">
 					<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 				</reportElement>
-				<textElement textAlignment="Left">
+				<textElement textAlignment="Right">
 					<font size="8"/>
 					<paragraph lineSpacingSize="0.0" leftIndent="12"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{ciRuc}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[py.com.flextech.utils.formters.NumberFormat.formataNumber(1l, $F{cantidad})]]></textFieldExpression>
 			</textField>
 			<textField pattern="dd/MM/yyyy">
-				<reportElement style="zebrado" x="224" y="0" width="72" height="12" uuid="43b832ed-fe1e-4a60-94f9-369cbb328af6">
+				<reportElement style="zebrado" x="287" y="0" width="112" height="12" uuid="43b832ed-fe1e-4a60-94f9-369cbb328af6">
 					<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 				</reportElement>
@@ -202,17 +205,17 @@
 					<font size="8"/>
 					<paragraph leftIndent="12"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{celular}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{unidadMedida}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement style="zebrado" x="296" y="0" width="194" height="12" uuid="308a563a-bdfe-456a-85db-d7cd3cc803c6">
+				<reportElement style="zebrado" x="400" y="0" width="90" height="12" uuid="308a563a-bdfe-456a-85db-d7cd3cc803c6">
 					<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
 				</reportElement>
-				<textElement textAlignment="Left">
+				<textElement textAlignment="Right">
 					<font size="8"/>
 					<paragraph leftIndent="12"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{direccion}.isEmpty() ? "NO DEFINIDO" : $F{direccion}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[py.com.flextech.utils.formters.NumberFormat.formataNumber(1l, $F{precioVenta})]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement style="zebrado" x="490" y="0" width="64" height="12" uuid="f9bb8d96-60f6-490a-8efe-bdf8a21b76d0"/>
@@ -226,31 +229,6 @@
 	<lastPageFooter>
 		<band height="48">
 			<property name="com.jaspersoft.studio.unit.height" value="px"/>
-			<staticText>
-				<reportElement x="359" y="19" width="140" height="12" backcolor="#E6E6E6" uuid="122d2e5c-2d91-4ca3-a20e-26fb3c334458">
-					<property name="com.jaspersoft.studio.unit.y" value="px"/>
-					<property name="com.jaspersoft.studio.unit.height" value="px"/>
-				</reportElement>
-				<box>
-					<topPen lineWidth="1.0"/>
-				</box>
-				<textElement textAlignment="Right" verticalAlignment="Middle">
-					<font size="8" isBold="true"/>
-				</textElement>
-				<text><![CDATA[TOTAL REGISTROS]]></text>
-			</staticText>
-			<textField evaluationTime="Page">
-				<reportElement x="499" y="19" width="55" height="12" backcolor="#E6E6E6" uuid="c281664b-a380-4879-acdf-a4834939f7aa">
-					<property name="com.jaspersoft.studio.unit.height" value="px"/>
-				</reportElement>
-				<box>
-					<topPen lineWidth="1.0"/>
-				</box>
-				<textElement textAlignment="Right" verticalAlignment="Middle">
-					<font size="8" isBold="true"/>
-				</textElement>
-				<textFieldExpression><![CDATA[py.com.flextech.utils.formters.NumberFormat.formataNumber(1l, $V{V_TOTAL_REGISTROS})]]></textFieldExpression>
-			</textField>
 		</band>
 	</lastPageFooter>
 	<noData>

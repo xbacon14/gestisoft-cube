@@ -1,5 +1,8 @@
+import 'dart:convert';
+import 'dart:io';
+import 'dart:typed_data';
+
 import 'package:fluent_ui/fluent_ui.dart';
-import 'package:flutter/foundation.dart';
 import 'package:gestisoft_windows/app/components/ui/alert.dart';
 import 'package:gestisoft_windows/app/modules/producto/models/producto.dart';
 import 'package:gestisoft_windows/app/modules/producto/repositories/producto_repository.dart';
@@ -31,6 +34,16 @@ abstract class _ProductoControllerBase with Store {
   @observable
   bool listaVacia = false;
 
+  // REPORTE
+  @observable
+  Uint8List? pdf;
+
+  @observable
+  File pdfFile = File('');
+
+  @observable
+  bool verInactivos = false;
+
   ObservableList<Producto> productos = ObservableList();
 
   ObservableList<Producto> dataProvider = ObservableList();
@@ -44,6 +57,7 @@ abstract class _ProductoControllerBase with Store {
       productos.clear();
       productos.addAll(
           response.data.map<Producto>((p) => Producto.fromJson(p)).toList());
+      resolveListaVacia();
     }
   }
 
@@ -81,6 +95,8 @@ abstract class _ProductoControllerBase with Store {
   resolveListaVacia() {
     if (dataProvider.isEmpty) {
       listaVacia = true;
+    } else if (productos.isEmpty) {
+      listaVacia = true;
     } else {
       listaVacia = false;
     }
@@ -103,5 +119,31 @@ abstract class _ProductoControllerBase with Store {
       debugPrint("no se pudieron consultar los clientes");
     }
     return lista;
+  }
+
+  Future<Uint8List> geraRelatorio({
+    required BuildContext context,
+    String? filtroDesde,
+    String? filtroHasta,
+    String? orderBy,
+    required bool isPdf,
+  }) async {
+    processando = true;
+    final response = await productoRepository
+        .geraRelatorio(
+            filtroDesde: filtroDesde,
+            filtroHasta: filtroHasta,
+            orderBy: orderBy,
+            verInactivos: verInactivos,
+            isPdf: isPdf)
+        .whenComplete(() => processando = false);
+    if (response.compareTo('error') == 0) {
+      Alert.show(
+          context: context,
+          message: "Error, no se pudo generar el reporte",
+          type: 2);
+      throw Error();
+    } else {}
+    return base64.decode(response);
   }
 }

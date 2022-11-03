@@ -56,7 +56,13 @@ public class VentaService {
 	}
 
 	public Long getProximoId() {
-		return ventaMapper.getProximoId() + 1l;
+		Long nextId = ventaMapper.getProximoId();
+		if (nextId != null) {
+			return nextId + 1l;
+		} else {
+			return 1l;
+		}
+
 	}
 
 	public List<Venta> findByNombre(String condition) {

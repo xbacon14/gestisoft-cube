@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper
+	namespace="py.edu.gestisoft.mapper.base.ConfiguracionMapper">
+
+
+	<resultMap id="resultSimples"
+		type="py.edu.gestisoft.model.sistema.DatosEmpresa">
+		<id property="id" column="ID_DATOS_EMPRESA" />
+		<result property="nombre" column="NOMBRE" />
+		<result property="ruc" column="RUC" />
+		<result property="celular" column="CELULAR" />
+		<result property="lineaBaja" column="LINEA_BAJA" />
+		<result property="email" column="EMAIL" />
+		<result property="ciudad" column="CIUDAD" />
+		<result property="direccion" column="DIRECCION" />
+		<result property="observacion" column="OBSERVACION" />
+		<result property="fechaRegistro" column="FECHA_REGISTRO" />
+		<result property="configuracionEfectuada"
+			column="BO_CONFIGURACION_EFECTUADA" />
+	</resultMap>
+
+
+	<select id="truncateTables">
+		CALL truncate_tables();
+	</select>
+
+	<select id="verificaConfiguracionEfectuada"
+		resultMap="resultSimples">
+		SELECT * FROM datos_empresa
+	</select>
+
+
+
+</mapper>

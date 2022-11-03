@@ -48,6 +48,7 @@ flutter:
 
   assets:
    - .env
+   -  assets/logo.png
 
 scripts:
   mobx_build: $clean & $get & $runner build --delete-conflicting-outputs

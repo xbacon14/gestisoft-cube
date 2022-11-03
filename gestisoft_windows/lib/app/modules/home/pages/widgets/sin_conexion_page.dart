@@ -39,21 +39,22 @@ class _SinConexionPageState extends State<SinConexionPage> {
               height: 24,
             ),
             FilledButton(
-                child: Container(
-                  padding: const EdgeInsets.symmetric(vertical: 8),
-                  width: 170,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: const [
-                      Icon(
-                        FluentIcons.refresh,
-                        color: Colors.white,
-                      ),
-                      Text("Intentar nuevamente"),
-                    ],
-                  ),
+              child: Container(
+                padding: const EdgeInsets.symmetric(vertical: 8),
+                width: 170,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: const [
+                    Icon(
+                      FluentIcons.refresh,
+                      color: Colors.white,
+                    ),
+                    Text("Intentar nuevamente"),
+                  ],
                 ),
-                onPressed: () => homeController.verificarConexion()),
+              ),
+              onPressed: () => homeController.verificarConexion(),
+            ),
           ],
         ),
       ),

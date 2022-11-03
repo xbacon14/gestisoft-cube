@@ -260,9 +260,9 @@ class _ReporteVentaPageState extends State<ReporteVentaPage> {
                                                       .remove_from_shopping_list,
                                                   size: 48,
                                                 ),
-                                                onButtonPressed: () =>
-                                                    debugPrint(
-                                                        "registrar venta"),
+                                                onButtonPressed: () => Modular
+                                                    .to
+                                                    .pushNamed('/venta/'),
                                                 buttonTitle: 'Registrar venta',
                                               )
                                             : VentaTable();

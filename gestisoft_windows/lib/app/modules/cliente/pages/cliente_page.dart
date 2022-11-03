@@ -239,8 +239,11 @@ class _ClientePageState extends State<ClientePage> {
                                                   size: 48,
                                                 ),
                                                 onButtonPressed: () =>
-                                                    debugPrint(
-                                                        "registrar cliente"),
+                                                    showDialog(
+                                                  context: context,
+                                                  builder: (context) =>
+                                                      const ClienteFormulario(),
+                                                ),
                                                 buttonTitle:
                                                     'Registrar cliente',
                                               )
@@ -253,10 +256,8 @@ class _ClientePageState extends State<ClientePage> {
                           ),
                         ),
                         Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
                           children: [
-                            Expanded(
-                              child: Container(),
-                            ),
                             Text(
                               dataShared.version,
                               style:

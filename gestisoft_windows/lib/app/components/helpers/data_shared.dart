@@ -5,9 +5,9 @@ class DataShared = DataSharedBase with _$DataShared;
 
 abstract class DataSharedBase with Store {
   @observable
-  String nombreEmpresa = "J.P. MORGAN DISTRIBUIDORA";
+  String nombreEmpresa = "SIN DEFINIR";
   @observable
   String nombreUsuario = "USUARIO 1";
   @observable
-  String version = "GESTISOFT v0.5 GUILLERMO CABALLERO - ITALO GOLIN";
+  String version = "GESTISOFT v1.1 GUILLERMO CABALLERO - ITALO GOLIN";
 }
