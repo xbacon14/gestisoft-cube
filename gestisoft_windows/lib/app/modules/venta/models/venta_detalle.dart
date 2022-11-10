@@ -33,7 +33,7 @@ abstract class VentaDetalleBase with Store {
     id = null;
     cantidad = 1;
     precio = 0;
-    producto = Producto.nuevo();
+    producto = null;
   }
 
   Map<String, dynamic> toJson() {

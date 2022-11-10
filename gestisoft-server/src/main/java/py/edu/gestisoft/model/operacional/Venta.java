@@ -70,11 +70,6 @@ public class Venta {
 	@OneToMany(mappedBy = "venta")
 	private List<VentaDetalle> detalles;
 
-	@PrePersist
-	public void setFecha() {
-		this.fecha = LocalDateTime.now();
-	}
-
 	public Venta(Long i) {
 		this.id = i;
 	}

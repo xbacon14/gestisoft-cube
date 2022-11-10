@@ -93,9 +93,11 @@ class _EliminarProductoDialogState extends State<EliminarProductoDialog> {
                       nombre: widget.producto.nombre!)) {
                 productoController
                     .eliminaProductoById(context, widget.producto.id!)
-                    .whenComplete(() => productoController.findAllProductos());
+                    .whenComplete(() {
+                  productoController.findAllProductos();
+                  Modular.to.pop();
+                });
               }
-              Modular.to.pop();
             },
           ),
         ),

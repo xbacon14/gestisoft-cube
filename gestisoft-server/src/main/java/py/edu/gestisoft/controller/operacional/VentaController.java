@@ -55,7 +55,9 @@ public class VentaController {
 
 	@GetMapping("/generaReporte")
 	public ResponseEntity<?> generaReporte(@RequestParam Long cliente, @RequestParam String docNro,
-			@RequestParam String dtInicio, @RequestParam String dtFinal, @RequestParam boolean verPdf) {
-		return ResponseEntity.ok(ventaService.generaReporteVenta(cliente, docNro, dtInicio, dtFinal, verPdf));
+			@RequestParam String dtInicio, @RequestParam String dtFinal, @RequestParam boolean verPdf,
+			@RequestParam boolean verAnuladas) {
+		return ResponseEntity
+				.ok(ventaService.generaReporteVenta(cliente, docNro, dtInicio, dtFinal, verPdf, verAnuladas));
 	}
 }

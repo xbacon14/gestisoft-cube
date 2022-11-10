@@ -43,7 +43,7 @@ abstract class _VentaControllerBase with Store {
   @observable
   TextEditingController precioVentaET = TextEditingController();
   @observable
-  TextEditingController cantET = TextEditingController();
+  TextEditingController cantET = TextEditingController(text: "1");
 
   @observable
   DateTimeRange filtroPeriod =
@@ -55,6 +55,9 @@ abstract class _VentaControllerBase with Store {
   bool processando = true;
   @observable
   bool produtoSeleccionado = false;
+
+  @observable
+  bool verAnuladas = false;
 
   @observable
   Venta currentRecord = Venta().nuevo();
@@ -109,7 +112,7 @@ abstract class _VentaControllerBase with Store {
     vehiculoET.clear();
     descripcionET.clear();
     precioVentaET.clear();
-    cantET.clear();
+    cantET.text = "1";
     currentRecord = Venta().nuevo();
     listaVacia = true;
   }
@@ -224,7 +227,9 @@ abstract class _VentaControllerBase with Store {
             dtInicio:
                 DateUtil.sqlDateFormat(filtroPeriod.start.toIso8601String()),
             dtFinal: DateUtil.sqlDateFormat(filtroPeriod.end.toIso8601String()),
-            isPdf: isPdf)
+            isPdf: isPdf,
+            idCliente: currentRecord.cliente!.id,
+            verAnuladas: verAnuladas)
         .whenComplete(() => processando = false);
     if (response.compareTo('error') == 0) {
       Alert.show(

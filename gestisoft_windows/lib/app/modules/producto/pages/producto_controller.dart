@@ -3,6 +3,7 @@ import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:fluent_ui/fluent_ui.dart';
+import 'package:flutter_modular/flutter_modular.dart';
 import 'package:gestisoft_windows/app/components/ui/alert.dart';
 import 'package:gestisoft_windows/app/modules/producto/models/producto.dart';
 import 'package:gestisoft_windows/app/modules/producto/repositories/producto_repository.dart';
@@ -61,13 +62,18 @@ abstract class _ProductoControllerBase with Store {
     }
   }
 
-  Future<void> save() async {
+  Future<void> save(BuildContext context) async {
     processando = true;
     final response = await productoRepository
         .save(currentRecord)
         .whenComplete(() => processando = false);
 
     if (response.statusCode == 200) {
+      Alert.show(
+          context: context,
+          message: "Se ha guardado el registro del producto satisfactoriamente",
+          type: 0);
+      Modular.to.pop();
       debugPrint(
           "El cliente ${currentRecord.nombre} ha sido guardado con exito");
       currentRecord = Producto.nuevo();
@@ -93,13 +99,10 @@ abstract class _ProductoControllerBase with Store {
   }
 
   resolveListaVacia() {
-    if (dataProvider.isEmpty) {
+    if (dataProvider.isEmpty || productos.isEmpty) {
       listaVacia = true;
-    } else if (productos.isEmpty) {
-      listaVacia = true;
-    } else {
-      listaVacia = false;
     }
+    listaVacia = false;
   }
 
   Future<List<Producto>> findByNombreOCodigo(String condition) async {

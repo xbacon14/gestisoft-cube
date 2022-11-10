@@ -204,6 +204,40 @@ class _FiltroVentaDialogState extends State<FiltroVentaDialog> {
           const SizedBox(
             height: 8,
           ),
+          TextButton(
+            style: ButtonStyle(
+              backgroundColor: ButtonState.all(Colors.white),
+            ),
+            onPressed: () {
+              ventaController.verAnuladas = !ventaController.verAnuladas;
+            },
+            child: Row(
+              children: [
+                Text(
+                  "Ver anuladas",
+                  style: FluentTheme.of(context).typography.body,
+                ),
+                const SizedBox(
+                  width: 16,
+                ),
+                SizedBox(
+                  height: 36,
+                  width: 36,
+                  child: Observer(
+                    builder: (_) {
+                      return Checkbox(
+                        checked: ventaController.verAnuladas,
+                        onChanged: (value) {
+                          ventaController.verAnuladas =
+                              !ventaController.verAnuladas;
+                        },
+                      );
+                    },
+                  ),
+                ),
+              ],
+            ),
+          ),
         ],
       ),
       actions: [

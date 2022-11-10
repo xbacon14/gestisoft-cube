@@ -38,6 +38,7 @@ class VentaRepository {
     required String dtInicio,
     required String dtFinal,
     required bool isPdf,
+    required bool verAnuladas,
   }) async {
     // debugPrint("$idCliente $docNro $dtInicio $dtFinal $isPdf");
     // return "";
@@ -48,6 +49,7 @@ class VentaRepository {
       "docNro": docNro,
       "verPdf": isPdf,
       "cliente": idCliente ?? 0,
+      "verAnuladas": verAnuladas,
     });
     return response.data['body'];
   }

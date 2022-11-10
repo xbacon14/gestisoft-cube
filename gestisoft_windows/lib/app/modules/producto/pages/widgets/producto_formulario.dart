@@ -75,14 +75,7 @@ class _ProductoFormularioState extends State<ProductoFormulario> {
                 onPressed: () {
                   debugPrint(productoController.currentRecord.toString());
                   if (formKey.currentState!.validate()) {
-                    productoController.save().then((value) {
-                      Alert.show(
-                          context: context,
-                          message:
-                              "Se ha guardado el registro del producto satisfactoriamente",
-                          type: 0);
-                      Modular.to.pop();
-                    }).whenComplete(
+                    productoController.save(context).whenComplete(
                         () => productoController.findAllProductos());
                   } else {
                     debugPrint("formulario no valido");
@@ -163,8 +156,6 @@ class _ProductoFormularioState extends State<ProductoFormulario> {
                         validator: (text) {
                           if (text == null || text.length < 3) {
                             return 'El nombre es obligatorio';
-                          } else if (text.length > 8) {
-                            return 'El nombre no puede tener mas que 8 caracteres';
                           }
                           return null;
                         },

@@ -194,7 +194,7 @@
 					<font size="8"/>
 					<paragraph lineSpacingSize="0.0" leftIndent="12"/>
 				</textElement>
-				<textFieldExpression><![CDATA[py.com.flextech.utils.formters.NumberFormat.formataNumber(1l, $F{cantidad})]]></textFieldExpression>
+				<textFieldExpression><![CDATA[py.edu.gestisoft.utils.text.NumberFormat.formataNumber(1l, $F{cantidad})]]></textFieldExpression>
 			</textField>
 			<textField pattern="dd/MM/yyyy">
 				<reportElement style="zebrado" x="287" y="0" width="112" height="12" uuid="43b832ed-fe1e-4a60-94f9-369cbb328af6">
@@ -215,7 +215,7 @@
 					<font size="8"/>
 					<paragraph leftIndent="12"/>
 				</textElement>
-				<textFieldExpression><![CDATA[py.com.flextech.utils.formters.NumberFormat.formataNumber(1l, $F{precioVenta})]]></textFieldExpression>
+				<textFieldExpression><![CDATA[py.edu.gestisoft.utils.text.NumberFormat.formataNumber(1l, $F{precioVenta})]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement style="zebrado" x="490" y="0" width="64" height="12" uuid="f9bb8d96-60f6-490a-8efe-bdf8a21b76d0"/>

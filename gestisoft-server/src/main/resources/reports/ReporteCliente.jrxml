@@ -249,7 +249,7 @@
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font size="8" isBold="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA[py.com.flextech.utils.formters.NumberFormat.formataNumber(1l, $V{V_TOTAL_REGISTROS})]]></textFieldExpression>
+				<textFieldExpression><![CDATA[py.edu.gestisoft.utils.text.NumberFormat.formataNumber(1l, $V{V_TOTAL_REGISTROS})]]></textFieldExpression>
 			</textField>
 		</band>
 	</lastPageFooter>

@@ -217,6 +217,22 @@ mixin _$VentaController on _VentaControllerBase, Store {
     });
   }
 
+  late final _$verAnuladasAtom =
+      Atom(name: '_VentaControllerBase.verAnuladas', context: context);
+
+  @override
+  bool get verAnuladas {
+    _$verAnuladasAtom.reportRead();
+    return super.verAnuladas;
+  }
+
+  @override
+  set verAnuladas(bool value) {
+    _$verAnuladasAtom.reportWrite(value, super.verAnuladas, () {
+      super.verAnuladas = value;
+    });
+  }
+
   late final _$currentRecordAtom =
       Atom(name: '_VentaControllerBase.currentRecord', context: context);
 
@@ -379,6 +395,7 @@ filtroPeriod: ${filtroPeriod},
 listaVacia: ${listaVacia},
 processando: ${processando},
 produtoSeleccionado: ${produtoSeleccionado},
+verAnuladas: ${verAnuladas},
 currentRecord: ${currentRecord},
 detalleActual: ${detalleActual},
 pdf: ${pdf},

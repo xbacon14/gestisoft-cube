@@ -74,18 +74,13 @@ class _VendedorFormularioState extends State<VendedorFormulario> {
                 onPressed: () {
                   if (formKey.currentState!.validate()) {
                     vendedorController
-                        .saveVendedor()
+                        .saveVendedor(context)
                         .then((value) => Modular.to.pop())
                         .whenComplete(
                             () => vendedorController.findAllVendedores());
                   } else {
                     debugPrint("formulario no valido");
                   }
-                  Alert.show(
-                      context: context,
-                      message:
-                          "Se ha guardado el registro del vendedor satisfactoriamente",
-                      type: 0);
                 },
               ),
             ],

@@ -75,7 +75,7 @@ abstract class _VendedorControllerBase with Store {
     return lista;
   }
 
-  Future<void> saveVendedor() async {
+  Future<void> saveVendedor(BuildContext context) async {
     processando = true;
 
     final response = await vendedorRepository
@@ -85,9 +85,17 @@ abstract class _VendedorControllerBase with Store {
     if (response.statusCode == 200) {
       debugPrint(
           "El cliente ${currentRecord.nombre} ha sido guardado con exito");
+      Alert.show(
+          context: context,
+          message: "Se ha guardado el registro del vendedor satisfactoriamente",
+          type: 0);
       currentRecord = Vendedor.nuevo();
     } else {
-      debugPrint("No se ha podido guardar el cliente");
+      debugPrint("No se ha podido guardar el vendedor");
+      Alert.show(
+          context: context,
+          message: "Ya existe un vendedor con este CI",
+          type: 1);
     }
   }
 

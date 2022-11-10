@@ -44,6 +44,9 @@
 	<field name="observacion" class="java.lang.String">
 		<fieldDescription><![CDATA[observacion]]></fieldDescription>
 	</field>
+	<variable name="VL_TOTAL_CANCELADO" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[($F{estado} == false ?  $F{total} : 0)]]></variableExpression>
+	</variable>
 	<variable name="VL_TOTAL_VENTAS" class="java.math.BigDecimal" calculation="Sum">
 		<variableExpression><![CDATA[$F{total}]]></variableExpression>
 		<initialValueExpression><![CDATA[0]]></initialValueExpression>
@@ -100,7 +103,7 @@
 		</band>
 	</title>
 	<columnHeader>
-		<band height="12" splitType="Stretch">
+		<band height="17" splitType="Stretch">
 			<property name="com.jaspersoft.studio.unit.height" value="px"/>
 			<staticText>
 				<reportElement x="0" y="0" width="30" height="12" uuid="2daa3fae-a7b0-43da-9520-972580013320">
@@ -115,7 +118,7 @@
 				<text><![CDATA[Código]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="30" y="0" width="160" height="12" uuid="faef00a2-cae9-492f-a296-d44b04368862">
+				<reportElement x="30" y="0" width="130" height="12" uuid="faef00a2-cae9-492f-a296-d44b04368862">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 				<box>
@@ -127,7 +130,7 @@
 				<text><![CDATA[Cliente]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="190" y="0" width="110" height="12" uuid="59eabc77-ad82-468c-bc7e-87e2e7d81e49">
+				<reportElement x="160" y="0" width="110" height="12" uuid="59eabc77-ad82-468c-bc7e-87e2e7d81e49">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 				<box>
@@ -139,7 +142,7 @@
 				<text><![CDATA[Vendedor]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="300" y="0" width="70" height="12" uuid="ec649cc1-6f35-4a94-8440-8dd42de0e7f8">
+				<reportElement x="270" y="0" width="70" height="12" uuid="ec649cc1-6f35-4a94-8440-8dd42de0e7f8">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 				<box>
@@ -151,7 +154,7 @@
 				<text><![CDATA[Fecha]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="370" y="0" width="120" height="12" uuid="5d6ee8f3-f224-46a5-baaa-93785d3aeff5">
+				<reportElement x="340" y="0" width="120" height="12" uuid="5d6ee8f3-f224-46a5-baaa-93785d3aeff5">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 				<box>
@@ -163,7 +166,7 @@
 				<text><![CDATA[Direccion]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="490" y="0" width="64" height="12" uuid="4cbcdc55-12bf-41d7-b1c9-3806b20d324a">
+				<reportElement x="460" y="0" width="64" height="12" uuid="4cbcdc55-12bf-41d7-b1c9-3806b20d324a">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 				<box>
@@ -173,6 +176,18 @@
 					<font size="8"/>
 				</textElement>
 				<text><![CDATA[Valor]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="524" y="0" width="30" height="12" uuid="1906c6eb-a86e-457b-92d3-69311b7ab190">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box>
+					<bottomPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Anulado]]></text>
 			</staticText>
 		</band>
 	</columnHeader>
@@ -187,7 +202,7 @@
 				<textFieldExpression><![CDATA[$F{id}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement style="zebrado" x="30" y="0" width="160" height="12" uuid="582dc2cc-df1b-40b5-a49e-db3ebe90cd6e">
+				<reportElement style="zebrado" x="30" y="0" width="130" height="12" uuid="582dc2cc-df1b-40b5-a49e-db3ebe90cd6e">
 					<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
 				</reportElement>
 				<textElement textAlignment="Left">
@@ -197,7 +212,7 @@
 				<textFieldExpression><![CDATA[$F{cliente}.getNombre()]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement style="zebrado" x="190" y="0" width="110" height="12" uuid="16018439-345c-4552-83ad-7818fe2f1841">
+				<reportElement style="zebrado" x="160" y="0" width="110" height="12" uuid="16018439-345c-4552-83ad-7818fe2f1841">
 					<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
 				</reportElement>
 				<textElement textAlignment="Left">
@@ -207,14 +222,14 @@
 				<textFieldExpression><![CDATA[$F{vendedor}.getNombre()]]></textFieldExpression>
 			</textField>
 			<textField pattern="dd/MM/yyyy">
-				<reportElement style="zebrado" x="300" y="0" width="70" height="12" uuid="43b832ed-fe1e-4a60-94f9-369cbb328af6"/>
+				<reportElement style="zebrado" x="270" y="0" width="70" height="12" uuid="43b832ed-fe1e-4a60-94f9-369cbb328af6"/>
 				<textElement textAlignment="Center">
 					<font size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[py.edu.gestisoft.utils.date.DateUtils.formatDateTime($F{fecha})]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement style="zebrado" x="370" y="0" width="120" height="12" uuid="308a563a-bdfe-456a-85db-d7cd3cc803c6">
+				<reportElement style="zebrado" x="340" y="0" width="120" height="12" uuid="308a563a-bdfe-456a-85db-d7cd3cc803c6">
 					<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
 				</reportElement>
 				<textElement textAlignment="Left">
@@ -224,11 +239,18 @@
 				<textFieldExpression><![CDATA[$F{observacion}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement style="zebrado" x="490" y="0" width="64" height="12" uuid="f9bb8d96-60f6-490a-8efe-bdf8a21b76d0"/>
+				<reportElement style="zebrado" x="460" y="0" width="64" height="12" uuid="f9bb8d96-60f6-490a-8efe-bdf8a21b76d0"/>
 				<textElement textAlignment="Right">
 					<font size="8"/>
 				</textElement>
-				<textFieldExpression><![CDATA[py.com.flextech.utils.formters.NumberFormat.formataNumber(1l, $F{total})]]></textFieldExpression>
+				<textFieldExpression><![CDATA[py.edu.gestisoft.utils.text.NumberFormat.formataNumber(1l, $F{total})]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="zebrado" x="524" y="0" width="30" height="12" uuid="f4854b87-bf1b-46a5-8f30-3db58a880a01"/>
+				<textElement textAlignment="Right">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{estado} == true ? "NO"   : "SI"]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>
@@ -236,7 +258,7 @@
 		<band height="48">
 			<property name="com.jaspersoft.studio.unit.height" value="px"/>
 			<staticText>
-				<reportElement x="359" y="19" width="140" height="12" backcolor="#E6E6E6" uuid="122d2e5c-2d91-4ca3-a20e-26fb3c334458">
+				<reportElement x="359" y="10" width="140" height="12" backcolor="#E6E6E6" uuid="122d2e5c-2d91-4ca3-a20e-26fb3c334458">
 					<property name="com.jaspersoft.studio.unit.y" value="px"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
@@ -249,7 +271,7 @@
 				<text><![CDATA[TOTAL VENTAS:]]></text>
 			</staticText>
 			<textField evaluationTime="Page">
-				<reportElement x="499" y="19" width="55" height="12" backcolor="#E6E6E6" uuid="c281664b-a380-4879-acdf-a4834939f7aa">
+				<reportElement x="499" y="10" width="55" height="12" backcolor="#E6E6E6" uuid="c281664b-a380-4879-acdf-a4834939f7aa">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 				<box>
@@ -258,7 +280,57 @@
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font size="8" isBold="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA[py.com.flextech.utils.formters.NumberFormat.formataNumber(1l, $V{VL_TOTAL_VENTAS})]]></textFieldExpression>
+				<textFieldExpression><![CDATA[py.edu.gestisoft.utils.text.NumberFormat.formataNumber(1l, $V{VL_TOTAL_VENTAS})]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Page">
+				<reportElement x="499" y="22" width="55" height="12" backcolor="#E6E6E6" uuid="cd97dfdf-6190-49d9-8ecf-9a213eb84e06">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box>
+					<topPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[py.edu.gestisoft.utils.text.NumberFormat.formataNumber(1l, $V{VL_TOTAL_CANCELADO})]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="359" y="22" width="140" height="12" backcolor="#E6E6E6" uuid="fb4fe99a-2e62-483b-9d28-35ea8302414a">
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box>
+					<topPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[TOTAL ANULADAS:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="360" y="34" width="140" height="12" backcolor="#E6E6E6" uuid="14314900-5868-4d5e-a75d-3b6c7ae08057">
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box>
+					<topPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[TOTAL LIQUIDO:]]></text>
+			</staticText>
+			<textField evaluationTime="Page">
+				<reportElement x="500" y="34" width="55" height="12" backcolor="#E6E6E6" uuid="d9e4ddfa-352f-4833-b265-1aa53ceb2727">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box>
+					<topPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[py.edu.gestisoft.utils.text.NumberFormat.formataNumber(1l, $V{VL_TOTAL_VENTAS}.subtract( $V{VL_TOTAL_CANCELADO}))]]></textFieldExpression>
 			</textField>
 		</band>
 	</lastPageFooter>

@@ -31,8 +31,6 @@ class _FiltroVendedorDialogState extends State<FiltroVendedorDialog> {
     "Documento",
   ];
 
-  String orderBy = "Codigo";
-
   bool isSelected(int value) {
     if (value != selected) {
       return false;
@@ -255,7 +253,7 @@ class _FiltroVendedorDialogState extends State<FiltroVendedorDialog> {
               context: context,
               filtroDesde: desdeET.text,
               filtroHasta: hastaET.text,
-              orderBy: orderBy,
+              orderBy: values[selected],
               isPdf: isPdf,
             );
             String fileName =
