@@ -116,7 +116,7 @@ public class VentaService {
 			condition = "v.DOC_NRO = " + FiltroUtil.stringToChar(docNro);
 		}
 		if (verAnuladas == false) {
-			condition += "AND v.ESTADO IS TRUE";
+			condition += " AND v.ESTADO IS TRUE";
 		}
 		String filtro = FiltroUtil.geraFiltroRelatorio(dtInicio, dtFinal, nombreReporte);
 		List<Venta> ventasReporte = ventaMapper.findVentasPorFecha(condition);
