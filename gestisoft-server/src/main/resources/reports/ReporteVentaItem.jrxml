@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.20.0.final using JasperReports Library version 6.20.0-2bc7ab61c56f459e8176eb05c7705e145cd400ad  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ReporteVentaItem" pageWidth="480" pageHeight="256" columnWidth="480" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="8c2afe60-282c-4c9b-acd5-7630cda7d7ad">
+	<style name="zebrado">
+		<conditionalStyle>
+			<conditionExpression><![CDATA[new Boolean(($V{COLUMN_COUNT}.intValue() % 2) == 0)]]></conditionExpression>
+			<style mode="Opaque" forecolor="#000000" backcolor="#EEE9E9"/>
+		</conditionalStyle>
+	</style>
+	<queryString>
+		<![CDATA[]]>
+	</queryString>
+	<field name="precio" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[precio]]></fieldDescription>
+	</field>
+	<field name="cantidad" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[cantidad]]></fieldDescription>
+	</field>
+	<field name="id" class="java.lang.Long">
+		<fieldDescription><![CDATA[id]]></fieldDescription>
+	</field>
+	<field name="producto" class="py.edu.gestisoft.model.base.Producto">
+		<fieldDescription><![CDATA[producto]]></fieldDescription>
+	</field>
+	<variable name="V_SUMA_VENTAS" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{precio}.multiply( $F{cantidad} )]]></variableExpression>
+	</variable>
+	<columnHeader>
+		<band height="12" splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+			<staticText>
+				<reportElement x="176" y="0" width="56" height="12" uuid="2b900a22-2f69-4a3e-870c-fbb2f1401fc0">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<box>
+					<bottomPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Cantidad]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="0" width="175" height="12" uuid="e1bfa867-7cc3-47f9-aa6e-921aec1938b6">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<box>
+					<bottomPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Producto]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="357" y="0" width="124" height="12" uuid="09084fb3-8295-408e-aed4-5813985e0780">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<box>
+					<bottomPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Precio total]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="234" y="0" width="122" height="12" uuid="3df9648b-a409-48db-85ab-152fcd2d0e5d">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<box>
+					<bottomPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Precio unitario]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="12" splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+			<textField>
+				<reportElement style="zebrado" x="0" y="0" width="175" height="12" uuid="c338ee0f-4ae8-44cb-81b4-2f33c557762b">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
+				</reportElement>
+				<textElement>
+					<font size="8"/>
+					<paragraph leftIndent="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{producto}.getId() + " - "+ $F{producto}.getNombre()]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="zebrado" x="176" y="0" width="56" height="12" uuid="0fbd37e9-f042-470c-87c9-6bc71c6d4ef6">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
+					<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Right">
+					<font size="8"/>
+					<paragraph leftIndent="0" rightIndent="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[py.edu.gestisoft.utils.text.NumberFormat.formataNumber(1l, $F{cantidad})]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="zebrado" x="234" y="0" width="122" height="12" uuid="920d03f5-fb4f-48e9-a446-3d08283c375b">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Right">
+					<font size="8"/>
+					<paragraph leftIndent="0" rightIndent="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[py.edu.gestisoft.utils.text.NumberFormat.formataNumber(1l, $F{precio})]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="zebrado" x="357" y="0" width="122" height="12" uuid="ebd684e1-4e0b-492c-9b18-85ca1f68f6f6">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Right">
+					<font size="8"/>
+					<paragraph leftIndent="0" rightIndent="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[py.edu.gestisoft.utils.text.NumberFormat.formataNumber(1l, $F{precio}.multiply( $F{cantidad} ))
+
+]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="64" splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+			<staticText>
+				<reportElement x="234" y="10" width="122" height="14" uuid="f127192c-471c-4b06-a2df-a87d878028e3">
+					<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<bottomPen lineWidth="0.0"/>
+				</box>
+				<textElement textAlignment="Left">
+					<font size="10"/>
+					<paragraph leftIndent="8"/>
+				</textElement>
+				<text><![CDATA[Total en ventas]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="357" y="10" width="122" height="14" uuid="82714d42-498a-4c29-af9a-981399360746"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[py.edu.gestisoft.utils.text.NumberFormat.formataNumber(1l, $V{V_SUMA_VENTAS})
+]]></textFieldExpression>
+			</textField>
+		</band>
+	</columnFooter>
+</jasperReport>

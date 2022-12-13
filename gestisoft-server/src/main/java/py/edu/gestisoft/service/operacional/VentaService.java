@@ -96,6 +96,10 @@ public class VentaService {
 
 	public Venta cancelaVenta(Long venta) {
 		Venta v = ventaRepository.findById(venta).get();
+		for (VentaDetalle detalle : v.getDetalles()) {
+			Producto p = productoRepository.findById(detalle.getProducto().getId()).get();
+			p.setCantidad(p.getCantidad().add(detalle.getCantidad()));
+		}
 		v.setEstado(false);
 		v = ventaRepository.save(v);
 		return v;
@@ -123,6 +127,9 @@ public class VentaService {
 		for (Venta venta : ventasReporte) {
 			venta.setVendedor(vendedorRepository.findById(venta.getVendedor().getId()).get());
 			venta.setCliente(clienteRepository.findById(venta.getCliente().getId()).get());
+			for (VentaDetalle detalle : venta.getDetalles()) {
+				detalle.setProducto(productoRepository.findById(detalle.getProducto().getId()).get());
+			}
 		}
 
 		if (verPdf == true) {

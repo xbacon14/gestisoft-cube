@@ -29,7 +29,6 @@ class _FiltroVentaDialogState extends State<FiltroVentaDialog> {
 
   DateTime dtInicio = DateTime.now();
   DateTime dtFim = DateTime.now();
-  bool isPdf = true;
 
   @override
   void dispose() {
@@ -154,27 +153,6 @@ class _FiltroVentaDialogState extends State<FiltroVentaDialog> {
             height: 8,
           ),
           SizedBox(
-            width: 144,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                const Text("Excel"),
-                ToggleSwitch(
-                  checked: isPdf,
-                  onChanged: ((value) {
-                    setState(() {
-                      isPdf = value;
-                    });
-                  }),
-                ),
-                const Text("PDF"),
-              ],
-            ),
-          ),
-          const SizedBox(
-            height: 8,
-          ),
-          SizedBox(
             height: 64,
             width: 300,
             child: DatePicker(
@@ -256,26 +234,24 @@ class _FiltroVentaDialogState extends State<FiltroVentaDialog> {
             ventaController.filtroPeriod =
                 DateTimeRange(start: dtInicio, end: dtFim);
             Uint8List _bytes = await ventaController.geraRelatorio(
-                context: context, docNro: docNroET.text, isPdf: isPdf);
+                context: context, docNro: docNroET.text, isPdf: true);
             String fileName =
                 "REPORTE-DE-VENTAS ${DateTime.now().millisecondsSinceEpoch.toString()}";
 
-            if (isPdf) {
-              final directory = await getApplicationDocumentsDirectory();
-              String dir = '${directory.path}\\$fileName.pdf';
-              if (_bytes.isNotEmpty) {
-                await File(dir).writeAsBytes(_bytes).then((file) async {
-                  setState(() {
-                    ventaController.pdf = file.readAsBytesSync();
-                    ventaController.pdfFile = file;
-                  });
+            final directory = await getApplicationDocumentsDirectory();
+            String dir = '${directory.path}\\$fileName.pdf';
+            if (_bytes.isNotEmpty) {
+              await File(dir).writeAsBytes(_bytes).then((file) async {
+                setState(() {
+                  ventaController.pdf = file.readAsBytesSync();
+                  ventaController.pdfFile = file;
                 });
-              } else {
-                Alert.show(
-                    context: context,
-                    message: "No se ha podido generar el reporte",
-                    type: 2);
-              }
+              });
+            } else {
+              Alert.show(
+                  context: context,
+                  message: "No se ha podido generar el reporte",
+                  type: 2);
             }
             Modular.to.push(
               FluentPageRoute(

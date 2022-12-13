@@ -178,16 +178,17 @@ class _ClientePageState extends State<ClientePage> {
                                                     width: 8,
                                                   ),
                                                   Text(
-                                                    "Filtros",
+                                                    "Reporte",
                                                   ),
                                                 ],
                                               ),
                                             ),
                                             onPressed: () {
-                                              Alert.show(
-                                                  message: "Info",
-                                                  type: 0,
-                                                  context: context);
+                                              showDialog(
+                                                  context: context,
+                                                  builder: (BuildContext ctx) {
+                                                    return const FiltroClienteDialog();
+                                                  });
                                             },
                                           ),
                                           CommandBarButton(

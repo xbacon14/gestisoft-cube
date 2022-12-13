@@ -47,6 +47,7 @@ public class CreaReporte {
 			JRBeanCollectionDataSource source = new JRBeanCollectionDataSource(list);
 			Map<String, Object> parameters = new HashMap<>();
 			parameters.put("P_FILTRO", filtro);
+			parameters.put("P_SUB_REPORT_DIR", path);
 
 			JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, parameters, source);
 			// Export the report to a PDF file

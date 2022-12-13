@@ -209,7 +209,7 @@ class _ReporteVentaPageState extends State<ReporteVentaPage> {
                                                     width: 8,
                                                   ),
                                                   Text(
-                                                    "Filtros",
+                                                    "Reporte",
                                                   ),
                                                 ],
                                               ),

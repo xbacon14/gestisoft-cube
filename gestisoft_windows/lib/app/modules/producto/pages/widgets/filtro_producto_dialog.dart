@@ -22,8 +22,6 @@ class _FiltroProductoDialogState extends State<FiltroProductoDialog> {
   final desdeET = TextEditingController();
   final hastaET = TextEditingController();
 
-  bool isPdf = true;
-
   int selected = 0;
   final values = [
     "Codigo",
@@ -161,27 +159,6 @@ class _FiltroProductoDialogState extends State<FiltroProductoDialog> {
             height: 8,
           ),
           SizedBox(
-            width: 144,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                const Text("Excel"),
-                ToggleSwitch(
-                  checked: isPdf,
-                  onChanged: ((value) {
-                    setState(() {
-                      isPdf = value;
-                    });
-                  }),
-                ),
-                const Text("PDF"),
-              ],
-            ),
-          ),
-          const SizedBox(
-            height: 8,
-          ),
-          SizedBox(
             width: 240,
             child: Row(
               children: [
@@ -248,27 +225,25 @@ class _FiltroProductoDialogState extends State<FiltroProductoDialog> {
               filtroDesde: desdeET.text,
               filtroHasta: hastaET.text,
               orderBy: orderBy,
-              isPdf: isPdf,
+              isPdf: true,
             );
             String fileName =
                 "REPORTE-DE-PRODUCTOS ${DateTime.now().millisecondsSinceEpoch.toString()}";
 
-            if (isPdf) {
-              final directory = await getApplicationDocumentsDirectory();
-              String dir = '${directory.path}\\$fileName.pdf';
-              if (_bytes.isNotEmpty) {
-                await File(dir).writeAsBytes(_bytes).then((file) async {
-                  setState(() {
-                    productoController.pdf = file.readAsBytesSync();
-                    productoController.pdfFile = file;
-                  });
+            final directory = await getApplicationDocumentsDirectory();
+            String dir = '${directory.path}\\$fileName.pdf';
+            if (_bytes.isNotEmpty) {
+              await File(dir).writeAsBytes(_bytes).then((file) async {
+                setState(() {
+                  productoController.pdf = file.readAsBytesSync();
+                  productoController.pdfFile = file;
                 });
-              } else {
-                Alert.show(
-                    context: context,
-                    message: "No se ha podido generar el reporte",
-                    type: 2);
-              }
+              });
+            } else {
+              Alert.show(
+                  context: context,
+                  message: "No se ha podido generar el reporte",
+                  type: 2);
             }
             Modular.to.push(
               FluentPageRoute(
